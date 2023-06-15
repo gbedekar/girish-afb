@@ -1,6 +1,6 @@
 import { decorateCaptcha, transformCaptchaRequest } from './captcha.js';
 import { transformFileRequest } from './file.js';
-
+import { applyRuleEngine } from '../rules/index.js';
 /**
  * decorate the form, modify html input types with custom elements,
  * but keep the original in case you want
@@ -8,8 +8,9 @@ import { transformFileRequest } from './file.js';
  * @param {HTMLFormElement} form
  */
 // eslint-disable-next-line no-unused-vars, no-empty-function
-export async function decorate(form) {
+export async function decorate(form, data) {
   decorateCaptcha(form);
+  applyRuleEngine(form, data);
 }
 
 /**

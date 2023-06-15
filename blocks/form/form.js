@@ -114,6 +114,9 @@ function createFieldWrapper(fd, tagName = 'div') {
   if (fd.Mandatory.toLowerCase() === 'true') {
     fieldWrapper.dataset.required = '';
   }
+  if (fd.Hidden?.toLowerCase() === 'true') {
+    fieldWrapper.dataset.hidden = 'true';
+  }
   fieldWrapper.classList.add('field-wrapper');
   fieldWrapper.append(createLabel(fd));
   return fieldWrapper;
@@ -311,7 +314,7 @@ async function createForm(formURL) {
       transformRequest = (req) => req,
     } = await import('./decorators/index.js');
     transformer = transformRequest;
-    decorateComponents(form);
+    decorateComponents(form, data);
   } catch (e) {
     console.log('no custom decorators found for this file');
   }
