@@ -1,3 +1,5 @@
+import { decorateCaptcha, transformCaptchaRequest } from './captcha.js';
+
 /**
  * decorate the form, modify html input types with custom elements,
  * but keep the original in case you want
@@ -5,7 +7,9 @@
  * @param {HTMLFormElement} form
  */
 // eslint-disable-next-line no-unused-vars, no-empty-function
-export async function decorate(form) {}
+export async function decorate(form) {
+  decorateCaptcha(form);
+}
 
 /**
  * The function should take the form and original request
@@ -18,7 +22,5 @@ export async function decorate(form) {}
  */
 // eslint-disable-next-line no-unused-vars
 export async function transformRequest(origRequest, form) {
-  const { body, headers, url } = origRequest;
-  const { data } = JSON.parse(body);
-  return { body: JSON.stringify({ data }), headers, url };
+  return transformCaptchaRequest(origRequest, form);
 }
