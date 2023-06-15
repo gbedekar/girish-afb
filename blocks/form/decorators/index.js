@@ -1,4 +1,5 @@
 import { decorateCaptcha, transformCaptchaRequest } from './captcha.js';
+import { transformFileRequest } from './file.js';
 
 /**
  * decorate the form, modify html input types with custom elements,
@@ -22,5 +23,7 @@ export async function decorate(form) {
  */
 // eslint-disable-next-line no-unused-vars
 export async function transformRequest(origRequest, form) {
-  return transformCaptchaRequest(origRequest, form);
+  const t = await transformCaptchaRequest(origRequest, form);
+  const t2 = await transformFileRequest(t, form);
+  return t2;
 }

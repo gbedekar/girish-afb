@@ -257,7 +257,9 @@ function renderField(fd) {
     field = renderer(fd);
   } else {
     field = createFieldWrapper(fd);
-    field.append(createInput(fd));
+    const input = createInput(fd);
+    field.append(input);
+    input.dataset.field = fd;
   }
   if (fd.Description) {
     field.append(createHelpText(fd));
