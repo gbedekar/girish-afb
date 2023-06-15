@@ -6,21 +6,18 @@ function generateUnique() {
 
 function constructPayload(form) {
   const payload = { __id__: generateUnique() };
-  const attachments = {};
   [...form.elements].forEach((fe) => {
     if (fe.name) {
       if (fe.type === 'radio') {
         if (fe.checked) payload[fe.name] = fe.value;
       } else if (fe.type === 'checkbox') {
         if (fe.checked) payload[fe.name] = payload[fe.name] ? `${payload[fe.name]},${fe.value}` : fe.value;
-      } else if (fe.type === 'file' && fe.files?.length > 0) {
-        attachments[fe.name] = fe.files;
       } else {
         payload[fe.name] = fe.value;
       }
     }
   });
-  return { payload, attachments };
+  return { payload };
 }
 
 async function submissionFailure(error, form) {
@@ -29,33 +26,26 @@ async function submissionFailure(error, form) {
   form.querySelector('button[type="submit"]').disabled = false;
 }
 
-function prepareRequest(form, token) {
-  const { payload, attachments } = constructPayload(form);
-  let headers = {
+async function prepareRequest(form, transformer) {
+  const { payload } = constructPayload(form);
+  const headers = {
     'Content-Type': 'application/json',
   };
-  let body = JSON.stringify({ data: payload, token });
-  if (attachments && Object.keys(attachments).length > 0) {
-    headers = {};
-    body = new FormData();
-    const fileNames = [];
-    Object.entries(attachments).forEach(([dataRef, files]) => {
-      fileNames.push(dataRef);
-      [...files].forEach((file) => body.append(dataRef, file));
-    });
-    body.append('token', token);
-    body.append('fileFields', JSON.stringify(fileNames));
-    body.append('data', JSON.stringify(payload));
+  const body = JSON.stringify({ data: payload });
+  const url = form.dataset.action;
+  if (typeof transformer === 'function') {
+    return transformer({ headers, body, url }, form);
   }
-  return { headers, body };
+  return { headers, body, url };
 }
 
-async function submitForm(form, token) {
+async function submitForm(form, transformer) {
   try {
-    const url = form.dataset.action;
+    const { headers, body, url } = await prepareRequest(form, transformer);
     const response = await fetch(url, {
       method: 'POST',
-      ...prepareRequest(form, token),
+      headers,
+      body,
     });
     if (response.ok) {
       sampleRUM('form:submit');
@@ -69,10 +59,10 @@ async function submitForm(form, token) {
   }
 }
 
-async function handleSubmit(form) {
+async function handleSubmit(form, transformer) {
   if (form.getAttribute('data-submitting') !== 'true') {
     form.setAttribute('data-submitting', 'true');
-    await submitForm(form);
+    await submitForm(form, transformer);
   }
 }
 
@@ -312,12 +302,23 @@ async function createForm(formURL) {
     form.append(el);
   });
   groupFieldsByFieldSet(form);
+  let transformer = (req) => req;
+  try {
+    const {
+      decorate: decorateComponents = () => {},
+      transformRequest = (req) => req,
+    } = await import('./decorators/index.js');
+    transformer = transformRequest;
+    decorateComponents(form);
+  } catch (e) {
+    console.log('no custom decorators found for this file');
+  }
   // eslint-disable-next-line prefer-destructuring
   form.dataset.action = pathname.split('.json')[0];
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     e.submitter.setAttribute('disabled', '');
-    handleSubmit(form, e.submitter.dataset?.redirect);
+    handleSubmit(form, transformer);
   });
   return form;
 }
