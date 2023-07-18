@@ -202,6 +202,36 @@ main .form button:disabled {
     background-color: var(--form-input-disable-color);
 }
 
+main .wizard .form-wizard-button-wrapper {
+    grid-column: 1/-1;
+}
+
+main .wizard form > :not(.current-wizard-step, .form-wizard-button-wrapper) {
+    display: none;
+}
+
+main .wizard .form-submit-wrapper,
+main .wizard .form-wizard-button {
+    --form-button-padding: 15px;
+
+    width: 140px;
+    margin: 0 10px 0 0;
+    display: inline-block;
+}
+
+main .wizard .form-submit-wrapper {
+    display: none;
+}
+
+main .wizard .current-wizard-step.field-wrapper:first-of-type ~ .form-wizard-button-wrapper > .form-wizard-button:first-of-type,
+main .wizard .current-wizard-step.field-wrapper:last-of-type ~ .form-wizard-button-wrapper > .form-wizard-button:last-of-type  {
+    display: none;
+}
+
+main .wizard .current-wizard-step.field-wrapper:last-of-type ~ .form-wizard-button-wrapper > .form-submit-wrapper {
+    display: inline-block;
+}
+
 @media (min-width: 576px) {
     :root {
         --form-width: 540px;
@@ -247,7 +277,7 @@ main form .form-fieldset-wrapper > .field-wrapper{
     }
 
     main .form form .form-fieldset-wrapper {
-        flex-flow: row wrap;
+        flex-flow: column wrap;
         gap: 10px 15px;
     }
 }
