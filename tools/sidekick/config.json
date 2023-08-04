@@ -7,12 +7,12 @@
       "environments": ["preview"]
     },
     {
-      "id": "form-create",
+      "id": "form-creator",
       "title": "Create Form",
       "url": "/tools/sidekick/formbuilder.html",
       "environments": ["edit"],
-      "isPalette": true,
-      "paletteRect": "top: auto; bottom: 25px; left: 5px; width: 300px; height: calc(100% - 200px); border-radius: var(--hlx-sk-button-border-radius); overflow: hidden; resize: horizontal;"
+      "passConfig": true,
+      "passReferrer": true
     },
     {
       "id": "form-editor-docx",
@@ -21,7 +21,9 @@
       "environments": ["edit"],
       "passConfig": true,
       "passReferrer": true,
-      "includePaths": [ "**.docx**" ]
+      "isPalette": true,
+      "paletteRect": "top: auto; bottom: 25px; left: 5px; width: 300px; height: calc(100% - 200px); border-radius: var(--hlx-sk-button-border-radius); overflow: hidden; resize: horizontal;display:none;",
+      "includePaths": ["**.docx**"]
     }
   ]
 }
