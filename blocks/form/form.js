@@ -1,5 +1,3 @@
-import { readBlockConfig } from '../../scripts/lib-franklin.js';
-
 function generateUnique() {
   return new Date().valueOf() + Math.random();
 }
@@ -43,7 +41,7 @@ async function prepareRequest(form, transformer) {
     'Content-Type': 'application/json',
   };
   const body = JSON.stringify({ data: payload });
-  const url = form.dataset.submit || form.dataset.action;
+  const url = form.dataset.action;
   if (typeof transformer === 'function') {
     return transformer({ headers, body, url }, form);
   }
@@ -125,6 +123,13 @@ function createHelpText(fd) {
   div.innerText = fd.Description;
   div.id = `${fd.Id}-description`;
   return div;
+}
+
+function generateItemId(id) {
+  if (id) {
+    return `urn:fnkconnection:${window.formPath}:default:Id:${id}`;
+  }
+  return `urn:fnkconnection:${window.formPath}:default`;
 }
 
 function createFieldWrapper(fd, tagName = 'div') {
@@ -380,30 +385,21 @@ async function createForm(formURL) {
   return form;
 }
 
-function generateItemId(id) {
-  if (id) {
-    return `urn:fnkconnection:${window.formPath}:default:Id:${id}`;
-  } else {
-    return `urn:fnkconnection:${window.formPath}:default`;
-  }
-}
-
 function loadUEScripts() {
-  let head = document.getElementsByTagName('head')[0];
-  var meta = document.createElement('meta');
-  meta.name = "urn:auecon:fnkconnection";
+  const head = document.getElementsByTagName('head')[0];
+  const meta = document.createElement('meta');
+  meta.name = 'urn:auecon:fnkconnection';
   meta.content = `fnk:${window.origin}`;
   head.appendChild(meta);
-  let ueEmbedded = document.createElement("script");
-  ueEmbedded.src = "https://cdn.jsdelivr.net/gh/adobe/universal-editor-cors/dist/universal-editor-embedded.js";
+  const ueEmbedded = document.createElement('script');
+  ueEmbedded.src = 'https://cdn.jsdelivr.net/gh/adobe/universal-editor-cors/dist/universal-editor-embedded.js';
   ueEmbedded.async = true;
   head.appendChild(ueEmbedded);
-  let componentDefinition = document.createElement("script");
-  componentDefinition.type =  "application/vnd.adobe.aem.editor.component-definition+json";
-  componentDefinition.src = "https://main--wknd--hlxsites.hlx.page/blocks/form/component-definition.json";
+  const componentDefinition = document.createElement('script');
+  componentDefinition.type = 'application/vnd.adobe.aem.editor.component-definition+json';
+  componentDefinition.src = 'https://main--wknd--hlxsites.hlx.page/blocks/form/component-definition.json';
   head.appendChild(componentDefinition);
 }
-
 
 export default async function decorate(block) {
   const formLink = block.querySelector('a[href$=".json"]');
@@ -413,10 +409,7 @@ export default async function decorate(block) {
     form.setAttribute('itemid', generateItemId());
     form.setAttribute('itemtype', 'container');
     form.setAttribute('itemscope', '');
-    form.setAttribute('data-editor-itemlabel', "Form Container");
+    form.setAttribute('data-editor-itemlabel', 'Form Container');
     formLink.replaceWith(form);
-
-    const config = readBlockConfig(block);
-    Object.entries(config).forEach(([key, value]) => { if (value) form.dataset[key] = value; });
   }
 }
