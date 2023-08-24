@@ -1,6 +1,10 @@
 import { sampleRUM } from '../../scripts/lib-franklin.js';
 import decorateFieldset from './fieldset.js';
 
+const thankyouMessage = `<p class='thanks-title'>Thank you</p>
+<p class='thanks-text'>Your information has been submitted. Someone will be in touch with you shortly.</p>
+`;
+
 function generateUnique() {
   return new Date().valueOf() + Math.random();
 }
@@ -47,7 +51,10 @@ async function submitForm(form) {
     });
     if (response.ok) {
       sampleRUM('form:submit');
-      window.location.href = form.dataset?.redirect || 'thankyou';
+      // window.location.href = form.dataset?.redirect || 'thankyou';
+      const thankyouDiv = document.createElement('div');
+      thankyouDiv.innerHTML = thankyouMessage;
+      form.replaceWith(thankyouDiv);
     } else {
       const error = await response.text();
       throw new Error(error);
