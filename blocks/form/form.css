@@ -73,6 +73,17 @@ main .form-container .form-dealer-customer {
 }
 
 
+main .form-container .field-wrapper span.error {
+    display: none;
+}
+
+main .form-container .field-wrapper.invalid span.error {
+    display: block;
+    color: #c00;
+    font-size: 10px;
+    font-weight: 700;
+}
+
 @media (min-width: 768px) {
     main .form-container form {
         display: flex;
