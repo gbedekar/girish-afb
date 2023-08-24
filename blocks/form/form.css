@@ -1,11 +1,11 @@
 :root {
-    --form-color: #fff;
+    --form-text-color: #fff;
     --body-font-size-s: 18px;
 }
 
 main .form-container {
     background-color: #000;
-    color: var(--form-color);
+    color: var(--form-text-color);
     font-weight: 300;
 }
 
@@ -36,7 +36,7 @@ main .form-container select  {
     padding: 0.75rem 0.6rem;
     border-radius: 0.25rem;
     box-sizing: border-box;
-    color: var(--text-color);
+    color: var(--form-text-color);
     font: inherit;
     outline: 0;
     border: 0;
