@@ -297,6 +297,10 @@ async function fetchForm(pathname) {
   return jsonData;
 }
 
+function decorateValidation(form) {
+  form.setAttribute('novalidate', '');
+}
+
 async function createForm(formURL) {
   const { pathname } = new URL(formURL);
   const data = await fetchForm(pathname);
@@ -321,11 +325,15 @@ async function createForm(formURL) {
   // eslint-disable-next-line prefer-destructuring
   form.dataset.action = pathname.split('.json')[0];
   form.addEventListener('submit', (e) => {
+    if (form.hasAttribute('novalidate')) {
+      form.checkValidity();
+    }
     e.preventDefault();
     e.submitter.setAttribute('disabled', '');
     handleSubmit(form);
   });
   decorateFormFields(form);
+  decorateValidation(form);
   return form;
 }
 
