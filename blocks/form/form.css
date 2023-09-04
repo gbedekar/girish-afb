@@ -2,6 +2,7 @@
     --background-color-primary: #fff;
     --label-color: #666;
     --border-color: #818a91;
+    --error-color: #ff5f3f;
     --button-primary-color: #5F8DDA;
     --button-primary-hover-color: #035fe6;
     --form-font-size-m: 22px;
@@ -12,7 +13,7 @@
     --form-columns: 1;
     --form-field-horz-gap: 40px;
     --form-field-vert-gap: 20px;
-    --form-invalid-border-color: #ff5f3f;
+    --form-invalid-border-color: var(--error-color);
     --form-input-padding: 0.75rem 0.6rem;
     --form-input-font-size: 1rem;
     --form-input-disable-color: var(--label-color);
@@ -29,8 +30,8 @@
     --form-fieldset-border: 0;
     --form-fieldset-marign: 0;
     --form-fieldset-legend-color: var(--form-label-color);
-    --form-fieldset-legend-font-size: var(--form-label-font-size);
-    --form-fieldset-legend-font-weight: var(--form-label-font-weight);
+    --form-fieldset-legend-font-size: var(--form-font-size-m);
+    --form-fieldset-legend-font-weight: bold;
     --form-fieldset-legend-border: none;
     --form-fieldset-legend-padding: 0;
     --form-button-color: var(--background-color-primary);
@@ -79,6 +80,11 @@ main .form .field-description {
     font-size: var(--form-font-size-xs);
 }
 
+main .form .field-description[type='error'] {
+    color: var(--error-color);
+    font-size: var(--form-font-size-xs);
+}
+
 main .form input, main .form textarea, main .form select {
     background-color: var(--form-input-background-color);
     border: var(--form-input-border-size) solid var(--form-input-border-color);
@@ -119,6 +125,7 @@ main .form fieldset legend {
     width: 100%;
     padding: var(--form-fieldset-legend-padding);
     margin-bottom: 10px;
+    text-align: center;
 }
 
 main .innovate form > fieldset > legend {

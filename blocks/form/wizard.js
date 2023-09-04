@@ -9,6 +9,7 @@ function createButton(fd) {
 const createTooltip = (() => {
   const tooltip = document.createElement('div');
   tooltip.className = 'field-description';
+  tooltip.setAttribute('type', 'error');
   document.addEventListener('click', () => tooltip.remove(), true); // execute for next click
   return (fd) => {
     tooltip.textContent = fd.Label;
