@@ -229,7 +229,7 @@ main .form-file-wrapper .field-dropregion {
 main .form-file-wrapper .file-description button {
     --form-button-padding: 15px;
 
-    background: url('/icons/delete.svg') no-repeat;
+    background: url('https://main--afb--adobe.hlx.live/icons/delete.svg') no-repeat;
     width: unset;
     border: unset;
     text-align: center;
