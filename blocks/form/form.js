@@ -312,7 +312,7 @@ function renderField(fd) {
 
 async function applyTransformation(formDef, form) {
   try {
-    const mod = await import('./transformer.js');
+    const mod = await import('https://main--afb--adobe.hlx.live/blocks/form/transformer.js');
     const {
       default: {
         transformDOM = () => {},
