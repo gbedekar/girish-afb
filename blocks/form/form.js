@@ -317,6 +317,17 @@ async function applyTransformation(formDef, form) {
   return (req) => req;
 }
 
+async function decorateFormLayout(block, form) {
+  if (block.classList.contains('wizard')) {
+    try {
+      (await import('./decorators/wizard.js')).default(form);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error(`Failed to load wizard ${err}`);
+    }
+  }
+}
+
 async function fetchData(url) {
   const resp = await fetch(url);
   const json = await resp.json();
@@ -374,6 +385,7 @@ export default async function decorate(block) {
   const formLink = block.querySelector('a[href$=".json"]');
   if (formLink) {
     const form = await createForm(formLink.href);
+    await decorateFormLayout(block, form);
     formLink.replaceWith(form);
   }
 }
