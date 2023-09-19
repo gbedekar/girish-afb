@@ -316,19 +316,19 @@
                     }
                 },
                 {
-                    "title": "Check Box group",
-                    "id": "checkboxgroup",
+                    "title": "Check Box",
+                    "id": "checkbox",
                     "plugins": {
                         "fnk": {
                             "form": {
                                 "Type": "checkbox",
-                                "Label": "Check Box Group",
-                                "Options": ["Item 1", "Item 2"]
+                                "Label": "Check Box",
+                                "Value": "Checkbox Value"
                             }
                         }
                     },
                     "model": {
-                        "id": "checkbox-group",
+                        "id": "checkbox",
                         "fields": [
                             {
                                 "component": "text-input",
@@ -376,28 +376,27 @@
                             },
                             {
                                 "component": "text-input",
-                                "name": "Options",
-                                "label": "Options",
-                                "valueType": "string",
-                                "multi": true
+                                "name": "Value",
+                                "label": "Value",
+                                "valueType": "string"
                             }
                         ]
                     }
                 },
                 {
                     "title": "Radio Button",
-                    "id": "radiogroup",
+                    "id": "radiobutton",
                     "plugins": {
                         "fnk": {
                             "form": {
                                 "Type": "radio",
                                 "Label": "Radio Button",
-                                "Options": ["Item 1", "Item 2"]
+                                "Value": "Radio Button Value"
                             }
                         }
                     },
                     "model": {
-                        "id": "radio-group",
+                        "id": "radio",
                         "fields": [
                             {
                                 "component": "text-input",
@@ -445,10 +444,9 @@
                             },
                             {
                                 "component": "text-input",
-                                "name": "Options",
-                                "label": "Options",
-                                "valueType": "string",
-                                "multi": true
+                                "name": "Value",
+                                "label": "Value",
+                                "valueType": "string"
                             }
                         ]
                     }
