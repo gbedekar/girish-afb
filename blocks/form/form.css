@@ -233,10 +233,15 @@ main .form-file-wrapper .field-dropregion {
 main .form-file-wrapper .file-description button {
     --form-button-padding: 15px;
 
-    background: url('/icons/delete.svg') no-repeat;
+    background: url('https://main--afb--adobe.hlx.live/icons/delete.svg') no-repeat;
     width: unset;
     border: unset;
     text-align: center;
+}
+
+.section.wknd-registration {
+    padding: 0 32px;
+    margin: 0 auto;
 }
 
 @media (min-width: 576px) {
@@ -257,7 +262,7 @@ main .form-file-wrapper .file-description button {
 
 @media (min-width: 1200px) {
     :root {
-        --form-width: 990px;
+        --form-width: 1200px;
     }
 }
 

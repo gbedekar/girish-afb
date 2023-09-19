@@ -108,6 +108,8 @@ function createLabel(fd, tagName = 'label') {
   label.setAttribute('for', fd.Id);
   label.className = 'field-label';
   label.textContent = fd.Label || '';
+  label.setAttribute('itemprop', 'Label');
+  label.setAttribute('itemtype', 'text');
   if (fd.Tooltip) {
     label.title = fd.Tooltip;
   }
@@ -118,6 +120,8 @@ function createHelpText(fd) {
   const div = document.createElement('div');
   div.className = 'field-description';
   div.setAttribute('aria-live', 'polite');
+  div.setAttribute('itemtype', 'text');
+  div.setAttribute('itemprop', 'Description');
   div.innerText = fd.Description;
   div.id = `${fd.Id}-description`;
   return div;
@@ -125,6 +129,11 @@ function createHelpText(fd) {
 
 function createFieldWrapper(fd, tagName = 'div') {
   const fieldWrapper = document.createElement(tagName);
+  fieldWrapper.setAttribute('itemtype', 'component');
+  fieldWrapper.setAttribute('itemid', generateItemId(fd.Id));
+  fieldWrapper.setAttribute('itemscope', '');
+  fieldWrapper.setAttribute('data-editor-itemlabel', fd.Label || fd.Name);
+  fieldWrapper.setAttribute('data-editor-itemmodel', fd.Type);
   const nameStyle = fd.Name ? ` form-${fd.Name}` : '';
   const fieldId = `form-${fd.Type}-wrapper${nameStyle}`;
   fieldWrapper.className = fieldId;
@@ -233,6 +242,7 @@ function createFieldSet(fd) {
   const wrapper = createFieldWrapper(fd, 'fieldset');
   wrapper.id = fd.Id;
   wrapper.name = fd.Name;
+  wrapper.setAttribute('itemtype', 'container');
   wrapper.replaceChildren(createLegend(fd));
   if (fd.Repeatable && fd.Repeatable.toLowerCase() === 'true') {
     setConstraints(wrapper, fd);
@@ -300,7 +310,7 @@ function renderField(fd) {
 
 async function applyTransformation(formDef, form) {
   try {
-    const mod = await import('./transformer.js');
+    const mod = await import('https://main--afb--adobe.hlx.live/blocks/form/transformer.js');
     const {
       default: {
         transformDOM = () => {},
@@ -334,6 +344,7 @@ async function fetchForm(pathname) {
 
 async function createForm(formURL) {
   const { pathname } = new URL(formURL);
+  window.formPath = pathname;
   const data = await fetchForm(pathname);
   const form = document.createElement('form');
   data.forEach((fd) => {
@@ -369,10 +380,40 @@ async function createForm(formURL) {
   return form;
 }
 
+function generateItemId(id) {
+  if (id) {
+    return `urn:fnkconnection:${window.formPath}:default:Id:${id}`;
+  } else {
+    return `urn:fnkconnection:${window.formPath}:default`;
+  }
+}
+
+function loadUEScripts() {
+  let head = document.getElementsByTagName('head')[0];
+  var meta = document.createElement('meta');
+  meta.name = "urn:auecon:fnkconnection";
+  meta.content = `fnk:${window.origin}`;
+  head.appendChild(meta);
+  let ueEmbedded = document.createElement("script");
+  ueEmbedded.src = "https://cdn.jsdelivr.net/gh/adobe/universal-editor-cors/dist/universal-editor-embedded.js";
+  ueEmbedded.async = true;
+  head.appendChild(ueEmbedded);
+  let componentDefinition = document.createElement("script");
+  componentDefinition.type =  "application/vnd.adobe.aem.editor.component-definition+json";
+  componentDefinition.src = "https://main--wknd--hlxsites.hlx.page/blocks/form/component-definition.json";
+  head.appendChild(componentDefinition);
+}
+
+
 export default async function decorate(block) {
   const formLink = block.querySelector('a[href$=".json"]');
   if (formLink) {
+    loadUEScripts();
     const form = await createForm(formLink.href);
+    form.setAttribute('itemid', generateItemId());
+    form.setAttribute('itemtype', 'container');
+    form.setAttribute('itemscope', '');
+    form.setAttribute('data-editor-itemlabel', "Form Container");
     formLink.replaceWith(form);
 
     const config = readBlockConfig(block);
