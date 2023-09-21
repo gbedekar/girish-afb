@@ -373,8 +373,8 @@ main .wizard .current-wizard-step.field-wrapper:last-of-type ~ .form-wizard-butt
     display: inline-block;
 }
 
-main .form/*custom-class */ .form-propertyLocationFS,
-main .form/*custom-class */ .form-singleFamilyDwellingFS {
+main .form/*custom-class */ .form-property-location-fs,
+main .form/*custom-class */ .form-single-family-dwelling-fs {
     margin: 0 0 0.9375rem;
 }
 
@@ -406,8 +406,8 @@ main .form/*custom-class */ .form-summary > legend {
         flex-direction: column;
     }
 
-    main .form/*custom-class */ .form-propertyLocationFS,
-    main .form/*custom-class */ .form-singleFamilyDwellingFS {
+    main .form/*custom-class */ .form-property-location-fs,
+    main .form/*custom-class */ .form-single-family-dwelling-fs {
         --form-fieldset-columns: 2;
 
         max-width: calc(50%);
