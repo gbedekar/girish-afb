@@ -11,44 +11,46 @@
  */
 
  :root {
-  /* colors */
-  --link-color: #035fe6;
-  --link-hover-color: #136ff6;
-  --background-color: #fff;
-  --overlay-background-color: #eee;
-  --highlight-background-color: #ccc;
-  --text-color: #000;
-
-
   /* global colors */
-  --mt-global-color-base-primary: #84329B;
-  --mt-global-color-base-secondary: #3D3E40;
-  --mt-global-color-accent-primary: #5F8DDA;
-  --mt-global-color-accent-secondary: #487ED9;
-  --mt-global-color-accent-tertiary: #78aaff24;
-  --mt-global-color-accent-quaternary: #75787B;
-  --mt-global-color-accent-quinary: #84329b;
-  --mt-global-color-black: #000;
-  --mt-global-color-white: #fff;
-  --mt-global-color-orange: #ff5f3f;
-  --mt-global-color-oslo-gray: #818a91;
-  --mt-global-color-dove-gray: #666;
-  --mt-global-color-blue-ribbon: #035fe6;
-  --mt-global-color-silver: #ccc;
-  --mt-global-color-alabaste: #F7F7F7;
-  --mt-global-color-gallery: #ECECEC;
+  --global-color-black: #000;
+  --global-color-blue: #007dbd;
+  --global-color-dark-blue: #006497;
+  --global-color-gray: #f2f2f2;
+  --global-color-dark-gray: #757575;
+  --global-color-indigo: #6610f2;
+  --global-color-orange: #fd7e14;
+  --global-color-purple: #53469c;
+  --global-color-white: #fff;
+
+  /* global font family */
+  --global-font-family-primary: "Montserrat",sans-serif;
+
 
   /* feature background colors */
-  --mt-background-color-primary: var(--mt-global-color-white);
-  --mt-background-color-secondary: var(--mt-global-color-black);
-  --mt-button-background-color-primary: var(--mt-global-color-accent-primary);
-  --mt-button-background-color-seconary: var(--mt-global-color-white);
-  --mt-input-background-color: var(--mt-background-color-primary);
+  
+  /* --background-color-primary: var(--mt-global-color-white);
+  --background-color-secondary: var(--mt-global-color-black); */
+
+  /* variables */
+
+  /* --link-hover-color: #136ff6;
+ 
+  --overlay-background-color: #eee;
+  --highlight-background-color: #ccc; */
+  --background-color: var(--global-color-white);
+  --text-color: var(var(--global-color-black));
+  --link-color: var(--global-color-blue);
+  --link-hover-color: var(--global-color-dark-blue);
+  --button-color: var(--global-color-white);
+  --button-background-color: var(--global-color-blue);
+  --button-hover-background-color: var(--global-color-dark-blue);
 
   /* fonts */
-  --body-font-family: 'helvetica neue', helvetica, ubuntu, roboto, noto, sans-serif;
-  --heading-font-family: var(--body-font-family);
-  --fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
+  --body-font-family: var(--global-font-family-primary);
+
+  /* --heading-font-family: var(--body-font-family); */
+
+  /* --fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace; */
 
   /* body sizes */
   --body-font-size-m: 20px;
@@ -155,32 +157,30 @@ a:hover {
 
 /* buttons */
 a.button:any-link, button {
-  font-family: var(--body-font-family);
   display: inline-block;
   box-sizing: border-box;
-  text-decoration: none;
-  border: 2px solid transparent;
-  padding: 5px 30px;
+  border: 0 solid #007dbd;
+  padding: 0.8675rem 1.25rem;
+  font-size: 1rem;
+  line-height: 1.5;
   text-align: center;
   font-style: normal;
   font-weight: 600;
   cursor: pointer;
-  color: var(--background-color);
-  background-color: var(--link-color);
-  margin: 16px 0;
+  font-family: var(--body-font-family);
+  color: var(--button-color);
+  background-color: var(--button-background-color);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-radius: 30px;
 }
 
 a.button:hover, a.button:focus, button:hover, button:focus  {
-  background-color: var(--link-hover-color);
-  cursor: pointer;
+  border-color: #005b8a;
+  background-color: var(--button-hover-background-color);
 }
 
 button:disabled, button:disabled:hover {
-  background-color: var(--overlay-background-color);
   cursor: unset;
 }
 
@@ -246,19 +246,6 @@ main .section {
   padding: 64px 16px;
 }
 
-@media (min-width: 600px) {
-  main .section {
-    padding: 64px 32px;
-  }
-}
-
-@media (min-width: 900px) {
-  .section > div {
-    max-width: 800px;
-    margin: auto;
-  }
-}
-
 /* section metadata */
 main .section.highlight {
   background-color: var(--highlight-background-color);
@@ -305,4 +292,26 @@ body.documentation {
 
 body.documentation h1:first-of-type {
   font-size: 45px;
+}
+
+
+@media (min-width: 600px) {
+  main .section {
+    padding: 64px 32px;
+  }
+}
+
+@media (min-width: 900px) {
+  .section > div {
+    max-width: 800px;
+    margin: auto;
+  }
+
+  a.button:any-link, button {
+    font-size: 1.5rem;
+    line-height: 1.13;
+    letter-spacing: .0144rem;
+    min-width: 280px;
+    padding: 1rem;
+  }
 }

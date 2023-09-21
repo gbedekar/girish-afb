@@ -9,9 +9,9 @@ function createButton(fd) {
 function insertTooltip(tooltip, invalid) {
   const wrapper = invalid.closest('.field-wrapper');
   if (invalid.type === 'radio') {
-
+    // @todo add logic to find invalid inside fieldset
   } else if (invalid.type === 'checkbox') {
-
+    // @todo add logic to find invalid inside fieldset
   } else {
     wrapper.insertBefore(tooltip, invalid.nextElementSibling);
   }
