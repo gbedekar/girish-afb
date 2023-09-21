@@ -38,7 +38,7 @@
   --overlay-background-color: #eee;
   --highlight-background-color: #ccc; */
   --background-color: var(--global-color-white);
-  --text-color: var(var(--global-color-black));
+  --text-color: var(--global-color-black);
   --link-color: var(--global-color-blue);
   --link-hover-color: var(--global-color-dark-blue);
   --button-color: var(--global-color-white);

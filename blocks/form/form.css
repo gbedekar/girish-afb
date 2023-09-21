@@ -50,6 +50,7 @@
     --form-output-padding: 0;
     --form-output-font-size: 1rem;
     --form-output-line-height: 1.25rem;
+    --form-output-font-weight: 700;
     --form-output-font-family: var(--form-font-family);
     --form-submit-wrapper-margin: 0;
 
@@ -171,6 +172,7 @@ main .form output {
     font-size: var(--form-output-font-size);
     font-family: var(--form-output-font-family);
     line-height: var(--form-output-line-height);
+    font-weight: var(--form-output-font-weight);
 }
 
 main .form .form-radio-wrapper {
