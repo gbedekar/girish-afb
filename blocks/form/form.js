@@ -298,6 +298,7 @@ function createFieldSet(fd) {
   wrapper.id = fd.Id;
   wrapper.name = fd.Name;
   wrapper.setAttribute('itemtype', 'container');
+  wrapper.setAttribute('data-editor-behavior', 'component');
   wrapper.replaceChildren(createLegend(fd));
   if (fd.Repeatable && fd.Repeatable.toLowerCase() === 'true') {
     setConstraints(wrapper, fd);
