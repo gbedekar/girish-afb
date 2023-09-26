@@ -20,5 +20,5 @@ export default {
   TOK_SUBTRACT: 'Subtract',
   TOK_UNARY_MINUS: 'UnaryMinus',
   TOK_UNQUOTEDIDENTIFIER: 'UnquotedIdentifier',
-  TOK_SHEET_ACCESS: 'Sheet',
+  TOK_DOT: 'Dot',
 };

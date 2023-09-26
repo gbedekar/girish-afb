@@ -20,11 +20,11 @@ const {
   TOK_SUBTRACT,
   TOK_UNARY_MINUS,
   TOK_UNQUOTEDIDENTIFIER,
-  TOK_SHEET_ACCESS,
+  TOK_DOT,
 } = tokenDefinitions;
 
 const basicTokens = {
-  '!': TOK_SHEET_ACCESS,
+  '.': TOK_DOT,
   ',': TOK_COMMA,
   '(': TOK_LPAREN,
   ')': TOK_RPAREN,

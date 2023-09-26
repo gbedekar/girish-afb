@@ -128,9 +128,6 @@ function createFieldWrapper(fd, tagName = 'div') {
   const nameStyle = fd.Name ? ` form-${fd.Name}` : '';
   const fieldId = `form-${fd.Type}-wrapper${nameStyle}`;
   fieldWrapper.className = fieldId;
-  if (fd.Fieldset) {
-    fieldWrapper.dataset.fieldset = fd.Fieldset;
-  }
   if (fd.Mandatory.toLowerCase() === 'true') {
     fieldWrapper.dataset.required = '';
   }
@@ -162,6 +159,9 @@ function createSubmit(fd) {
 function createInput(fd) {
   const input = document.createElement('input');
   input.type = fd.Type;
+  if (fd.Fieldset) {
+    input.dataset.fieldset = fd.Fieldset;
+  }
   setPlaceholder(input, fd);
   setConstraints(input, fd);
   return input;
@@ -246,18 +246,20 @@ function groupFieldsByFieldSet(form) {
   fieldsets?.forEach((fieldset) => {
     const fields = form.querySelectorAll(`[data-fieldset="${fieldset.name}"`);
     fields?.forEach((field) => {
-      fieldset.append(field);
+      fieldset.append(field.parentElement);
     });
   });
 }
 
 function createPlainText(fd) {
+  const wrapper = createFieldWrapper(fd);
+  wrapper.name = fd.Name;
+  wrapper.id = fd.Id;
   const paragraph = document.createElement('p');
-  const nameStyle = fd.Name ? `form-${fd.Name}` : '';
-  paragraph.className = nameStyle;
   paragraph.dataset.fieldset = fd.Fieldset ? fd.Fieldset : '';
   paragraph.textContent = fd.Label;
-  return paragraph;
+  wrapper.replaceChildren(paragraph);
+  return wrapper;
 }
 
 export const getId = (function getId() {

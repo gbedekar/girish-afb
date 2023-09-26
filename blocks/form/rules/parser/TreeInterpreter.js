@@ -1,7 +1,7 @@
 import tokenDefinitions from './Tokens.js';
 import {
   getToNumber,
-} from './utils.js';
+} from './coercion.js';
 
 const {
   TOK_EQ,

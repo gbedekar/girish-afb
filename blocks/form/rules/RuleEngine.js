@@ -2,6 +2,7 @@
 import Formula from './parser/Formula.js';
 import transformRule from './RuleCompiler.js';
 import formatFns from '../formatting.js';
+import { numberToDate, dateToString } from './parser/coercion.js';
 
 function stripTags(input, allowd) {
   const allowed = ((`${allowd || ''}`)
@@ -18,7 +19,10 @@ export function sanitizeHTML(input) {
   return stripTags(input, '<a>');
 }
 
-function coerceValue(val) {
+function coerceValue(val, type) {
+  if (type === 'date') {
+    return typeof val === 'string' ? val : dateToString(numberToDate(val));
+  }
   if (val === 'true') return true;
   if (val === 'false') return false;
   return val;
@@ -120,16 +124,12 @@ export default class RuleEngine {
         stack.push(...this.dependencyTree[el].deps.Value);
       }
       // eslint-disable-next-line no-loop-func
-      this.dependencyTree[el]?.deps.Hidden?.forEach((field) => {
-        arr[field] = index;
-        index += 1;
+      ['Hidden', 'Label', 'Min'].forEach((prop) => {
+        this.dependencyTree[el]?.deps[prop]?.forEach((field) => {
+          arr[field] = index;
+          index += 1;
+        });
       });
-      // eslint-disable-next-line no-loop-func
-      this.dependencyTree[el]?.deps.Label?.forEach((field) => {
-        arr[field] = index;
-        index += 1;
-      });
-      // @todo add label deps as well.
     } while (stack.length > 0);
     return Object.entries(arr).sort((a, b) => a[1] - b[1]).map((_) => _[0]).slice(1);
   }
@@ -137,14 +137,15 @@ export default class RuleEngine {
   updateValue(fieldId, value) {
     const element = document.getElementById(fieldId);
     if (!(element instanceof NodeList)) {
-      this.data[element.name] = coerceValue(value);
+      const coercedValue = coerceValue(value, element.type);
+      this.data[element.name] = coercedValue;
       const { displayFormat } = element.dataset;
       if (element.tagName === 'OUTPUT') {
         const formatFn = formatFns[displayFormat] || ((x) => x);
         element.value = formatFn(value);
         element.dataset.value = value;
       } else {
-        element.value = value;
+        element.value = coercedValue;
       }
       if (element.type === 'range') {
         element.dispatchEvent(new CustomEvent('input', { bubbles: false }));
@@ -167,6 +168,11 @@ export default class RuleEngine {
     const element = document.getElementById(fieldId);
     const label = element.closest('.field-wrapper').querySelector('.field-label');
     label.innerHTML = sanitizeHTML(value);
+  }
+
+  updateMin(fieldId, value) {
+    const element = document.getElementById(`${fieldId}-im`);
+    element.setAttribute('data-min', value);
   }
 
   setData(field) {
@@ -236,8 +242,9 @@ export default class RuleEngine {
         ...this.data,
         ...getFieldsetPayload(this.formTag, fieldsetName),
       };
-      const rules = [...fieldset.elements].map((fd) => this.getRules(fd.name)).flat();
-      this.applyRules(rules);
+      const dependentRules = [...fieldset.elements].map((fd) => this.getRules(fd.name)).flat();
+      const newRules = [...fieldset.elements].map((fd) => this.formRules[fd.name]).flat();
+      this.applyRules(dependentRules.concat(newRules));
     });
 
     this.formTag.addEventListener('item:remove', (e) => {

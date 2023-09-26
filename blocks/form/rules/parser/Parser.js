@@ -23,7 +23,7 @@ const {
   TOK_SUBTRACT,
   TOK_UNARY_MINUS,
   TOK_UNQUOTEDIDENTIFIER,
-  TOK_SHEET_ACCESS,
+  TOK_DOT,
 } = tokenDefinitions;
 
 const bindingPower = {
@@ -46,7 +46,7 @@ const bindingPower = {
   [TOK_LTE]: 5,
   [TOK_NE]: 5,
   [TOK_UNARY_MINUS]: 30,
-  [TOK_SHEET_ACCESS]: 40,
+  [TOK_DOT]: 40,
   [TOK_LPAREN]: 60,
 };
 
@@ -144,9 +144,9 @@ export default class Parser {
     let node;
     let rbp;
     switch (tokenName) {
-      case TOK_SHEET_ACCESS:
-        rbp = bindingPower.Sheet;
-        right = this.parseSheetRHS(rbp);
+      case TOK_DOT:
+        rbp = bindingPower.Dot;
+        right = this.parseDotRHS(rbp);
         return { type: 'Subexpression', children: [left, right] };
       case TOK_CONCATENATE:
         right = this.expression(bindingPower.Concatenate);
@@ -212,9 +212,9 @@ export default class Parser {
   }
 
   // eslint-disable-next-line consistent-return
-  parseSheetRHS(rbp) {
+  parseDotRHS(rbp) {
     const lookahead = this.lookahead(0);
-    const exprTokens = [TOK_UNQUOTEDIDENTIFIER];
+    const exprTokens = [TOK_UNQUOTEDIDENTIFIER, TOK_QUOTEDIDENTIFIER];
     if (exprTokens.indexOf(lookahead) >= 0) {
       return this.expression(rbp);
     }

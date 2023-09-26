@@ -3,6 +3,7 @@ export function getRules(fd) {
     ['Value', fd?.['Value Expression']],
     ['Hidden', fd?.['Hidden Expression']],
     ['Label', fd?.['Label Expression']],
+    ['Min', fd?.['Min Expression']],
   ];
   return entries.filter((e) => e[1]).map(([prop, expression]) => ({
     prop,

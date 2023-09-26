@@ -1,6 +1,6 @@
 import {
   getValueOf, getToNumber,
-} from './utils.js';
+} from './coercion.js';
 
 export default function functions(debug) {
   const toNumber = getToNumber(debug);
