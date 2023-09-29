@@ -1,4 +1,4 @@
-import { sampleRUM } from '../../scripts/lib-franklin.js';
+import { readBlockConfig } from '../../scripts/lib-franklin.js';
 
 function generateUnique() {
   return new Date().valueOf() + Math.random();
@@ -43,7 +43,7 @@ async function prepareRequest(form, transformer) {
     'Content-Type': 'application/json',
   };
   const body = JSON.stringify({ data: payload });
-  const url = form.dataset.action;
+  const url = form.dataset.submit || form.dataset.action;
   if (typeof transformer === 'function') {
     return transformer({ headers, body, url }, form);
   }
@@ -59,7 +59,6 @@ async function submitForm(form, transformer) {
       body,
     });
     if (response.ok) {
-      sampleRUM('form:submit');
       window.location.href = form.dataset?.redirect || 'thankyou';
     } else {
       const error = await response.text();
@@ -135,8 +134,8 @@ function createFieldWrapper(fd, tagName = 'div') {
   if (fd.Mandatory.toLowerCase() === 'true') {
     fieldWrapper.dataset.required = '';
   }
-  if (fd.Hidden?.toLowerCase() === 'true') {
-    fieldWrapper.dataset.hidden = 'true';
+  if (fd.Visible?.toLowerCase() === 'false') {
+    fieldWrapper.dataset.visible = 'false';
   }
   fieldWrapper.classList.add('field-wrapper');
   fieldWrapper.append(createLabel(fd));
@@ -301,14 +300,17 @@ function renderField(fd) {
 
 async function applyTransformation(formDef, form) {
   try {
-    const mod = await import('./transformer.js');
-    const {
-      default: {
-        transformDOM = () => {},
-        transformRequest,
-      },
-    } = mod;
-    transformDOM(formDef, form);
+    const { requestTransformers, transformers } = await import('./decorators/index.js');
+    if (transformers) {
+      transformers.forEach(
+        (fn) => fn.call(this, formDef, form),
+      );
+    }
+
+    const transformRequest = async (request, fd) => requestTransformers?.reduce(
+      (promise, transformer) => promise.then((modifiedRequest) => transformer(modifiedRequest, fd)),
+      Promise.resolve(request),
+    );
     return transformRequest;
   } catch (e) {
     // eslint-disable-next-line no-console
@@ -387,5 +389,8 @@ export default async function decorate(block) {
     const form = await createForm(formLink.href);
     await decorateFormLayout(block, form);
     formLink.replaceWith(form);
+
+    const config = readBlockConfig(block);
+    Object.entries(config).forEach(([key, value]) => { if (value) form.dataset[key] = value; });
   }
 }
