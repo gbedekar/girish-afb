@@ -101,6 +101,9 @@ function setConstraints(element, fd) {
         element.setAttribute(htmlNm, fd[nm]);
       });
   }
+  if (fd.Mandatory && fd.Mandatory.toLowerCase() === 'true') {
+    element.setAttribute('required', '');
+  }
 }
 
 function createLabel(fd, tagName = 'label') {
@@ -128,9 +131,6 @@ function createFieldWrapper(fd, tagName = 'div') {
   const nameStyle = fd.Name ? ` form-${fd.Name}` : '';
   const fieldId = `form-${fd.Type}-wrapper${nameStyle}`;
   fieldWrapper.className = fieldId;
-  if (fd.Fieldset) {
-    fieldWrapper.dataset.fieldset = fd.Fieldset;
-  }
   if (fd.Mandatory.toLowerCase() === 'true') {
     fieldWrapper.dataset.required = '';
   }
@@ -154,6 +154,7 @@ function createButton(fd) {
   wrapper.replaceChildren(button);
   return wrapper;
 }
+
 function createSubmit(fd) {
   const wrapper = createButton(fd);
   return wrapper;
@@ -246,18 +247,20 @@ function groupFieldsByFieldSet(form) {
   fieldsets?.forEach((fieldset) => {
     const fields = form.querySelectorAll(`[data-fieldset="${fieldset.name}"`);
     fields?.forEach((field) => {
-      fieldset.append(field);
+      fieldset.append(field.parentElement);
     });
   });
 }
 
 function createPlainText(fd) {
+  const wrapper = createFieldWrapper(fd);
   const paragraph = document.createElement('p');
-  const nameStyle = fd.Name ? `form-${fd.Name}` : '';
-  paragraph.className = nameStyle;
-  paragraph.dataset.fieldset = fd.Fieldset ? fd.Fieldset : '';
+  if (fd.Fieldset) {
+    paragraph.dataset.fieldset = fd.Fieldset ? fd.Fieldset : '';
+  }
   paragraph.textContent = fd.Label;
-  return paragraph;
+  wrapper.replaceChildren(paragraph);
+  return wrapper;
 }
 
 export const getId = (function getId() {
@@ -352,10 +355,7 @@ async function createForm(formURL) {
   const form = document.createElement('form');
   data.forEach((fd) => {
     const el = renderField(fd);
-    const input = el.querySelector('input,textarea,select');
-    if (fd.Mandatory && fd.Mandatory.toLowerCase() === 'true') {
-      input.setAttribute('required', 'required');
-    }
+    const input = el.querySelector('input,textarea,select,output');
     if (input) {
       input.id = fd.Id;
       input.name = fd.Name;
@@ -367,6 +367,9 @@ async function createForm(formURL) {
       }
       if (fd.Description) {
         input.setAttribute('aria-describedby', `${fd.Id}-description`);
+      }
+      if (fd.Fieldset) {
+        input.dataset.fieldset = fd.Fieldset;
       }
     }
     form.append(el);

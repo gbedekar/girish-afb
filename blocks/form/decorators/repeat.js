@@ -1,12 +1,5 @@
-const getId = (function getId() {
-  const ids = {};
-  return (name) => {
-    ids[name] = ids[name] || 0;
-    const idSuffix = ids[name] ? `-${ids[name]}` : '';
-    ids[name] += 1;
-    return `${name}${idSuffix}`;
-  };
-}());
+// eslint-disable-next-line import/no-cycle
+import { getId } from '../form.js';
 
 function update(fieldset, index, labelTemplate) {
   const legend = fieldset.querySelector(':scope>.field-label').firstChild;
@@ -87,8 +80,12 @@ const add = (wrapper, form) => (e) => {
 export default function transferRepeatableDOM(formDef, form) {
   form.querySelectorAll('[data-repeatable="true"]').forEach((el) => {
     const div = document.createElement('div');
-    div.setAttribute('data-min', el.dataset.min);
-    div.setAttribute('data-max', el.dataset.max);
+    if (el.dataset.min) {
+      div.setAttribute('data-min', el.dataset.min);
+    }
+    if (el.dataset.max) {
+      div.setAttribute('data-max', el.dataset.max);
+    }
     el.insertAdjacentElement('beforebegin', div);
     div.append(el);
     const addLabel = 'Add';
