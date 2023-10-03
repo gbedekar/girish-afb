@@ -237,7 +237,7 @@ function createFieldSet(fd) {
   wrapper.replaceChildren(createLegend(fd));
   if (fd.Repeatable && fd.Repeatable.toLowerCase() === 'true') {
     setConstraints(wrapper, fd);
-    wrapper.dataset.repeatable = 'true';
+    wrapper.setAttribute('data-repeatable', '');
   }
   return wrapper;
 }

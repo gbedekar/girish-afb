@@ -78,7 +78,7 @@ const add = (wrapper, form) => (e) => {
 };
 
 export default function transferRepeatableDOM(formDef, form) {
-  form.querySelectorAll('[data-repeatable="true"]').forEach((el) => {
+  form.querySelectorAll('[data-repeatable]').forEach((el) => {
     const div = document.createElement('div');
     if (el.dataset.min) {
       div.setAttribute('data-min', el.dataset.min);

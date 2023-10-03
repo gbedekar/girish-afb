@@ -26,68 +26,66 @@ function coerceValue(val) {
 
 const isFieldset = (e) => e.tagName === 'FIELDSET';
 
-const isRepeatableFieldset = (e) => isFieldset(e) && e.getAttribute('data-repeatable') === 'true';
+const isRepeatableFieldset = (e) => isFieldset(e) && e.hasAttribute('data-repeatable') && e.name;
 
-const isDataElement = (element) => element.tagName !== 'BUTTON' && !isFieldset(element) && element.name;
+const isDataElement = (element) => element.tagName !== 'BUTTON' && element.name;
 
 function getValue(fe) {
   if (fe.type === 'checkbox' || fe.type === 'radio') {
     if (fe.checked) return coerceValue(fe.value);
   } else if (fe.tagName === 'OUTPUT') {
-    return fe.dataset.value;
+    return fe.dataset.value || '';
   } else if (fe.name) {
     return coerceValue(fe.value);
   }
   return undefined;
 }
 
-function constructData(elements) {
-  const payload = {};
-  elements.filter(isDataElement)
-    .forEach((fe) => {
-      payload[fe.name] = getValue(fe);
-    });
-  return payload;
-}
-
-function getFieldsetPayload(form, fieldsetName) {
-  let fieldsets = form.elements[fieldsetName];
+function getFieldsetPayload(fieldset) {
+  let fieldsets = fieldset.form.elements[fieldset.name];
   if (!(fieldsets instanceof RadioNodeList)) {
     fieldsets = [fieldsets];
   }
-  const payload = {};
-  fieldsets.forEach((fe, i) => {
-    [...fe.elements].filter(isDataElement).forEach((e) => {
-      payload[e.name] = payload[e.name] || [];
-      payload[e.name][i] = getValue(e);
-    });
+  return fieldsets.map((fe) => [...fe.elements].filter(isDataElement).reduce((acc, e) => ({
+    ...acc,
+    [e.name]: getValue(e),
+  }), {}));
+}
+
+function constructData(elements, fieldsetName = '', path = 'form') {
+  const els = [...elements];
+  const dataElements = els.filter((el) => {
+    const elFieldsetName = el.dataset.fieldset || '';
+    return isDataElement(el) && fieldsetName === elFieldsetName;
   });
-  return payload;
+  const result = dataElements.reduce((acc, el) => {
+    if (isFieldset(el)) {
+      const repeat = isRepeatableFieldset(el);
+      const fPath = repeat ? `${path}.${el.name}[]` : path;
+      const data = constructData(el.elements, el.name, fPath);
+      if (repeat) {
+        acc[el.name] = acc[el.name] || [];
+        acc[el.name][el.dataset.index] = data;
+        return acc;
+      }
+      return {
+        ...acc,
+        ...data,
+      };
+    }
+    el.dataset.qn = `${path}.${el.name}`;
+    acc[el.name] = getValue(el);
+    return acc;
+  }, {});
+  return result;
 }
-
-function constructPayload(form) {
-  const elements = [...form.elements];
-  const payload = constructData(elements);
-  const fieldsetNames = [...elements.filter(isRepeatableFieldset)
-    .reduce((names, x) => {
-      names.add(x.name);
-      return names;
-    }, new Set())];
-  return fieldsetNames.reduce((currPayload, x) => {
-    const fieldsetPayload = getFieldsetPayload(form, x);
-    return {
-      ...currPayload,
-      ...fieldsetPayload,
-    };
-  }, payload);
-}
-
 export default class RuleEngine {
   rulesOrder = {};
 
   constructor(formRules, fieldIdMap, formTag) {
     this.formTag = formTag;
-    this.data = constructPayload(formTag);
+    this.data = constructData(formTag.elements);
+    console.log(this.data);
     this.formula = new Formula();
     const newRules = formRules.map(([fieldId, fieldRules]) => [
       fieldId,
