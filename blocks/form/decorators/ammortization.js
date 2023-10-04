@@ -108,12 +108,14 @@ export default function ammSchedule(principle, term, rate, start, isGroupByYear 
     yearly.real += monthly.real;
     yearly.principle = monthly.principle;
     if (isGroupByYear) {
-      data.push({
-        date: yearly.date,
-        real: formatAsMoney(yearly.real / 100),
-        interest: formatAsMoney(yearly.interest / 100),
-        principle: formatAsMoney(yearly.principle / 100),
-      });
+      if (monthly.month === 11 || n === numPayments) {
+        data.push({
+          date: yearly.date,
+          real: formatAsMoney(yearly.real / 100),
+          interest: formatAsMoney(yearly.interest / 100),
+          principle: formatAsMoney(yearly.principle / 100),
+        });
+      }
     } else {
       data.push({
         date: monthly.date,

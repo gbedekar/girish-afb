@@ -253,6 +253,21 @@ function groupFieldsByFieldSet(form) {
   });
 }
 
+function createSwitch(fd) {
+  const wrapper = createFieldWrapper(fd);
+  const options = fd.Options.split(',').slice(0, 2);
+  const opts = options.map((o, i) => createRadio(
+    {
+      Name: fd.Name,
+      Label: o,
+      Value: o,
+      Id: i === 0 ? fd.Id : getId(fd.Name),
+      Checked: true,
+    },
+  ));
+  wrapper.append(...opts.map((o) => o.children).flat());
+}
+
 function createPlainText(fd) {
   const wrapper = createFieldWrapper(fd);
   const paragraph = document.createElement('p');
@@ -285,6 +300,7 @@ const fieldRenderers = {
   hidden: createHidden,
   fieldset: createFieldSet,
   plaintext: createPlainText,
+  switch: createSwitch,
 };
 
 function renderField(fd) {
