@@ -111,6 +111,24 @@ export default function functions(debug) {
         return sum + toNumber(x);
       }, 0),
     },
+
+    myfunction: {
+      func: (args) => {
+        const [loanAmount, interestRate, loanTerm] = args;
+        const years = loanTerm * 12;
+        // create a range from 1 to years
+        const range = Array.from(Array(years).keys()).map((x) => {
+          const y = x + 1;
+          return {
+            interest: '',
+            paymentDate: '',
+            principle: '',
+            remaining: '',
+          };
+        });
+        return range;
+      },
+    },
   };
   return fnMap;
 }

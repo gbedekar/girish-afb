@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import { applyRuleEngine } from '../rules/index.js';
 import { transformFileDOM, transformFileRequest } from './attachments.js';
 import { transformCaptchaDOM, transformCaptchaRequest } from './recaptcha.js';

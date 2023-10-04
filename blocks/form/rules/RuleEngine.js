@@ -2,6 +2,8 @@
 import Formula from './parser/Formula.js';
 import transformRule from './RuleCompiler.js';
 import formatFns from '../formatting.js';
+// eslint-disable-next-line import/no-cycle
+import { repeatFieldset } from '../decorators/repeat.js';
 
 function stripTags(input, allowd) {
   const allowed = ((`${allowd || ''}`)
@@ -64,6 +66,9 @@ function constructData(elements, fieldsetName = '', path = 'form') {
       const fPath = repeat ? `${path}.${el.name}[]` : path;
       const data = constructData(el.elements, el.name, fPath);
       if (repeat) {
+        const parent = el.parentElement;
+        parent.dataset.qn = `${path}.${el.name}`;
+        el.dataset.qn = `${path}.${el.name}`;
         acc[el.name] = acc[el.name] || [];
         acc[el.name][el.dataset.index] = data;
         return acc;
@@ -79,6 +84,48 @@ function constructData(elements, fieldsetName = '', path = 'form') {
   }, {});
   return result;
 }
+
+function getDataParent(fieldset, data) {
+  const qn = fieldset.dataset.qn.split('.').slice(1, -1);
+  // handle the case when there is nested repeatable fieldset
+  const parent = qn.reduce((acc, key) => acc[key], data);
+  return parent;
+}
+
+function importData(fieldset, currentData, newData) {
+  function updateFieldset(f, data) {
+    [...f.elements].forEach((el) => {
+      if (isRepeatableFieldset(el)) {
+        importData(el, currentData, data[el.name]);
+      } else if (isDataElement(el) && !isFieldset(el)) {
+        el.value = data[el.name];
+      }
+    });
+  }
+
+  const dataNode = getDataParent(fieldset, currentData);
+  dataNode[fieldset.name] = newData;
+  let fieldsets = fieldset.form.elements[fieldset.name];
+  if (!(fieldsets instanceof RadioNodeList)) {
+    fieldsets = [fieldsets];
+  }
+  const existing = Math.min(fieldsets.length, newData.length);
+  let i = 0;
+  for (i = 0; i < existing; i += 1) {
+    updateFieldset(fieldsets[i], newData[i]);
+  }
+  // remove extra fieldsets
+  for (; i < fieldsets.length; i += 1) {
+    fieldsets[i].remove();
+  }
+  // create new fieldsets
+  for (; i < newData.length; i += 1) {
+    const newFieldset = repeatFieldset(fieldset);
+    updateFieldset(newFieldset, newData[i]);
+    fieldset.insertAdjacentElement('beforebegin', newFieldset);
+  }
+}
+
 export default class RuleEngine {
   rulesOrder = {};
 
@@ -131,7 +178,9 @@ export default class RuleEngine {
 
   updateValue(fieldId, value) {
     const element = document.getElementById(fieldId);
-    if (!(element instanceof NodeList)) {
+    if (element instanceof HTMLFieldSetElement) {
+      importData(element, this.data, value);
+    } else if (!(element instanceof NodeList)) {
       this.data[element.name] = coerceValue(value);
       const { displayFormat } = element.dataset;
       if (element.tagName === 'OUTPUT') {
@@ -203,7 +252,7 @@ export default class RuleEngine {
         if (fieldset && fieldset.getAttribute('data-repeatable') === 'true') {
           this.data = {
             ...this.data,
-            ...getFieldsetPayload(this.formTag, fieldset.name),
+            ...getFieldsetPayload(fieldset),
           };
           fieldId = field.name;
         } else {
@@ -223,14 +272,10 @@ export default class RuleEngine {
 
     this.formTag.addEventListener('item:add', (e) => {
       const fieldsetName = e.detail.item.name;
-      let fieldset = this.formTag.elements[fieldsetName];
-      if (fieldset instanceof RadioNodeList) {
-        fieldset = fieldset.item(0);
-      }
-      this.data = {
-        ...this.data,
-        ...getFieldsetPayload(this.formTag, fieldsetName),
-      };
+      const fieldset = this.formTag.elements[e.detail.item.id];
+      const data = getDataParent(fieldset, this.data);
+      data[fieldsetName] = data[fieldsetName] || [];
+      data[fieldsetName][fieldset.dataset.index] = constructData(fieldset.elements, fieldsetName);
       const rules = [...fieldset.elements].map((fd) => this.getRules(fd.name)).flat();
       this.applyRules(rules);
     });
@@ -241,10 +286,8 @@ export default class RuleEngine {
       if (fieldset instanceof RadioNodeList) {
         fieldset = fieldset.item(0);
       }
-      this.data = {
-        ...this.data,
-        ...getFieldsetPayload(this.formTag, fieldsetName),
-      };
+      const data = getDataParent(fieldset, this.data);
+      data[fieldsetName].splice(e.detail.item.index, 1);
       const rules = [...fieldset.elements].map((fd) => this.getRules(fd.name)).flat();
       this.applyRules(rules);
     });
