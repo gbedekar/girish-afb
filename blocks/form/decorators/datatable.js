@@ -1,21 +1,10 @@
 function updateRows(row, data) {
   function updateRow(r, d) {
-    const tds = [...row.querySelectorAll('td')];
+    const tds = [...r.querySelectorAll('td')];
     tds.forEach((td) => {
       const { name } = td.dataset;
       td.innerText = d[name] == null ? '' : d[name];
     });
-  }
-
-  function createRow(d, numCols) {
-    // create a tr with numCols tds
-    const tr = document.createElement('tr');
-    for (let i = 0; i < numCols; i += 1) {
-      const td = document.createElement('td');
-      tr.append(td);
-    }
-    updateRow(tr, d);
-    return tr;
   }
 
   const tbody = row.parentElement;
@@ -33,7 +22,8 @@ function updateRows(row, data) {
   }
   // create new fieldsets
   for (; i < data.length; i += 1) {
-    const newRow = createRow(data[i], numCols);
+    const newRow = tbody['#template'].cloneNode(true);
+    updateRow(newRow, data[i]);
     lastElement.insertAdjacentElement('afterend', newRow);
     lastElement = newRow;
   }
@@ -45,7 +35,7 @@ function updateRows(row, data) {
  * @param {*} formTag
  */
 export default function transformTable(formDef, formTag) {
-  formTag.querySelectorAll('.form-panel1').forEach((el) => {
+  formTag.querySelectorAll('.form-schedule').forEach((el) => {
     const labels = el.querySelectorAll('label');
     // create a table
     const table = document.createElement('table');
@@ -76,6 +66,7 @@ export default function transformTable(formDef, formTag) {
       td.dataset.name = f.querySelector('output').name;
       bodyRow.append(td);
     });
+    tbody['#template'] = bodyRow.cloneNode(true);
     bodyRow.setAttribute('data-repeatable', '');
     bodyRow.setAttribute('data-fieldsetName', el.name);
     el.parentElement.insertAdjacentElement('afterend', table);

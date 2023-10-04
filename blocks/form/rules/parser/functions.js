@@ -1,6 +1,7 @@
 import {
   getValueOf, getToNumber,
 } from './utils.js';
+import ammSchedule from '../../decorators/ammortization.js';
 
 export default function functions(debug) {
   const toNumber = getToNumber(debug);
@@ -114,19 +115,8 @@ export default function functions(debug) {
 
     myfunction: {
       func: (args) => {
-        const [loanAmount, interestRate, loanTerm] = args;
-        const years = loanTerm * 12;
-        // create a range from 1 to years
-        const range = Array.from(Array(years).keys()).map((x) => {
-          const y = x + 1;
-          return {
-            interest: '',
-            paymentDate: '',
-            principle: '',
-            remaining: '',
-          };
-        });
-        return range;
+        const [loanAmount, interestRate, loanTerm, startDate, scheduleType] = args;
+        return ammSchedule(loanAmount, loanTerm, interestRate, startDate, scheduleType);
       },
     },
   };
