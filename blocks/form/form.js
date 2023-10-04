@@ -1,4 +1,5 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
+import decorateDataTable from './decorators/datatable.js';
 
 function generateUnique() {
   return new Date().valueOf() + Math.random();

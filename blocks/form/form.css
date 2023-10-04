@@ -471,3 +471,8 @@ main .form/*custom-class */ .form-summary > legend {
         letter-spacing: .02rem;
     }
 }
+
+/* styling table */
+table.table-panel1 {
+    grid-column: 1/ -1;
+}

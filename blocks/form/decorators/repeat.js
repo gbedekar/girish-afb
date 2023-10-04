@@ -1,8 +1,9 @@
 // eslint-disable-next-line import/no-cycle
 import { getId } from '../form.js';
+import { isDataElement, isFieldset } from '../rules/RuleEngine.js';
 
 function updateLabel(fieldset, index, labelTemplate) {
-  const legend = fieldset.querySelector(':scope>.field-label').firstChild;
+  const legend = fieldset.querySelector(':scope>.field-label')?.firstChild;
   const text = labelTemplate.replace('#', index + 1);
   if (legend) {
     legend.textContent = text;
@@ -102,6 +103,38 @@ const add = (el, form) => (e) => {
   form.dispatchEvent(event);
 };
 
+function updateInstances(fieldset, data) {
+  function updateFieldset(f, d) {
+    [...f.elements].forEach((el) => {
+      if (el.hasAttribute('data-repeatable')) {
+        // handle repeatable elements inside repeatable elements
+      } else if (isDataElement(el) && !isFieldset(el)) {
+        el.value = d[el.name];
+      }
+    });
+  }
+
+  let fieldsets = fieldset.form.elements[fieldset.name];
+  if (!(fieldsets instanceof RadioNodeList)) {
+    fieldsets = [fieldsets];
+  }
+  const existing = Math.min(fieldsets.length, data.length);
+  let i = 0;
+  for (i = 0; i < existing; i += 1) {
+    updateFieldset(fieldsets[i], data[i]);
+  }
+  // remove extra fieldsets
+  for (; i < fieldsets.length; i += 1) {
+    fieldsets[i].remove();
+  }
+  // create new fieldsets
+  for (; i < data.length; i += 1) {
+    const newFieldset = repeatFieldset(fieldset);
+    updateFieldset(newFieldset, data[i]);
+    fieldset.insertAdjacentElement('beforebegin', newFieldset);
+  }
+}
+
 export default function transferRepeatableDOM(formDef, form) {
   form.querySelectorAll('[data-repeatable]').forEach((el) => {
     const div = document.createElement('div');
@@ -126,5 +159,19 @@ export default function transferRepeatableDOM(formDef, form) {
     }
     div.append(addButton);
     div.className = 'form-repeat-wrapper';
+  });
+
+  form.addEventListener('setItems', (e) => {
+    const {
+      item: {
+        name, data,
+      },
+    } = e.detail;
+    const fieldset = form.elements[name];
+    if (fieldset && fieldset.hasAttribute('data-repeatable')
+    && fieldset.parentElement.style.display !== 'none') {
+      updateInstances(fieldset, data);
+      // trigger rule
+    }
   });
 }

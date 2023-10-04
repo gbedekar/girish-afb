@@ -2,8 +2,6 @@
 import Formula from './parser/Formula.js';
 import transformRule from './RuleCompiler.js';
 import formatFns from '../formatting.js';
-// eslint-disable-next-line import/no-cycle
-import { repeatFieldset } from '../decorators/repeat.js';
 
 function stripTags(input, allowd) {
   const allowed = ((`${allowd || ''}`)
@@ -26,11 +24,17 @@ function coerceValue(val) {
   return val;
 }
 
-const isFieldset = (e) => e.tagName === 'FIELDSET';
+export function isFieldset(e) {
+  return e.tagName === 'FIELDSET';
+}
 
-const isRepeatableFieldset = (e) => isFieldset(e) && e.hasAttribute('data-repeatable') && e.name;
+export function isRepeatableFieldset(e) {
+  return isFieldset(e) && e.hasAttribute('data-repeatable') && e.name;
+}
 
-const isDataElement = (element) => element.tagName !== 'BUTTON' && element.name;
+export function isDataElement(e) {
+  return e.tagName !== 'BUTTON' && e.name;
+}
 
 function getValue(fe) {
   if (fe.type === 'checkbox' || fe.type === 'radio') {
@@ -69,61 +73,53 @@ function constructData(elements, fieldsetName = '', path = 'form') {
         const parent = el.parentElement;
         parent.dataset.qn = `${path}.${el.name}`;
         el.dataset.qn = `${path}.${el.name}`;
-        acc[el.name] = acc[el.name] || [];
-        acc[el.name][el.dataset.index] = data;
-        return acc;
+        acc.data[el.name] = acc[el.name] || [];
+        acc.data[el.name][el.dataset.index] = data.data;
+        acc.form[el.name] = {
+          $type: 'fieldset',
+          $qn: `${path}.${el.name}`,
+          $name: el.name,
+          ...data.form,
+        };
+        acc.idMap[el.id] = acc.form[el.name];
+        return {
+          data: acc.data,
+          form: acc.form,
+          idMap: {
+            ...acc.idMap,
+            ...data.idMap,
+          },
+        };
       }
       return {
-        ...acc,
-        ...data,
+        data: {
+          ...acc.data,
+          ...data.data,
+        },
+        form: {
+          ...acc.form,
+          ...data.form,
+        },
+        idMap: {
+          ...acc.idMap,
+          ...data.idMap,
+        },
       };
     }
     el.dataset.qn = `${path}.${el.name}`;
-    acc[el.name] = getValue(el);
+    acc.data[el.name] = getValue(el);
+    acc.form[el.id] = { $type: 'field', $qn: `${path}.${el.name}`, $name: el.name };
+    acc.idMap[el.id] = acc.form[el.id];
     return acc;
-  }, {});
+  }, { data: {}, form: {}, idMap: {} });
   return result;
 }
 
-function getDataParent(fieldset, data) {
-  const qn = fieldset.dataset.qn.split('.').slice(1, -1);
+export function getDataParent(fieldset, data) {
+  const qn = fieldset.$qn.split('.').slice(1, -1);
   // handle the case when there is nested repeatable fieldset
   const parent = qn.reduce((acc, key) => acc[key], data);
   return parent;
-}
-
-function importData(fieldset, currentData, newData) {
-  function updateFieldset(f, data) {
-    [...f.elements].forEach((el) => {
-      if (isRepeatableFieldset(el)) {
-        importData(el, currentData, data[el.name]);
-      } else if (isDataElement(el) && !isFieldset(el)) {
-        el.value = data[el.name];
-      }
-    });
-  }
-
-  const dataNode = getDataParent(fieldset, currentData);
-  dataNode[fieldset.name] = newData;
-  let fieldsets = fieldset.form.elements[fieldset.name];
-  if (!(fieldsets instanceof RadioNodeList)) {
-    fieldsets = [fieldsets];
-  }
-  const existing = Math.min(fieldsets.length, newData.length);
-  let i = 0;
-  for (i = 0; i < existing; i += 1) {
-    updateFieldset(fieldsets[i], newData[i]);
-  }
-  // remove extra fieldsets
-  for (; i < fieldsets.length; i += 1) {
-    fieldsets[i].remove();
-  }
-  // create new fieldsets
-  for (; i < newData.length; i += 1) {
-    const newFieldset = repeatFieldset(fieldset);
-    updateFieldset(newFieldset, newData[i]);
-    fieldset.insertAdjacentElement('beforebegin', newFieldset);
-  }
 }
 
 export default class RuleEngine {
@@ -131,8 +127,10 @@ export default class RuleEngine {
 
   constructor(formRules, fieldIdMap, formTag) {
     this.formTag = formTag;
-    this.data = constructData(formTag.elements);
-    console.log(this.data);
+    const { form, data, idMap } = constructData(formTag.elements);
+    this.data = data;
+    this.formDef = form;
+    this.idMap = idMap;
     this.formula = new Formula();
     const newRules = formRules.map(([fieldId, fieldRules]) => [
       fieldId,
@@ -176,10 +174,27 @@ export default class RuleEngine {
     return Object.entries(arr).sort((a, b) => a[1] - b[1]).map((_) => _[0]).slice(1);
   }
 
+  importData(element, data) {
+    const dataNode = getDataParent(element, this.data);
+    dataNode[element.$name] = data;
+    const event = new CustomEvent('setItems', {
+      detail: {
+        item: {
+          name: element.$name,
+          id: element.$id,
+          data,
+        },
+      },
+      bubbles: false,
+    });
+    this.formTag.dispatchEvent(event);
+  }
+
   updateValue(fieldId, value) {
+    const elementDef = this.idMap[fieldId];
     const element = document.getElementById(fieldId);
-    if (element instanceof HTMLFieldSetElement) {
-      importData(element, this.data, value);
+    if (elementDef.$type === 'fieldset') {
+      this.importData(this.idMap[fieldId], value);
     } else if (!(element instanceof NodeList)) {
       this.data[element.name] = coerceValue(value);
       const { displayFormat } = element.dataset;

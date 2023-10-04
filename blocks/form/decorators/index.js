@@ -2,13 +2,15 @@
 import { applyRuleEngine } from '../rules/index.js';
 import { transformFileDOM, transformFileRequest } from './attachments.js';
 import { transformCaptchaDOM, transformCaptchaRequest } from './recaptcha.js';
-import transferRepeatableDOM from './repeat.js';
+import transformRepeatableDOM from './repeat.js';
+import transformTable from './datatable.js';
 
 export const transformers = [
   transformFileDOM,
   transformCaptchaDOM,
-  transferRepeatableDOM,
+  transformRepeatableDOM,
   applyRuleEngine,
+  transformTable,
 ];
 
 export const asyncTransformers = [
