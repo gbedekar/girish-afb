@@ -9,7 +9,6 @@ function updateRows(row, data) {
 
   const tbody = row.parentElement;
   const rows = tbody.querySelectorAll('tr');
-  const numCols = rows[0].childElementCount;
   const existing = Math.min(rows.length, data.length);
   let i = 0;
   for (i = 0; i < existing; i += 1) {
@@ -35,7 +34,7 @@ function updateRows(row, data) {
  * @param {*} formTag
  */
 export default function transformTable(formDef, formTag) {
-  formTag.querySelectorAll('.form-schedule').forEach((el) => {
+  formTag.querySelectorAll('fieldset[data-display-format="table"]').forEach((el) => {
     const labels = el.querySelectorAll('label');
     // create a table
     const table = document.createElement('table');

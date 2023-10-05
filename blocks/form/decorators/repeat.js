@@ -124,8 +124,10 @@ function updateInstances(fieldset, data) {
     updateFieldset(fieldsets[i], data[i]);
   }
   // remove extra fieldsets
-  for (; i < fieldsets.length; i += 1) {
-    fieldsets[i].remove();
+  const { length } = fieldsets;
+  const j = i;
+  for (; i < length; i += 1) {
+    fieldsets[j].remove();
   }
   // create new fieldsets
   for (; i < data.length; i += 1) {
@@ -167,7 +169,11 @@ export default function transferRepeatableDOM(formDef, form) {
         name, data,
       },
     } = e.detail;
-    const fieldset = form.elements[name];
+    let fieldset = form.elements[name];
+    if (fieldset instanceof RadioNodeList) {
+      // eslint-disable-next-line prefer-destructuring
+      fieldset = fieldset[0];
+    }
     if (fieldset && fieldset.hasAttribute('data-repeatable')
     && fieldset.parentElement.style.display !== 'none') {
       updateInstances(fieldset, data);

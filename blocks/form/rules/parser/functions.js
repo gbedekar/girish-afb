@@ -113,7 +113,7 @@ export default function functions(debug) {
       }, 0),
     },
 
-    myfunction: {
+    ammortize: {
       func: (args) => {
         const [loanAmount, interestRate, loanTerm, startDate, scheduleType] = args;
         return ammSchedule(loanAmount, loanTerm, interestRate, startDate, scheduleType);

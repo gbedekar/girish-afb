@@ -1,5 +1,4 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
-import decorateDataTable from './decorators/datatable.js';
 
 function generateUnique() {
   return new Date().valueOf() + Math.random();
@@ -248,6 +247,9 @@ function createFieldSet(fd) {
   const wrapper = createFieldWrapper(fd, 'fieldset');
   wrapper.id = fd.Id;
   wrapper.name = fd.Name;
+  if (fd['Display Format']) {
+    wrapper.dataset.displayFormat = fd['Display Format'];
+  }
   wrapper.replaceChildren(createLegend(fd));
   if (fd.Repeatable && fd.Repeatable.toLowerCase() === 'true') {
     setConstraints(wrapper, fd);
@@ -312,6 +314,7 @@ function createPlainText(fd) {
 
 function createPrint(fd) {
   const btn = createButton(fd);
+  btn.querySelector('button').type = 'button';
   btn.classList.add('print');
   btn.addEventListener('click', () => {
     window.print();
