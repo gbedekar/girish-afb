@@ -162,6 +162,9 @@ function createButton(fd) {
   button.dataset.redirect = fd.Extra || '';
   button.id = fd.Id;
   button.name = fd.Name;
+  if (fd.Fieldset) {
+    button.dataset.fieldset = fd.Fieldset;
+  }
   wrapper.replaceChildren(button);
   return wrapper;
 }
@@ -250,6 +253,9 @@ function createFieldSet(fd) {
     setConstraints(wrapper, fd);
     wrapper.setAttribute('data-repeatable', '');
   }
+  if (fd.Fieldset) {
+    wrapper.dataset.fieldset = fd.Fieldset;
+  }
   return wrapper;
 }
 
@@ -258,7 +264,11 @@ function groupFieldsByFieldSet(form) {
   fieldsets?.forEach((fieldset) => {
     const fields = form.querySelectorAll(`[data-fieldset="${fieldset.name}"`);
     fields?.forEach((field) => {
-      fieldset.append(field.parentElement);
+      if (field.tagName === 'FIELDSET') {
+        fieldset.append(field);
+      } else {
+        fieldset.append(field.parentElement);
+      }
     });
   });
 }

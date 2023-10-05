@@ -466,19 +466,20 @@ main .form/*custom-class */ .form-summary > legend {
     main .form/*custom-class */ .form-summary > legend {
         --form-fieldset-legend-line-height: 2.625rem;
         --form-fieldset-legend-font-size: 2rem;
-
         margin-bottom: 2.5rem;
         letter-spacing: .02rem;
     }
-}
 
-/* styling table */
-table.table-schedule {
-    grid-column: 1/ -1;
-}
+    main .form .form-payments > legend {
+        --form-fieldset-legend-line-height: 2.625rem;
+        --form-fieldset-legend-font-size: 2rem;
+        margin-bottom: 2.5rem;
+        letter-spacing: .02rem;
+    }
 
-table td {
-    text-align: center;
+    main .form .form-payments {
+        grid-gap: 30px;
+    }
 }
 
 /** styling switch */
@@ -511,3 +512,31 @@ form .form-switch-wrapper input[type="radio"] {
     background-color: #007dbd;
     color: #fff;
 }
+
+/** styling payments section */
+form .form-print {
+    grid-column: 2/3;
+}
+
+form .form-print button {
+    color: #007dbd;
+    background-color: transparent;
+    padding: 0.4375rem 0.75rem;
+    min-width: unset;
+    font-size: 23px;
+}
+
+form .form-scheduleType {
+    grid-column: 3/4;
+}
+
+/* styling table */
+table.table-schedule {
+    grid-column: 1/ 4;
+}
+
+table td {
+    text-align: center;
+}
+
+
