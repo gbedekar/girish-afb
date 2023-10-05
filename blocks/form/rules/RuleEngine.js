@@ -259,7 +259,7 @@ export default class RuleEngine {
   enable() {
     this.formTag.addEventListener('input', (e) => {
       const field = e.target;
-      const valid = e.target.checkValidity();
+      const valid = this.formTag.checkValidity();
       if (valid) {
         let fieldId = field.id;
         let rules = [];

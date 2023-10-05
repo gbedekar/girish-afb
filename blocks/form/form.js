@@ -5,6 +5,16 @@ function generateUnique() {
   return new Date().valueOf() + Math.random();
 }
 
+export const getId = (function getId() {
+  const ids = {};
+  return (name) => {
+    ids[name] = ids[name] || 0;
+    const idSuffix = ids[name] ? `-${ids[name]}` : '';
+    ids[name] += 1;
+    return `${name}${idSuffix}`;
+  };
+}());
+
 const formatFns = await (async function imports() {
   try {
     const formatters = await import('./formatting.js');
@@ -132,7 +142,7 @@ function createFieldWrapper(fd, tagName = 'div') {
   const nameStyle = fd.Name ? ` form-${fd.Name}` : '';
   const fieldId = `form-${fd.Type}-wrapper${nameStyle}`;
   fieldWrapper.className = fieldId;
-  if (fd.Mandatory.toLowerCase() === 'true') {
+  if (fd.Mandatory?.toLowerCase() === 'true') {
     fieldWrapper.dataset.required = '';
   }
   if (fd.Visible?.toLowerCase() === 'false') {
@@ -256,16 +266,27 @@ function groupFieldsByFieldSet(form) {
 function createSwitch(fd) {
   const wrapper = createFieldWrapper(fd);
   const options = fd.Options.split(',').slice(0, 2);
-  const opts = options.map((o, i) => createRadio(
-    {
+  fd.Value = fd.Value || options[0];
+  const opts = options.map((o, i) => {
+    const rOpts = {
       Name: fd.Name,
       Label: o,
       Value: o,
-      Id: i === 0 ? fd.Id : getId(fd.Name),
+      Type: 'radio',
       Checked: true,
-    },
-  ));
-  wrapper.append(...opts.map((o) => o.children).flat());
+      Id: i === 0 ? fd.Id : getId(fd.Name),
+    };
+    const el = createRadio(rOpts);
+    // const label = el.querySelector('label');
+    const input = el.querySelector('input');
+    // label.append(input);
+    input.id = rOpts.Id;
+    input.name = rOpts.Name;
+    input.value = rOpts.Value;
+    return el;
+  });
+  wrapper.replaceChildren(...opts.flatMap((o) => [...o.children]));
+  return wrapper;
 }
 
 function createPlainText(fd) {
@@ -278,16 +299,6 @@ function createPlainText(fd) {
   wrapper.replaceChildren(paragraph);
   return wrapper;
 }
-
-export const getId = (function getId() {
-  const ids = {};
-  return (name) => {
-    ids[name] = ids[name] || 0;
-    const idSuffix = ids[name] ? `-${ids[name]}` : '';
-    ids[name] += 1;
-    return `${name}${idSuffix}`;
-  };
-}());
 
 const fieldRenderers = {
   radio: createRadio,

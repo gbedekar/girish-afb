@@ -480,3 +480,34 @@ table.table-schedule {
 table td {
     text-align: center;
 }
+
+/** styling switch */
+form .form-switch-wrapper {
+    display: flex;
+}
+
+form .form-switch-wrapper label {
+    height: 40px;
+    border: 2px solid #007dbd;
+    background-color: #fff;
+    padding: 0.4375rem 0.75rem;
+    margin: 0;
+    font-weight: 700;
+    color: #007dbd;
+}
+
+
+form .form-switch-wrapper input[type="radio"] {
+    width:0;
+    height: 0;
+}
+
+
+.form-switch-wrapper input[type="radio"]:focus + label {
+    outline: 2px solid cornflowerblue;
+}
+
+.form-switch-wrapper input[type="radio"]:checked + label {
+    background-color: #007dbd;
+    color: #fff;
+}
