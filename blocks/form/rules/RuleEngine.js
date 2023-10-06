@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import { isDataElement, isFieldset, isDataElement } from './parser/utils.js';
+import { isDataElement, isFieldset, isRepeatableFieldset } from './parser/utils.js';
 import Tokens from './parser/Tokens.js';
 import Lexer from './parser/Lexer.js';
 import Parser from './parser/Parser.js';
@@ -9,6 +9,7 @@ import R from './parser/Runtime.js';
 import Formula from './parser/Formula.js';
 import transformRule from './RuleCompiler.js';
 import formatFns from '../formatting.js';
+
 function stripTags(input, allowd) {
   const allowed = ((`${allowd || ''}`)
     .toLowerCase()
