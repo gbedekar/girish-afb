@@ -27,3 +27,15 @@ export function getToNumber(debug = []) {
     return 0;
   };
 }
+
+export function isFieldset(e) {
+  return e.tagName === 'FIELDSET';
+}
+
+export function isRepeatableFieldset(e) {
+  return isFieldset(e) && e.hasAttribute('data-repeatable') && e.name;
+}
+
+export function isDataElement(e) {
+  return e.tagName !== 'BUTTON' && e.name;
+}

@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-cycle
 import { getId } from '../form.js';
-import { isDataElement, isFieldset } from '../rules/RuleEngine.js';
+import { isDataElement, isFieldset } from '../rules/parser/utils.js';
 
 function updateLabel(fieldset, index, labelTemplate) {
   const legend = fieldset.querySelector(':scope>.field-label')?.firstChild;

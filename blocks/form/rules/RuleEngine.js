@@ -1,8 +1,14 @@
 /* eslint-disable max-classes-per-file */
+import { isDataElement, isFieldset, isDataElement } from './parser/utils.js';
+import Tokens from './parser/Tokens.js';
+import Lexer from './parser/Lexer.js';
+import Parser from './parser/Parser.js';
+import T from './parser/TreeInterpreter.js';
+import X from './parser/functions.js';
+import R from './parser/Runtime.js';
 import Formula from './parser/Formula.js';
 import transformRule from './RuleCompiler.js';
 import formatFns from '../formatting.js';
-
 function stripTags(input, allowd) {
   const allowed = ((`${allowd || ''}`)
     .toLowerCase()
@@ -22,18 +28,6 @@ function coerceValue(val) {
   if (val === 'true') return true;
   if (val === 'false') return false;
   return val;
-}
-
-export function isFieldset(e) {
-  return e.tagName === 'FIELDSET';
-}
-
-export function isRepeatableFieldset(e) {
-  return isFieldset(e) && e.hasAttribute('data-repeatable') && e.name;
-}
-
-export function isDataElement(e) {
-  return e.tagName !== 'BUTTON' && e.name;
 }
 
 function getValue(fe) {
