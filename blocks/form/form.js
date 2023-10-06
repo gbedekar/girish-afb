@@ -312,16 +312,6 @@ function createPlainText(fd) {
   return wrapper;
 }
 
-function createPrint(fd) {
-  const btn = createButton(fd);
-  btn.querySelector('button').type = 'button';
-  btn.classList.add('print');
-  btn.addEventListener('click', () => {
-    window.print();
-  });
-  return btn;
-}
-
 const fieldRenderers = {
   radio: createRadio,
   checkbox: createRadio,
@@ -334,7 +324,6 @@ const fieldRenderers = {
   fieldset: createFieldSet,
   plaintext: createPlainText,
   switch: createSwitch,
-  print: createPrint,
 };
 
 function renderField(fd) {
