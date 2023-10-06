@@ -403,6 +403,9 @@ async function createForm(formURL) {
   window.formPath = pathname;
   const data = await fetchForm(pathname);
   const form = document.createElement('form');
+  const DomMutationLogger = (await import('./DomMutationLogger.js')).default;
+  const mutationLogger = new DomMutationLogger(form);
+  mutationLogger.startObserving();
   data.forEach((fd) => {
     const el = renderField(fd);
     const input = el.querySelector('input,textarea,select');
