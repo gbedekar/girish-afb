@@ -415,6 +415,9 @@ async function createForm(formURL) {
     form.append(el);
   });
   groupFieldsByFieldSet(form);
+  import('./rules/index.js').then((m) => {
+    m.applyRuleEngine(data, form);
+  });
   const transformRequest = await applyTransformation(data, form);
   // eslint-disable-next-line prefer-destructuring
   form.dataset.action = pathname?.split('.json')[0];

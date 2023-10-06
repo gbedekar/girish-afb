@@ -10,16 +10,10 @@ const transformPrintButton = (formDef, formTag) => {
   });
 };
 
-async function applyRuleEngine(formDef, formTag) {
-  const test = await import('../rules/index.js');
-  test.applyRuleEngine(formDef, formTag);
-}
-
 export const transformers = [
   transformFileDOM,
   transformCaptchaDOM,
   transformRepeatableDOM,
-  applyRuleEngine,
   transformTable,
   transformPrintButton,
 ];
