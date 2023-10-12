@@ -443,7 +443,7 @@ function loadUEScripts() {
   meta.content = `fnk:${window.origin}`;
   head.appendChild(meta);
   const ueEmbedded = document.createElement('script');
-  ueEmbedded.src = 'https://cdn.jsdelivr.net/gh/adobe/universal-editor-cors/dist/universal-editor-embedded.js';
+  ueEmbedded.src = 'https://unpkg.com/@adobe/universal-editor-cors@1.4.2/dist/universal-editor-embedded.js';
   ueEmbedded.async = true;
   head.appendChild(ueEmbedded);
   const componentDefinition = document.createElement('script');
