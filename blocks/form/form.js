@@ -156,8 +156,6 @@ function createLabel(fd, tagName = 'label') {
   label.setAttribute('for', fd.Id);
   label.className = 'field-label';
   label.textContent = fd.Label || '';
-  label.setAttribute('itemprop', 'Label');
-  label.setAttribute('itemtype', 'text');
   if (fd.Tooltip) {
     label.title = fd.Tooltip;
   }
@@ -167,9 +165,6 @@ function createLabel(fd, tagName = 'label') {
 function createHelpText(fd) {
   const div = document.createElement('div');
   div.className = 'field-description';
-  div.setAttribute('aria-live', 'polite');
-  div.setAttribute('itemtype', 'text');
-  div.setAttribute('itemprop', 'Description');
   div.innerText = fd.Description;
   div.id = `${fd.Id}-description`;
   return div;
@@ -184,11 +179,7 @@ function generateItemId(id) {
 
 function createFieldWrapper(fd, tagName = 'div') {
   const fieldWrapper = document.createElement(tagName);
-  fieldWrapper.setAttribute('itemtype', 'component');
-  fieldWrapper.setAttribute('itemid', generateItemId(fd.Id));
-  fieldWrapper.setAttribute('itemscope', '');
-  fieldWrapper.setAttribute('data-editor-itemlabel', fd.Label || fd.Name);
-  fieldWrapper.setAttribute('data-editor-itemmodel', fd.Type);
+  fieldWrapper.id = fd.Id;
   const nameStyle = fd.Name ? ` form-${fd.Name}` : '';
   const fieldId = `form-${fd.Type}-wrapper${nameStyle}`;
   fieldWrapper.className = fieldId;
@@ -213,7 +204,7 @@ function createButton(fd) {
   button.type = fd.Type;
   button.classList.add('button');
   button.dataset.redirect = fd.Extra || '';
-  button.id = fd.Id;
+  button.id = `${fd.Id}-widget`;
   button.name = fd.Name;
   wrapper.replaceChildren(button);
   return wrapper;
@@ -270,7 +261,7 @@ function createRadio(fd) {
 const createOutput = withFieldWrapper((fd) => {
   const output = document.createElement('output');
   output.name = fd.Name;
-  output.id = fd.Id;
+  output.id = `${fd.Id}-widget`;
   const displayFormat = fd['Display Format'];
   if (displayFormat) {
     output.dataset.displayFormat = displayFormat;
@@ -283,7 +274,7 @@ const createOutput = withFieldWrapper((fd) => {
 function createHidden(fd) {
   const input = document.createElement('input');
   input.type = 'hidden';
-  input.id = fd.Id;
+  input.id = `${fd.Id}-widget`;
   input.name = fd.Name;
   input.value = fd.Value;
   return input;
@@ -295,10 +286,7 @@ function createLegend(fd) {
 
 function createFieldSet(fd) {
   const wrapper = createFieldWrapper(fd, 'fieldset');
-  wrapper.id = fd.Id;
   wrapper.name = fd.Name;
-  wrapper.setAttribute('itemtype', 'container');
-  wrapper.setAttribute('data-editor-behavior', 'component');
   wrapper.replaceChildren(createLegend(fd));
   if (fd.Repeatable && fd.Repeatable.toLowerCase() === 'true') {
     setConstraints(wrapper, fd);
@@ -403,9 +391,7 @@ async function createForm(formURL) {
   window.formPath = pathname;
   const data = await fetchForm(pathname);
   const form = document.createElement('form');
-  const DomMutationLogger = (await import('./DomMutationLogger.js')).default;
-  const mutationLogger = new DomMutationLogger(form);
-  mutationLogger.startObserving();
+  await loadUEScripts(form, data);
   data.forEach((fd) => {
     const el = renderField(fd);
     const input = el.querySelector('input,textarea,select');
@@ -413,7 +399,7 @@ async function createForm(formURL) {
       input.setAttribute('required', 'required');
     }
     if (input) {
-      input.id = fd.Id;
+      input.id = `${fd.Id}-widget`;
       input.name = fd.Name;
       if (input.type !== 'file') {
         input.value = fd.Value;
@@ -439,7 +425,7 @@ async function createForm(formURL) {
   return form;
 }
 
-function loadUEScripts() {
+async function loadUEScripts(form , data) {
   const head = document.getElementsByTagName('head')[0];
   const meta = document.createElement('meta');
   meta.name = 'urn:auecon:fnkconnection';
@@ -453,20 +439,17 @@ function loadUEScripts() {
   componentDefinition.type = 'application/vnd.adobe.aem.editor.component-definition+json';
   componentDefinition.src = 'https://main--wknd--hlxsites.hlx.page/blocks/form/component-definition.json';
   head.appendChild(componentDefinition);
+
+  const FormMutationObserver = (await import('./FormMutationObserver.js')).default;
+  const mutationLogger = new FormMutationObserver(form, data);
+  mutationLogger.startObserving();
 }
 
 export default async function decorate(block) {
   const formLink = block.querySelector('a[href$=".json"]');
   if (formLink) {
-    loadUEScripts();
     const form = await createForm(formLink.href);
-    form.setAttribute('itemid', generateItemId());
-    form.setAttribute('itemtype', 'container');
-    form.setAttribute('itemscope', '');
-    form.setAttribute('data-editor-itemlabel', 'Form Container');
-    form.setAttribute('data-editor-itemmodel', 'form');
     formLink.replaceWith(form);
-
     const config = readBlockConfig(block);
     Object.entries(config).forEach(([key, value]) => { if (value) form.dataset[key] = value; });
   }
