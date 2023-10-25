@@ -26,42 +26,38 @@ export default class FormMutationObserver {
     return `urn:fnkconnection:${window.formPath}:default`;
   }
 
-  handleMutation(mutationsList, observer) {
-    for (const mutation of mutationsList) {
-      if (mutation.type === "childList") {
+  handleMutation(mutationsList) {
+    mutationsList.forEach((mutation) => {
+      if (mutation.type === 'childList') {
         mutation.addedNodes.forEach((addedNode) => {
-          if (addedNode.classList.contains("field-wrapper")) {
-            const id = addedNode.id;
-            const fd = this.data.find( item => item.Id === id);
+          if (addedNode.classList.contains('field-wrapper')) {
+            const { id } = addedNode;
+            const fd = this.data.find((item) => item.Id === id);
             addedNode.setAttribute('itemtype', 'component');
             addedNode.setAttribute('itemid', this.generateItemId(fd.Id));
             addedNode.setAttribute('itemscope', '');
             addedNode.setAttribute('data-editor-itemlabel', fd.Label || fd.Name);
             addedNode.setAttribute('data-editor-itemmodel', fd.Type);
-            const label = addedNode.querySelector("label");
-            if(label) {
+            const label = addedNode.querySelector('label');
+            if (label) {
               label.setAttribute('itemprop', 'Label');
               label.setAttribute('itemtype', 'text');
             }
-            const description =  addedNode.querySelector("div.field-description");
-            if(description) {
+            const description = addedNode.querySelector('div.field-description');
+            if (description) {
               description.setAttribute('aria-live', 'polite');
               description.setAttribute('itemtype', 'text');
               description.setAttribute('itemprop', 'Description');
             }
-            const fieldset = addedNode.querySelector("fieldset");
-            if(fieldset) {
+            const fieldset = addedNode.querySelector('fieldset');
+            if (fieldset) {
               fieldset.setAttribute('itemtype', 'container');
               fieldset.setAttribute('data-editor-behavior', 'component');
             }
             console.log(addedNode);
           }
         });
-      } else {
-        console.log(
-          "The " + mutation.attributeName + " attribute was modified."
-        );
       }
-    }
+    });
   }
 }

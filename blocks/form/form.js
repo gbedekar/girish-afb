@@ -386,6 +386,26 @@ async function fetchForm(pathname) {
   return jsonData;
 }
 
+async function loadUEScripts(form, data) {
+  const head = document.getElementsByTagName('head')[0];
+  const meta = document.createElement('meta');
+  meta.name = 'urn:auecon:fnkconnection';
+  meta.content = `fnk:${window.origin}`;
+  head.appendChild(meta);
+  const ueEmbedded = document.createElement('script');
+  ueEmbedded.src = 'https://cdn.jsdelivr.net/gh/adobe/universal-editor-cors/dist/universal-editor-embedded.js';
+  ueEmbedded.async = true;
+  head.appendChild(ueEmbedded);
+  const componentDefinition = document.createElement('script');
+  componentDefinition.type = 'application/vnd.adobe.aem.editor.component-definition+json';
+  componentDefinition.src = 'https://main--wknd--hlxsites.hlx.page/blocks/form/component-definition.json';
+  head.appendChild(componentDefinition);
+
+  const FormMutationObserver = (await import('./FormMutationObserver.js')).default;
+  const mutationLogger = new FormMutationObserver(form, data);
+  mutationLogger.startObserving();
+}
+
 async function createForm(formURL) {
   const { pathname } = new URL(formURL);
   window.formPath = pathname;
@@ -423,26 +443,6 @@ async function createForm(formURL) {
     handleSubmit(form, transformRequest);
   });
   return form;
-}
-
-async function loadUEScripts(form , data) {
-  const head = document.getElementsByTagName('head')[0];
-  const meta = document.createElement('meta');
-  meta.name = 'urn:auecon:fnkconnection';
-  meta.content = `fnk:${window.origin}`;
-  head.appendChild(meta);
-  const ueEmbedded = document.createElement('script');
-  ueEmbedded.src = 'https://cdn.jsdelivr.net/gh/adobe/universal-editor-cors/dist/universal-editor-embedded.js';
-  ueEmbedded.async = true;
-  head.appendChild(ueEmbedded);
-  const componentDefinition = document.createElement('script');
-  componentDefinition.type = 'application/vnd.adobe.aem.editor.component-definition+json';
-  componentDefinition.src = 'https://main--wknd--hlxsites.hlx.page/blocks/form/component-definition.json';
-  head.appendChild(componentDefinition);
-
-  const FormMutationObserver = (await import('./FormMutationObserver.js')).default;
-  const mutationLogger = new FormMutationObserver(form, data);
-  mutationLogger.startObserving();
 }
 
 export default async function decorate(block) {
