@@ -322,7 +322,6 @@ actionValue.addEventListener("change", (event) => {
   } else {
     component[selectedAttribute] = selectedValue;
   }
-  updateActionComponents();
   loadForm();
 });
 
@@ -338,6 +337,5 @@ actionCompPosition.addEventListener("change", (event) => {
   const element = selectedFormData[currentCompIndex];
   selectedFormData.splice(currentCompIndex, 1);
   selectedFormData.splice(newIndex, 0, element);
-  updateActionComponents();
   loadForm();
 });
