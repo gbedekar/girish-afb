@@ -17,16 +17,7 @@ import { generateFormRendition } from "../../../../../blocks/form/form.js";
 const FORM_IMPORTER =
   "https://g7ory75qdb.execute-api.ap-south-1.amazonaws.com/vega-services/importer";
 
-const scanFormEl = document.querySelector("form");
-const domainEl = document.querySelector("#domainURL");
-const includePlainText = document.querySelector("#includePlainText");
-const startBtn = document.querySelector("#startBtn");
-const copyAction = document.querySelector("#copyAction");
-const msgEl = document.querySelector("#msg");
-const switchView = document.querySelector("#switchView");
-const cardsContainer = document.getElementById("cards-container");
-const formPreview = document.querySelector(".form-preview");
-const jsonPreview = document.querySelector(".json-preview");
+
 
 // action containers
 
@@ -35,19 +26,51 @@ const actionAttribute = document.querySelector("select#attributes");
 const actionValue = document.querySelector("select#values");
 const actionCompPosition = document.querySelector("select#positions");
 
+//
+
+const scanFormEl = document.querySelector('form');
+const domainEl = document.querySelector('#domainURL');
+const includePlainText = document.querySelector('#includePlainText');
+const includeHiddenFields = document.querySelector('#includeHiddenFields');
+const groupBySelector = document.querySelector('#groupBySelector');
+const startBtn = document.querySelector('#startBtn');
+const copyAction = document.querySelector('#copyAction');
+const msgEl = document.querySelector('#msg');
+const switchView = document.querySelector('#switchView');
+const cardsContainer = document.getElementById('cards-container');
+const formPreview = document.querySelector('.form-preview');
+const jsonPreview = document.querySelector('.json-preview');
 let forms = [];
 let editor;
 let article;
 let selectedForm;
 let selectedIndex;
 
+const emptyField = {
+  Name: '',
+  Type: '',
+  Description: '',
+  Placeholder: '',
+  Label: '',
+  'Read Only': '',
+  Mandatory: '',
+  Pattern: '',
+  Step: '',
+  Min: '',
+  Max: '',
+  Value: '',
+  Options: '',
+  OptionNames: '',
+  Fieldset: '',
+};
+
 function convertToCSV(fields, divider = "\t") {
   if (fields && fields.length > 0) {
-    const keys = Object.keys(fields?.[0]);
+    const keys = Object.keys({ ...emptyField, ...fields?.[0] });
     const th = keys.join(divider);
     const rows = fields
-      .map((field) => Object.values(field).join(divider))
-      .join("\n");
+      .map((field) => Object.values({ ...emptyField, ...field }).join(divider))
+      .join('\n');
     return `${th}\n${rows}`;
   }
   return "table is empty";
@@ -125,43 +148,15 @@ function setupJSONView() {
   editor.session.setMode("ace/mode/json");
 }
 
-function updateFormsJson() {
-  forms?.forEach(form => {
-    let keyTypeSet = new Set();
-    const formData = form?.data;
-    formData.forEach(field => {
-      const keys = Object.keys(field);
-      keys.forEach(key => {
-        const keyType = typeof field[key]; // Get the data type of the key
-        keyTypeSet.add({ key, type: keyType }); // Store key and its type as an object
-      });
+function fillUpMissingFields() {
+  forms.forEach((form) => {
+    const data = [];
+    form.data.forEach((field) => {
+      data.push({ ...emptyField, ...field });
     });
-
-    keyTypeSet.forEach(({ key, type }) => {
-      const defaultValue = getDefaultValueBasedOnType(type);
-      formData.forEach(field => {
-        if (!field.hasOwnProperty(key)) {
-          field[key] = defaultValue;
-        }
-      });
-    });
+    form.data = data;
   });
 }
-
-function getDefaultValueBasedOnType(type) {
-  // Define default values based on data type
-  const defaultValues = {
-    string: "",
-    number: 0,
-    boolean: "",
-    object: "",
-    // Add more data types and default values as needed
-  };
-
-  // Return the appropriate default value based on the data type
-  return defaultValues[type] !== undefined ? defaultValues[type] : null;
-}
-
 
 async function scanNow() {
   const valid = scanFormEl.checkValidity();
@@ -171,7 +166,11 @@ async function scanNow() {
     const domain = domainEl.value;
     const payload = {
       url: domain,
-      options: { includePlainText: includePlainText.checked },
+      options: {
+        includePlainText: includePlainText.checked,
+        includeHidden: includeHiddenFields.checked,
+        groupBySelector: groupBySelector.value || '',
+      },
     };
     try {
       const response = await fetch(FORM_IMPORTER, {
@@ -183,9 +182,9 @@ async function scanNow() {
       });
       if (response.ok) {
         forms = await response.json();
-        updateFormsJson();
         renderCards(forms);
-        updateStatus("Scanning Completed", true, false);
+        fillUpMissingFields(forms);
+        updateStatus('Scanning Completed', true, false);
       } else {
         const msg = await response.text();
         updateStatus(`Failed to scan ${msg}`, true, true);
