@@ -1,11 +1,11 @@
 /*
  * Copyright 2023 Adobe. All rights reserved.
- * This file is licensed to you under the Apache License, Version 2.0 (the "License");
+ * This file is licensed to you under the Apache License, Version 2.0 (the 'License');
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software distributed under
- * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+ * the License is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -14,14 +14,14 @@ import { generateFormRendition } from '../../../../../blocks/form/form.js';
 
 /* eslint-disable no-undef */
 
-const FORM_IMPORTER = "https://g7ory75qdb.execute-api.ap-south-1.amazonaws.com/vega-services/importer";
+const FORM_IMPORTER = 'https://g7ory75qdb.execute-api.ap-south-1.amazonaws.com/vega-services/importer';
 
 // action containers
 
-const actionComponent = document.querySelector("select#components");
-const actionAttribute = document.querySelector("select#attributes");
-const actionValue = document.querySelector("select#values");
-const actionCompPosition = document.querySelector("select#positions");
+const actionComponent = document.querySelector('select#components');
+const actionAttribute = document.querySelector('select#attributes');
+const actionValue = document.querySelector('select#values');
+const actionCompPosition = document.querySelector('select#positions');
 const scanFormEl = document.querySelector('form');
 const domainEl = document.querySelector('#domainURL');
 const includePlainText = document.querySelector('#includePlainText');
@@ -38,7 +38,6 @@ let forms = [];
 let editor;
 let article;
 let selectedForm;
-let selectedIndex;
 
 const emptyField = {
   Name: '',
@@ -67,21 +66,21 @@ function convertToCSV(fields, divider = '\t') {
       .join('\n');
     return `${th}\n${rows}`;
   }
-  return "table is empty";
+  return 'table is empty';
 }
 
 function updateStatus(msg, completed = false, error = false) {
   startBtn.disabled = !completed;
   msgEl.textContent = msg;
   if (error) {
-    msgEl.classList.add("error");
+    msgEl.classList.add('error');
   } else {
-    msgEl.classList.remove("error");
+    msgEl.classList.remove('error');
   }
 }
 
 function cleanUp() {
-  cardsContainer.innerHTML = "";
+  cardsContainer.innerHTML = '';
 }
 
 function cardTemplate(form, index) {
@@ -89,31 +88,15 @@ function cardTemplate(form, index) {
                 <div class="card-header">
                     <h5 class="card-header-title">${form.name}</h5>
                     <div class="features">
-                        ${
-                          form?.stats?.attachmentsUsed
-                            ? '<span title="Attachments found in form." class="icon attachment-icon"></span>'
-                            : ""
-                        }
-                        ${
-                          form?.stats?.recaptchaUsed
-                            ? '<span title="Google reCaptcha found in form." class="icon recaptcha-icon"></span>'
-                            : ""
-                        }
-                        ${
-                          form?.stats?.isMarketToForm
-                            ? '<span title="Its a Marketo Form" class="icon marketo-icon"></span>'
-                            : ""
-                        }
+                    ${form?.stats?.attachmentsUsed ? '<span title="Attachments found in form." class="icon attachment-icon"></span>' : ''}
+                    ${form?.stats?.recaptchaUsed ? '<span title="Google reCaptcha found in form." class="icon recaptcha-icon"></span>' : ''}
+                    ${form?.stats?.isMarketToForm ? '<span title="Its a Marketo Form" class="icon marketo-icon"></span>' : ''}
                     </div>
                 </div>
                 <div class="card-content">
                     <div class="follow-info">
-                        <h2><div><span> ${
-                          form?.stats?.fields || 0
-                        }</span><small>Fields</small></div></h2>
-                        <h2><div><span>${
-                          form?.stats?.hiddenFields || 0
-                        }</span><small>Hidden Fields</small></div></h2>
+                      <h2><div><span> ${form?.stats?.fields || 0}</span><small>Fields</small></div></h2>
+                      <h2><div><span>${form?.stats?.hiddenFields || 0}</span><small>Hidden Fields</small></div></h2>
                     </div>
                 </div>
                 <footer class="card-footer">
@@ -123,12 +106,12 @@ function cardTemplate(form, index) {
 
 function renderCards() {
   cleanUp();
-  const formCards = forms.map(cardTemplate).join("");
+  const formCards = forms.map(cardTemplate).join('');
   cardsContainer.innerHTML += formCards;
 }
 
 function loadForm() {
-  const formEl = document.createElement("form");
+  const formEl = document.createElement('form');
   generateFormRendition(selectedForm?.data, formEl);
   formPreview.replaceChildren(formEl);
   // Set JSON data to the editor
@@ -137,9 +120,9 @@ function loadForm() {
 }
 
 function setupJSONView() {
-  editor = ace.edit("editor");
-  editor.setTheme("ace/theme/monokai");
-  editor.session.setMode("ace/mode/json");
+  editor = ace.edit('editor');
+  editor.setTheme('ace/theme/monokai');
+  editor.session.setMode('ace/mode/json');
 }
 
 function fillUpMissingFields() {
@@ -156,7 +139,7 @@ async function scanNow() {
   const valid = scanFormEl.checkValidity();
   if (valid) {
     cleanUp();
-    updateStatus("Scan Initiated...");
+    updateStatus('Scan Initiated...');
     const domain = domainEl.value;
     const payload = {
       url: domain,
@@ -168,9 +151,9 @@ async function scanNow() {
     };
     try {
       const response = await fetch(FORM_IMPORTER, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
       });
@@ -197,81 +180,81 @@ function copyToClipboard() {
       .writeText(data)
       .then(() => {
         // eslint-disable-next-line no-alert
-        alert("Copied to clipboard");
+        alert('Copied to clipboard');
       })
       .catch(() => {
         // eslint-disable-next-line no-alert
-        alert("Issue in copying to clipboard use json view");
+        alert('Issue in copying to clipboard use json view');
       });
   }
 }
 
 function updateActionComponents() {
   const formData = selectedForm?.data;
-  actionComponent.innerHTML = "";
+  actionComponent.innerHTML = '';
   formData.forEach((field, index) => {
     const { Type , Label } = field;
-    const option = document.createElement("option");
+    const option = document.createElement('option');
     option.value = Type;
     option.dataset.component = Type;
     option.textContent = `${Type} - ${Label}`;
     option.id = index;
     actionComponent.appendChild(option);
 
-    const option2 = document.createElement("option");
-    option2.value = index;
-    option2.textContent = index;
-    option2.id = index;
-    actionCompPosition.appendChild(option2);
+    const compPosOption = document.createElement('option');
+    compPosOption.value = index;
+    compPosOption.textContent = index;
+    compPosOption.id = index;
+    actionCompPosition.appendChild(compPosOption);
   });
-  const option = document.createElement("option");
-  option.value = "addComponent";
-  option.dataset.component = "Add Component";
-  option.textContent = "Add Component";
+  const option = document.createElement('option');
+  option.value = 'addComponent';
+  option.dataset.component = 'Add Component';
+  option.textContent = 'Add Component';
   option.id = -1;
   actionComponent.appendChild(option);
 }
 
-copyAction.addEventListener("click", copyToClipboard);
-startBtn.addEventListener("click", scanNow);
-cardsContainer.addEventListener("click", (event) => {
+copyAction.addEventListener('click', copyToClipboard);
+startBtn.addEventListener('click', scanNow);
+cardsContainer.addEventListener('click', (event) => {
   if (article) {
-    article.classList.toggle("selected");
+    article.classList.toggle('selected');
   }
-  article = event?.target?.closest("article");
+  article = event?.target?.closest('article');
   if (article) {
-    article.classList.toggle("selected");
+    article.classList.toggle('selected');
     const { index } = article.dataset;
     selectedForm = forms[index];
     loadForm();
     updateActionComponents();
   }
 });
-switchView.addEventListener("click", () => {
-  formPreview.classList.toggle("hide");
-  jsonPreview.classList.toggle("hide");
+switchView.addEventListener('click', () => {
+  formPreview.classList.toggle('hide');
+  jsonPreview.classList.toggle('hide');
 });
 setupJSONView();
 
 // action container
 
-actionComponent.addEventListener("change", (event) => {
+actionComponent.addEventListener('change', (event) => {
   const component = event.target;
   const value = component.value;
-  if (value === "addComponent") {
-    const newComponentType = prompt("Enter new component Type");
+  if (value === 'addComponent') {
+    const newComponentType = prompt('Enter new component Type');
     const formTemplate = selectedForm?.data[0];
     const component = { ...formTemplate };
     // clear all values of its keys
     Object.keys(component).forEach((key) => {
-      if (typeof component[key] === "string") {
-        component[key] = "";
+      if (typeof component[key] === 'string') {
+        component[key] = '';
       }
-      if (typeof component[key] === "number") {
+      if (typeof component[key] === 'number') {
         component[key] = 0;
       }
-      if (typeof component[key] === "boolean") {
-        component[key] = "false";
+      if (typeof component[key] === 'boolean') {
+        component[key] = 'false';
       }
       if (Array.isArray(component[key])) {
         component[key] = [];
@@ -286,33 +269,33 @@ actionComponent.addEventListener("change", (event) => {
   const selectedOption = component.options[component.selectedIndex];
   const selectedId = selectedOption.id;
   const selectedComponent = selectedForm?.data[selectedId];
-  actionAttribute.innerHTML = "";
+  actionAttribute.innerHTML = '';
   Object.keys(selectedComponent).forEach((key ,) => {
-    const option = document.createElement("option");
+    const option = document.createElement('option');
     option.value = key;
     option.dataset.attribute = key;
     option.textContent = key;
-    option.setAttribute("componentIndex", selectedId);
+    option.setAttribute('componentIndex', selectedId);
     actionAttribute.appendChild(option);
   });
-  const option = document.createElement("option");
-  option.value = "addAttribute";
-  option.dataset.component = "Add Attribute";
-  option.textContent = "Add Attribute";
+  const option = document.createElement('option');
+  option.value = 'addAttribute';
+  option.dataset.component = 'Add Attribute';
+  option.textContent = 'Add Attribute';
   option.id = -1;
   actionAttribute.appendChild(option);
 });
 
-actionAttribute.addEventListener("change", (event) => {
+actionAttribute.addEventListener('change', (event) => {
   const attribute = event.target;
   const selectedOption = attribute.options[attribute.selectedIndex];
   const selectedAttribute = selectedOption.value;
-  actionValue.innerHTML = "";
- if(selectedAttribute === "addAttribute") {
-    const newAttribute = prompt("Enter new attribute");
+  actionValue.innerHTML = '';
+ if(selectedAttribute === 'addAttribute') {
+    const newAttribute = prompt('Enter new attribute');
     const selectedFormData = selectedForm?.data;
     selectedFormData.forEach((component) => {
-      component[newAttribute] = "";
+      component[newAttribute] = '';
     });
     updateActionComponents();
     loadForm();
@@ -320,32 +303,32 @@ actionAttribute.addEventListener("change", (event) => {
   }
 
   selectedForm?.data.forEach((field, index) => {
-    const option = document.createElement("option");
+    const option = document.createElement('option');
     option.value = field[selectedAttribute];
     option.dataset.value = field[selectedAttribute];
     option.textContent =
-      field[selectedAttribute] === "" ? "Empty" : field[selectedAttribute];
-    option.setAttribute("attribute", selectedAttribute);
+      field[selectedAttribute] === '' ? 'Empty' : field[selectedAttribute];
+    option.setAttribute('attribute', selectedAttribute);
     actionValue.appendChild(option);
   });
-  const option = document.createElement("option");
-  option.value = "addValue";
-  option.dataset.component = "Add Value";
-  option.textContent = "Add Value";
+  const option = document.createElement('option');
+  option.value = 'addValue';
+  option.dataset.component = 'Add Value';
+  option.textContent = 'Add Value';
   option.id = -1;
   actionValue.appendChild(option);
 });
 
-actionValue.addEventListener("change", (event) => {
+actionValue.addEventListener('change', (event) => {
   const value = event.target;
   const selectedOption = value.options[value.selectedIndex];
   const selectedValue = selectedOption.value;
   const selectedAttribute = actionAttribute.options[actionAttribute.selectedIndex].value;
   const componentIndex = actionComponent.options[actionComponent.selectedIndex].id;
   const component = selectedForm?.data[componentIndex];
-  if (selectedValue === "addValue") {
-    const newValue = prompt("Enter new value");
-    const option = document.createElement("option");
+  if (selectedValue === 'addValue') {
+    const newValue = prompt('Enter new value');
+    const option = document.createElement('option');
     option.value = newValue;
     option.dataset.value = newValue;
     option.textContent = newValue;
@@ -358,7 +341,7 @@ actionValue.addEventListener("change", (event) => {
 });
 
 
-actionCompPosition.addEventListener("change", (event) => {
+actionCompPosition.addEventListener('change', (event) => {
   const position = event.target;
   const selectedOption = position.options[position.selectedIndex];
   const selectedPosition = selectedOption.value;
