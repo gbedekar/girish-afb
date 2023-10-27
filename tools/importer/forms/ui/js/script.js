@@ -125,6 +125,44 @@ function setupJSONView() {
   editor.session.setMode("ace/mode/json");
 }
 
+function updateFormsJson() {
+  forms?.forEach(form => {
+    let keyTypeSet = new Set();
+    const formData = form?.data;
+    formData.forEach(field => {
+      const keys = Object.keys(field);
+      keys.forEach(key => {
+        const keyType = typeof field[key]; // Get the data type of the key
+        keyTypeSet.add({ key, type: keyType }); // Store key and its type as an object
+      });
+    });
+
+    keyTypeSet.forEach(({ key, type }) => {
+      const defaultValue = getDefaultValueBasedOnType(type);
+      formData.forEach(field => {
+        if (!field.hasOwnProperty(key)) {
+          field[key] = defaultValue;
+        }
+      });
+    });
+  });
+}
+
+function getDefaultValueBasedOnType(type) {
+  // Define default values based on data type
+  const defaultValues = {
+    string: "",
+    number: 0,
+    boolean: "",
+    object: "",
+    // Add more data types and default values as needed
+  };
+
+  // Return the appropriate default value based on the data type
+  return defaultValues[type] !== undefined ? defaultValues[type] : null;
+}
+
+
 async function scanNow() {
   const valid = scanFormEl.checkValidity();
   if (valid) {
@@ -145,6 +183,7 @@ async function scanNow() {
       });
       if (response.ok) {
         forms = await response.json();
+        updateFormsJson();
         renderCards(forms);
         updateStatus("Scanning Completed", true, false);
       } else {
