@@ -10,14 +10,11 @@
  * governing permissions and limitations under the License.
  */
 
-import { generateFormRendition } from "../../../../../blocks/form/form.js";
+import { generateFormRendition } from '../../../../../blocks/form/form.js';
 
 /* eslint-disable no-undef */
 
-const FORM_IMPORTER =
-  "https://g7ory75qdb.execute-api.ap-south-1.amazonaws.com/vega-services/importer";
-
-
+const FORM_IMPORTER = "https://g7ory75qdb.execute-api.ap-south-1.amazonaws.com/vega-services/importer";
 
 // action containers
 
@@ -25,9 +22,6 @@ const actionComponent = document.querySelector("select#components");
 const actionAttribute = document.querySelector("select#attributes");
 const actionValue = document.querySelector("select#values");
 const actionCompPosition = document.querySelector("select#positions");
-
-//
-
 const scanFormEl = document.querySelector('form');
 const domainEl = document.querySelector('#domainURL');
 const includePlainText = document.querySelector('#includePlainText');
@@ -64,7 +58,7 @@ const emptyField = {
   Fieldset: '',
 };
 
-function convertToCSV(fields, divider = "\t") {
+function convertToCSV(fields, divider = '\t') {
   if (fields && fields.length > 0) {
     const keys = Object.keys({ ...emptyField, ...fields?.[0] });
     const th = keys.join(divider);
