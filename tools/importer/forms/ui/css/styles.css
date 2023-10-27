@@ -7,6 +7,7 @@
   flex-wrap: wrap;
   line-height: normal;
   font-size: 16px;
+  --form-width: 800px;
 }
 .container hr {
   margin-top: 0;
@@ -20,17 +21,23 @@
 
 .left {
   max-width: 20%;
-  flex-basis: 20%;
+  flex: 1;
   padding: 24px;
   border-right: 2px solid lightgray;
 }
 
-.right {
-  flex-basis: 78%;
+.middle {
   padding: 20px;
+  flex: 2;
 }
 
-.right .header {
+.right {
+  padding: 20px;
+  flex: 1;
+  border-left: 2px solid lightgray;
+}
+
+.middle .header {
   display: flex;
   justify-content: space-between;
 }
@@ -89,7 +96,6 @@ button {
 
 .cards-container {
   display: flex;
-  flex-wrap: wrap;
   flex-direction: column;
 }
 .cards-container a {
@@ -313,4 +319,14 @@ input:checked + .slider:before {
 iframe {
   width: 50%;
   height: 100%;
+}
+
+
+/* * form actions */
+
+.action-container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 20px;
 }

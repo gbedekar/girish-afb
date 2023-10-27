@@ -13,7 +13,7 @@
     <body>
         <header>
         </header>
-        <div class="container">
+        <div class="container mycontainer">
             <div class="left">
                 <h2>Configuration</h2>
             
@@ -42,7 +42,7 @@
                 <div id="cards-container" class="cards-container" data-forms-index="0" data-pdfs-index="0"></div>
             </div>
             
-            <div class="right">
+            <div class="middle">
                 <div class="header">
                     <h2>Preview Form</h2>
                     <div class="toolbar">
@@ -63,6 +63,25 @@
                     </div>
                     <div id="editor" class="json-preview hide"></div>
                 </main>
+            </div>
+            <div class="right">
+                <div class="header">
+                    <h2>Form Actions</h2>
+                </div>
+                <hr>
+                <div class="action-container">
+                 <label for="components"> Select Component</label>
+                  <select name="components" id="components"> </select>
+
+                  <label for="position"> Select position</label>
+                  <select name="positions" id="positions"> </select>
+                 
+                  <label for="attributes"> Select Attributes</label>
+                  <select name="attributes" id="attributes"> </select>
+
+                  <label for="values"> Values</label>
+                  <select name="values" id="values"> </select>
+                </div>
             </div>
         </div>
     </body>
