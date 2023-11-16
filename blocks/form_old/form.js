@@ -1,8 +1,5 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
-import { getOrigin } from '../../scripts/scripts.js';
-import {
-  getId, createButton, createFieldWrapper, createLabel,
-} from './util.js';
+import { createButton, createFieldWrapper, createLabel } from './util.js';
 
 function generateUnique() {
   return new Date().valueOf() + Math.random();
@@ -54,43 +51,6 @@ async function prepareRequest(form, transformer) {
   return { headers, body, url };
 }
 
-async function submitFormMailto(form) {
-  try {
-    const mailConfigResp = await fetch(`${form.dataset.submit}.json?sheet=email`);
-    if (mailConfigResp.ok) {
-      const mailConfigJson = await mailConfigResp.json();
-      if (mailConfigJson.data && mailConfigJson.data.length > 0) {
-        const mailConfig = mailConfigJson.data[0];
-
-        const mailtoLink = document.createElement('a');
-        let linkHref = `mailto:${encodeURIComponent(mailConfig.to)}?subject=${encodeURIComponent(mailConfig.subject)}`;
-        if (mailConfig.cc) {
-          linkHref += `&cc=${encodeURIComponent(mailConfig.cc)}`;
-        }
-
-        const { payload } = constructPayload(form);
-        let bodyString = '';
-        Object.entries(payload).forEach(([key, value]) => {
-          if (key !== '__id__' && value) {
-            bodyString += `${key}: ${value}\n`;
-          }
-        });
-
-        linkHref += `&body=${encodeURIComponent(bodyString)}`;
-
-        mailtoLink.href = linkHref;
-
-        mailtoLink.click();
-        return;
-      }
-    }
-
-    throw new Error('failed to fetch mail config for mailto form.');
-  } catch (error) {
-    submissionFailure(error, form);
-  }
-}
-
 async function submitForm(form, transformer) {
   try {
     const { headers, body, url } = await prepareRequest(form, transformer);
@@ -114,13 +74,9 @@ async function handleSubmit(form, transformer) {
   if (form.getAttribute('data-submitting') !== 'true') {
     form.setAttribute('data-submitting', 'true');
     if (form.dataset?.action) {
-      if (form.dataset.action.toLowerCase() === 'mailto') {
-        await submitFormMailto(form);
-      } else {
-        form.action = form.dataset.action;
-        form.target = form.dataset.target || '_self';
-        form.submit();
-      }
+      form.action = form.dataset.action;
+      form.target = form.dataset.target || '_self';
+      form.submit();
     } else {
       await submitForm(form, transformer);
     }
@@ -198,7 +154,6 @@ const createSelect = withFieldWrapper((fd) => {
     ph.textContent = fd.Placeholder;
     ph.setAttribute('selected', '');
     ph.setAttribute('disabled', '');
-    ph.setAttribute('value', '');
     select.append(ph);
   }
 
@@ -212,22 +167,9 @@ const createSelect = withFieldWrapper((fd) => {
     select.append(option);
     return option;
   };
-  if (fd?.Options && (fd.Options.startsWith('https://') || fd.Options.startsWith('/'))) {
-    const optionsUrl = new URL(fd.Options, getOrigin());
-    fetch(`${optionsUrl.pathname}${optionsUrl.search}`).then((resp) => {
-      if (resp.ok) {
-        resp.json().then((json) => {
-          json.data.forEach((opt) => {
-            addOption(opt.Option, opt.Value || opt.Option);
-          });
-        });
-      }
-    });
-  } else {
-    const options = fd?.Options?.split(',') || [];
-    const optionNames = fd?.['Options Name'] ? fd?.['Options Name']?.split(',') : options;
-    options.forEach((value, index) => addOption(optionNames?.[index], value));
-  }
+  const options = fd?.Options?.split(',') || [];
+  const optionsName = fd?.['Options Name'] ? fd?.['Options Name']?.split(',') : options;
+  options.forEach((value, index) => addOption(optionsName?.[index], value));
   return select;
 });
 
@@ -285,10 +227,8 @@ function createLegend(fd) {
 
 function createFragment(fd) {
   const wrapper = createFieldWrapper(fd);
-  if (fd.Value) {
-    const fragmentUrl = new URL(fd.Value, getOrigin());
-    const fragmentPath = fragmentUrl.pathname;
-    const url = fragmentPath.endsWith('.html') ? fragmentPath.replace('.html', '.plain.html') : `${fragmentPath}.plain.html`;
+  if (fd.Value?.startsWith('/') && fd.Value.includes('.html')) {
+    const url = fd.Value.replace('.html', '.plain.html');
     fetch(url).then(async (resp) => {
       if (resp.ok) {
         wrapper.innerHTML = await resp.text();
@@ -302,13 +242,10 @@ function createFieldSet(fd) {
   const wrapper = createFieldWrapper(fd, 'fieldset');
   wrapper.id = fd.Id;
   wrapper.name = fd.Name;
-  if (fd.Id.startsWith('panel-')) {
-    wrapper.classList.add('form-panel-wrapper');
-  }
   wrapper.replaceChildren(createLegend(fd));
   if (fd.Repeatable && fd.Repeatable.toLowerCase() === 'true') {
     setConstraints(wrapper, fd);
-    wrapper.dataset.repeatable = '';
+    wrapper.dataset.repeatable = 'true';
   }
   return wrapper;
 }
@@ -332,23 +269,15 @@ function createPlainText(fd) {
   return wrapper;
 }
 
-function createHeading(fd) {
-  const heading = document.createElement('h2');
-  heading.textContent = fd.Label;
-  const wrapper = createFieldWrapper(fd);
-  wrapper.id = fd.Id;
-  wrapper.replaceChildren(heading);
-  return wrapper;
-}
-
-function createSubHeading(fd) {
-  const heading = document.createElement('h3');
-  heading.textContent = fd.Label;
-  const wrapper = createFieldWrapper(fd);
-  wrapper.id = fd.Id;
-  wrapper.replaceChildren(heading);
-  return wrapper;
-}
+export const getId = (function getId() {
+  const ids = {};
+  return (name) => {
+    ids[name] = ids[name] || 0;
+    const idSuffix = ids[name] ? `-${ids[name]}` : '';
+    ids[name] += 1;
+    return `${name}${idSuffix}`;
+  };
+}());
 
 const fieldRenderers = {
   radio: createRadio,
@@ -363,8 +292,6 @@ const fieldRenderers = {
   fieldset: createFieldSet,
   plaintext: createPlainText,
   fragment: createFragment,
-  heading: createHeading,
-  subheading: createSubHeading,
 };
 
 function renderField(fd) {
@@ -423,12 +350,8 @@ async function fetchForm(pathname) {
 export async function generateFormRendition(field, container) {
   field.forEach((fd) => {
     const el = renderField(fd);
-    const colSpan = fd['Column Span'];
-    if (colSpan) {
-      el.classList.add(`col-${colSpan}`);
-    }
     const input = el.querySelector('input,textarea,select');
-    if (input && (fd.Mandatory && fd.Mandatory.toLowerCase() === 'true')) {
+    if (fd.Mandatory === true || fd.Mandatory?.toLowerCase() === 'true') {
       input.setAttribute('required', 'required');
     }
     if (input) {
@@ -490,11 +413,7 @@ async function createForm(formURL, block) {
       e.submitter.setAttribute('disabled', '');
       handleSubmit(form, transformRequest);
     } else {
-      const firstInvalidEl = form.querySelector(':invalid:not(fieldset)');
-      if (firstInvalidEl) {
-        firstInvalidEl.focus();
-        firstInvalidEl.scrollIntoView({ behavior: 'smooth' });
-      }
+      form.querySelector(':invalid')?.focus();
     }
   });
   return form;

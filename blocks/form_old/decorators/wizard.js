@@ -13,7 +13,7 @@ export class WizardLayout {
     const direction = forward ? 'nextElementSibling' : 'previousElementSibling';
 
     for (let sibling = current[direction]; sibling; sibling = sibling[direction]) {
-      if (sibling.dataset.hidden !== 'true') {
+      if (sibling.dataset.visible !== 'true') {
         return sibling;
       }
     }

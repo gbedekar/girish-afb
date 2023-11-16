@@ -24,23 +24,17 @@ function coerceValue(val) {
   return val;
 }
 
-function isFieldset(e) {
-  return e.tagName === 'FIELDSET';
-}
+const isFieldset = (e) => e.tagName === 'FIELDSET';
 
-function isRepeatableFieldset(e) {
-  return isFieldset(e) && e.hasAttribute('data-repeatable') && e.name;
-}
+const isRepeatableFieldset = (e) => isFieldset(e) && e.getAttribute('data-repeatable') === 'true';
 
-function isDataElement(e) {
-  return e.tagName !== 'BUTTON' && e.name;
-}
+const isDataElement = (element) => element.tagName !== 'BUTTON' && !isFieldset(element) && element.name;
 
 function getValue(fe) {
   if (fe.type === 'checkbox' || fe.type === 'radio') {
     if (fe.checked) return coerceValue(fe.value);
   } else if (fe.tagName === 'OUTPUT') {
-    return fe.dataset.value || '';
+    return fe.dataset.value;
   } else if (fe.name) {
     return coerceValue(fe.value);
   }
@@ -56,7 +50,6 @@ function constructData(elements) {
   return payload;
 }
 
-
 function getFieldsetPayload(form, fieldsetName) {
   let fieldsets = form.elements[fieldsetName];
   if (!(fieldsets instanceof RadioNodeList)) {
@@ -71,7 +64,6 @@ function getFieldsetPayload(form, fieldsetName) {
   });
   return payload;
 }
-
 
 function constructPayload(form) {
   const elements = [...form.elements];
@@ -104,6 +96,7 @@ export default class RuleEngine {
 
     this.formRules = Object.fromEntries(newRules);
     this.dependencyTree = newRules.reduce((fields, [fieldId, rules]) => {
+      fields[fieldId] = fields[fieldId] || { deps: {} };
       rules.forEach(({ prop, deps }) => {
         deps.forEach((dep) => {
           fields[dep] = fields[dep] || { deps: {} };
@@ -113,12 +106,6 @@ export default class RuleEngine {
       });
       return fields;
     }, {});
-    this.formTag.querySelectorAll('input[type="hidden"]').forEach((el) => {
-      const rules = this.formRules[el.id];
-      if (rules) {
-        this.applyRules([el.id]);
-      }
-    })
   }
 
   listRules(fieldId) {
@@ -133,7 +120,7 @@ export default class RuleEngine {
         stack.push(...this.dependencyTree[el].deps.Value);
       }
       // eslint-disable-next-line no-loop-func
-      ['Hidden', 'Label'].forEach((prop) => {
+      ['Visible', 'Label'].forEach((prop) => {
         this.dependencyTree[el]?.deps[prop]?.forEach((field) => {
           arr[field] = index;
           index += 1;
@@ -163,13 +150,13 @@ export default class RuleEngine {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  updateHidden(fieldId, value) {
+  updateVisible(fieldId, value) {
     const element = document.getElementById(fieldId);
     let wrapper = element;
     if (!isFieldset(element)) {
       wrapper = element.closest('.field-wrapper');
     }
-    wrapper.dataset.hidden = value;
+    wrapper.dataset.visible = value;
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -210,7 +197,7 @@ export default class RuleEngine {
   enable() {
     this.formTag.addEventListener('input', (e) => {
       const field = e.target;
-      const valid = this.formTag.checkValidity();
+      const valid = e.target.checkValidity();
       if (valid) {
         let fieldId = field.id;
         let rules = [];

@@ -18,8 +18,7 @@ function visitor(nameMap, fields, bExcelFormula) {
           fields.add(field.id);
         }
       } else {
-        field = Object.values(nameMap).find(x => x.name === name);
-        fields.add(field.id);
+        fields.add(name);
       }
     } if (n.type === 'Function') {
       n.name = n.name.toLowerCase();

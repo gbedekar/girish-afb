@@ -62,9 +62,6 @@ export default function functions(debug) {
       func: (args) => {
         const num = toNumber(args[0]);
         const digits = toNumber(args[1]);
-        if (digits === 2) { // roundToHundredths: float precision forces the +0.000001
-          return Math.round(parseFloat(num) * 100 + 0.000001) / 100;
-        }
         const precision = 10 ** digits;
         return Math.round(num * precision) / precision;
       },
@@ -113,14 +110,6 @@ export default function functions(debug) {
         if (Array.isArray(x)) return sum + fnMap.sum.func(x);
         return sum + toNumber(x);
       }, 0),
-    },
-
-    usertimezone: {
-      func: () => {
-        const currentDate = new Date();
-        const timezoneOffset = currentDate.getTimezoneOffset() / 60;
-        return timezoneOffset;
-      },
     },
   };
   return fnMap;

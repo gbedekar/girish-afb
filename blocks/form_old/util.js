@@ -1,16 +1,3 @@
-import { toClassName } from '../../scripts/lib-franklin.js';
-
-export const getId = (function getId() {
-  const ids = {};
-  return (name) => {
-    const slug = toClassName(name);
-    ids[slug] = ids[slug] || 0;
-    const idSuffix = ids[slug] ? `-${ids[slug]}` : '';
-    ids[slug] += 1;
-    return `${slug}${idSuffix}`;
-  };
-}());
-
 export function createLabel(fd, tagName = 'label') {
   const label = document.createElement(tagName);
   label.setAttribute('for', fd.Id);
@@ -24,17 +11,17 @@ export function createLabel(fd, tagName = 'label') {
 
 export function createFieldWrapper(fd, tagName = 'div') {
   const fieldWrapper = document.createElement(tagName);
-  const nameStyle = fd.Name ? ` form-${toClassName(fd.Name)}` : '';
+  const nameStyle = fd.Name ? ` form-${fd.Name}` : '';
   const fieldId = `form-${fd.Type}-wrapper${nameStyle}`;
   fieldWrapper.className = fieldId;
   if (fd.Fieldset) {
     fieldWrapper.dataset.fieldset = fd.Fieldset;
   }
-  if (fd.Mandatory?.toLowerCase() === 'true') {
+  if (fd.Mandatory === true || fd.Mandatory?.toLowerCase() === 'true') {
     fieldWrapper.dataset.required = '';
   }
   if (fd.Hidden?.toLowerCase() === 'true') {
-    fieldWrapper.dataset.hidden = 'true';
+    fieldWrapper.dataset.visible = 'true';
   }
   fieldWrapper.classList.add('field-wrapper');
   fieldWrapper.append(createLabel(fd));
