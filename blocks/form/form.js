@@ -1,5 +1,4 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
-import { getOrigin } from '../../scripts/scripts.js';
 import {
   getId, createButton, createFieldWrapper, createLabel,
 } from './util.js';
@@ -212,18 +211,7 @@ const createSelect = withFieldWrapper((fd) => {
     select.append(option);
     return option;
   };
-  if (fd?.Options && (fd.Options.startsWith('https://') || fd.Options.startsWith('/'))) {
-    const optionsUrl = new URL(fd.Options, getOrigin());
-    fetch(`${optionsUrl.pathname}${optionsUrl.search}`).then((resp) => {
-      if (resp.ok) {
-        resp.json().then((json) => {
-          json.data.forEach((opt) => {
-            addOption(opt.Option, opt.Value || opt.Option);
-          });
-        });
-      }
-    });
-  } else {
+  if (fd?.Options) {
     const options = fd?.Options?.split(',') || [];
     const optionNames = fd?.['Options Name'] ? fd?.['Options Name']?.split(',') : options;
     options.forEach((value, index) => addOption(optionNames?.[index], value));
