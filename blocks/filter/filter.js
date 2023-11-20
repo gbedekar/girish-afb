@@ -8,7 +8,7 @@ import { readBlockConfig } from '../../scripts/lib-franklin.js';
  * @param {boolean} display true when show, false when hide
  */
 function show(element, display) {
-  if (display) {
+  if (display) { 
     // show element
     document.getElementById(element).classList.remove('hide');
   } else {
