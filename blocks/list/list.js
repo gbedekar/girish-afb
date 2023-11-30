@@ -48,7 +48,7 @@ export default function decorate(block) {
       const listGridContainer = document.createElement('div');
       listGridContainer.classList.add('grid', 'list', 'container');
 
-      const cols = ['url', 'pageviews', 'formsubmission','usrexp', 'avglcp', 'avgcls', 'avgfid', 'avginp'];
+      const cols = ['url', 'views', 'formsubmission'];
       const metrics = ['s', '', 'ms', 'ms'];
       const ranges = {
         avglcp: [2500, 4000],
@@ -59,26 +59,14 @@ export default function decorate(block) {
 
       const listGridHeadingRow = document.createElement('div');
       listGridHeadingRow.classList.add('grid', 'list', 'row', 'heading');
-      for (let j = 0; j < 7; j += 1) {
+      for (let j = 0; j < 3; j += 1) {
         const listGridHeadings = document.createElement('div');
-        if (cols[j] === 'usrexp') {
-          listGridHeadings.textContent = 'Core Web Vitals across visits';
-        } else if (cols[j] === 'url') {
+        if (cols[j] === 'url') {
           listGridHeadings.textContent = 'Path';
-        } else if (cols[j] === 'pageviews') {
-          listGridHeadings.textContent = 'Page Views';
+        } else if (cols[j] === 'views') {
+          listGridHeadings.textContent = 'Form Views';
         }else if (cols[j] === 'formsubmission') {
           listGridHeadings.textContent = 'Form Submission';
-        } else if (cols[j] === 'avglcp') {
-          listGridHeadings.textContent = 'LCP 75P';
-        } else if (cols[j] === 'avgcls') {
-          listGridHeadings.textContent = 'CLS 75P';
-        } else if (cols[j] === 'avgfid') {
-          listGridHeadings.textContent = 'FID 75P';
-        } else if (cols[j] === 'avginp') {
-          listGridHeadings.textContent = 'INP 75P';
-        } else {
-          listGridHeadings.textContent = cols[j];
         }
         listGridHeadings.classList.add('grid', 'list', 'col', 'heading');
         listGridHeadingRow.appendChild(listGridHeadings);
@@ -113,80 +101,15 @@ export default function decorate(block) {
         const avgGood = Math.round((lcpgood + clsgood + fidgood + inpgood) / 4);
         const avgBad = Math.round((lcpbad + clsbad + fidbad + inpbad) / 4);
         let chartFlag = true;
-        for (let j = 0; j < 7; j += 1) {
+        for (let j = 0; j < 3; j += 1) {
           const listGridColumn = document.createElement('div');
           listGridColumn.classList.add('grid', 'list', 'col', cols[j]);
-          if (cols[j] === 'usrexp') {
-            const badPerc = document.createElement('div');
-            const goodPerc = document.createElement('div');
-            const okayPerc = document.createElement('div');
-            if (!noresult) {
-              badPerc.classList.add('grid', 'list', 'col', cols[j], 'badbar');
-              goodPerc.classList.add('grid', 'list', 'col', cols[j], 'goodbar');
-              okayPerc.classList.add('grid', 'list', 'col', cols[j], 'okaybar');
-              const badPercentage = `${avgBad}%`;
-              const goodPercentage = `${avgGood}%`;
-              const okayPercentage = `${avgOkay}%`;
-              badPerc.textContent = badPercentage;
-              goodPerc.textContent = goodPercentage;
-              okayPerc.textContent = okayPercentage;
-              badPerc.style.width = badPercentage;
-              goodPerc.style.width = goodPercentage;
-              okayPerc.style.width = okayPercentage;
-              if (avgBad < 10) badPerc.style.color = 'red';
-              if (avgGood < 10) goodPerc.style.color = 'green';
-              if (avgOkay < 10) okayPerc.style.color = 'orange';
-              listGridColumn.appendChild(goodPerc);
-              listGridColumn.appendChild(okayPerc);
-              listGridColumn.appendChild(badPerc);
-            } else {
-              const noresultPerc = document.createElement('div');
-              noresultPerc.classList.add('grid', 'list', 'col', cols[j], 'noresultbar');
-              const noresultPercentage = '100%';
-              noresultPerc.textContent = 'Not Enough Traffic';
-              noresultPerc.style.width = noresultPercentage;
-              listGridColumn.appendChild(noresultPerc);
-            }
-          } else {
             let txtContent;
-            if (cols[j] === 'avglcp') {
-              txtContent = data[i][cols[j]] / 1000.00;
-            } else if (cols[j] === 'url') {
+            if (cols[j] === 'url') {
               listGridColumn.innerHTML = `<a href='${data[i][cols[j]]}' target="_blank">${data[i][cols[j]].replace(/^https?:\/\/[^/]+/i, '')}</a>`;
-            } else if (cols[j] === 'pageviews') {
-              const params = new URLSearchParams(window.location.search);
-              const nextUrl = data[i][cols[0]].replace('https://', '');
-              params.set('url', nextUrl);
-              listGridColumn.innerHTML = `<a href="/views/rum-pageviews?${params.toString()}">${parseInt(data[i][cols[j]], 10).toLocaleString('en-US')}</a>`;
-            } else {
+            }  else {
               txtContent = data[i][cols[j]];
             }
-            if (j >= 3) {
-              if (data[i][cols[j]] && data[i][cols[j]] <= ranges[cols[j]][0]) {
-                listGridColumn.classList.toggle('pass');
-              } else if (
-                  data[i][cols[j]] > ranges[cols[j]][0] && data[i][cols[j]] < ranges[cols[j]][1]
-              ) {
-                listGridColumn.classList.toggle('okay');
-              } else if (!data[i][cols[j]]) {
-                listGridColumn.classList.toggle('noresult');
-                chartFlag = false;
-              } else {
-                listGridColumn.classList.toggle('fail');
-              }
-            }
-            if (txtContent) {
-              if (j >= 3) {
-                const numb = parseFloat(txtContent).toFixed(2).toLocaleString('en-US');
-                const displayedNumb = numb.endsWith('.00') ? numb.replace('.00', '') : numb;
-                listGridColumn.textContent = `${displayedNumb}${metrics[j - 3]}`;
-              } else {
-                listGridColumn.textContent = txtContent;
-              }
-            } else if (j >= 3) {
-              listGridColumn.textContent = 'n/a';
-            }
-          }
           listGridRow.append(listGridColumn);
         }
         const chartLink = document.createElement('div');
