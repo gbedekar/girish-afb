@@ -128,8 +128,6 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
   let interval;
 
   const params = new URLSearchParams(window.location.search);
-  console.log("-----window.location.search");
-  console.log(window.location.search);
   if (!endpoint) {
     throw new Error('No Endpoint Provided, No Data to be retrieved for Block');
   }
@@ -240,10 +238,6 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
     }
   }
   endpoint = "rum-checkpoint-urls";
-  console.log("params");
-  console.log(params.toString());
-  console.log(`${endpointHost}${endpoint}?${params.toString()}`);
-  console.log(`${endpoint}`);
   const flag = `${endpoint}Flag`;
   const checkData = async () => {
     if(type === 'submit'){
@@ -251,12 +245,9 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
           .then((resp) => resp.json())
           .then((data) => {
             window[flag] = false;
-            console.log("-----data");
             if (!Object.hasOwn(window, 'dashboard')) {
               window.dashboard = {};
             }
-            console.log("-----data");
-            console.log(data);
             window.dashboard[endpoint] = data;
             console.log( window.dashboard[endpoint]);
           })
@@ -264,7 +255,6 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
             // eslint-disable-next-line no-console
             console.error('API Call Has Failed, Check that inputs are correct', err.message);
           });
-      console.log("-----data done");
     }
     else if (Object.hasOwn(window, flag) && window[flag] === true) {
       window.setTimeout(checkData, 5);

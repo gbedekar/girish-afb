@@ -40,7 +40,6 @@ console.log(flag);
   };
 
   const makeList = async () => {
-    console.log("....makelist");
     if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
       window.setTimeout(makeList, 1000);
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
@@ -69,8 +68,6 @@ console.log(flag);
       listGridContainer.appendChild(listGridHeadingRow);
 
       let counter = 0;
-      console.log("data");
-      console.log(data);
       for (let i = 0; i < data.length; i += 1) {
         const listGridRow = document.createElement('div');
         listGridRow.classList.add('grid', 'list', 'row');
@@ -84,11 +81,8 @@ console.log(flag);
           if (cols[j] === 'url') {
             listGridColumn.innerHTML = `<a href='${data[i][cols[j]]}' target="_blank">${data[i][cols[j]].replace(/^https?:\/\/[^/]+/i, '')}</a>`;
           } else if (cols[j] === 'formsubmission') {
-            console.log(data[i]['url']);
             await queryRequest(endpoint, getUrlBase(endpoint), 'submit', `${data[i]['url']}`);
             const submitData  = window.dashboard[endpoint].results.data;
-            console.log(submitData);
-            console.log(window);
             for(let k= 0; k < submitData.length ; k += 1){
                 if(submitData[k]['url'] === `${data[i]['url']}`){
                   txtContent = submitData[k]['actions'];
@@ -96,8 +90,6 @@ console.log(flag);
                   break;
                 }
             }
-            console.log("submitData");
-            console.log(window);
           } else {
             txtContent = data[i][cols[j]];
             listGridColumn.textContent = txtContent;
