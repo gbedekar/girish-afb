@@ -233,6 +233,8 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
       params.set('limit', '500');
     }
   }
+  console.log("params");
+  console.log(params);
   const flag = `${endpoint}Flag`;
   const checkData = () => {
     if (Object.hasOwn(window, flag) && window[flag] === true) {
