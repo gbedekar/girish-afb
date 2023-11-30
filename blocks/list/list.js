@@ -88,6 +88,7 @@ console.log(flag);
             await queryRequest(endpoint, getUrlBase(endpoint), 'submit', `${data[i]['url']}`);
             const { submitData } = window.dashboard[endpoint].results;
             console.log(submitData);
+            console.log(window);
             for(let k= 0; k < submitData.length ; k += 1){
                 if(submitData[k]['url'] === `${data[i]['url']}`){
                   txtContent = submitData[k]['actions'];
