@@ -8,7 +8,10 @@ import { drawLoader, hideLoader } from "../../scripts/loader.js";
 
 export default function decorate(block) {
   let cfg = readBlockConfig(block);
+  console.log("...decorate");
+  console.log(cfg);
   cfg = Object.fromEntries(Object.entries(cfg).map(([k, v]) => [k, typeof v === 'string' ? v.toLowerCase() : v]));
+  console.log(cfg);
   const endpoint = cfg.data;
 
   cfg.block = block;
