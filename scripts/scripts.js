@@ -234,7 +234,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
     }
   }
   console.log("params");
-  console.log(params);
+  console.log(params.toString());
   const flag = `${endpoint}Flag`;
   const checkData = () => {
     if (Object.hasOwn(window, flag) && window[flag] === true) {
