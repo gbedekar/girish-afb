@@ -38,6 +38,7 @@ export default function decorate(block) {
   };
 
   const makeList = () => {
+    console.log("....makelist");
     if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
       window.setTimeout(makeList, 1000);
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
