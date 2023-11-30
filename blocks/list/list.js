@@ -73,10 +73,6 @@ console.log(flag);
         listGridHeadings.classList.add('grid', 'list', 'col', 'heading');
         listGridHeadingRow.appendChild(listGridHeadings);
       }
-      const chartHeading = document.createElement('div');
-      chartHeading.textContent = 'Chart';
-      chartHeading.classList.add('grid', 'list', 'col', 'heading');
-      listGridHeadingRow.appendChild(chartHeading);
       listGridContainer.appendChild(listGridHeadingRow);
 
       let counter = 0;
