@@ -77,7 +77,6 @@ console.log(flag);
         if ((i % 2) === 1) {
           listGridRow.classList.add('odd');
         }
-        let chartFlag = true;
         for (let j = 0; j < 3; j += 1) {
           const listGridColumn = document.createElement('div');
           listGridColumn.classList.add('grid', 'list', 'col', cols[j]);

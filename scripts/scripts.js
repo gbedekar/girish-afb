@@ -285,7 +285,7 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
         });
     }
   };
-  checkData();
+  await checkData();
 }
 
 
