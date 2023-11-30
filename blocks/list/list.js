@@ -12,7 +12,7 @@ export default function decorate(block) {
   console.log(cfg);
   cfg = Object.fromEntries(Object.entries(cfg).map(([k, v]) => [k, typeof v === 'string' ? v.toLowerCase() : v]));
   console.log(cfg);
-  const endpoint = cfg.data;
+  const endpoint = 'rum-checkpoint-urls';
 
   cfg.block = block;
   const flag = `${endpoint}Flag`;
