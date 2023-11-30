@@ -16,7 +16,8 @@ export default function decorate(block) {
 
   cfg.block = block;
   const flag = `${endpoint}Flag`;
-
+console.log("flag");
+console.log(flag);
   // once we read config, clear the dom.
   block.querySelectorAll(':scope > div').forEach((row) => {
     row.style.display = 'none';
