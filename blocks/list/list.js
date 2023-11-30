@@ -45,7 +45,7 @@ export default function decorate(block) {
       const listGridContainer = document.createElement('div');
       listGridContainer.classList.add('grid', 'list', 'container');
 
-      const cols = ['url', 'pageviews', 'usrexp', 'avglcp', 'avgcls', 'avgfid', 'avginp'];
+      const cols = ['url', 'pageviews', 'formsubmission','usrexp', 'avglcp', 'avgcls', 'avgfid', 'avginp'];
       const metrics = ['s', '', 'ms', 'ms'];
       const ranges = {
         avglcp: [2500, 4000],
@@ -64,6 +64,8 @@ export default function decorate(block) {
           listGridHeadings.textContent = 'Path';
         } else if (cols[j] === 'pageviews') {
           listGridHeadings.textContent = 'Page Views';
+        }else if (cols[j] === 'formsubmission') {
+          listGridHeadings.textContent = 'Form Submission';
         } else if (cols[j] === 'avglcp') {
           listGridHeadings.textContent = 'LCP 75P';
         } else if (cols[j] === 'avgcls') {
