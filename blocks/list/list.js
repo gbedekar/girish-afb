@@ -87,7 +87,13 @@ console.log(flag);
             console.log(data[i]['url']);
             await queryRequest(endpoint, getUrlBase(endpoint), 'submit', `${data[i]['url']}`);
             const {submitData} = window.dashboard[endpoint].results;
-
+            for(let k= 0; k< submitData.length ; k += 1){
+                if(submitData[k]['url'] === `${data[i]['url']}`){
+                  txtContent = submitData[k]['actions'];
+                  listGridColumn.textContent = txtContent;
+                  break;
+                }
+            }
             console.log("submitData");
             console.log(window);
           } else {
