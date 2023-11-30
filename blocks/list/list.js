@@ -101,6 +101,8 @@ console.log(flag);
             }
           listGridRow.append(listGridColumn);
         }
+        listGridContainer.append(listGridRow);
+
         counter = i;
       }
       block.append(listGridContainer);
