@@ -31,7 +31,7 @@ console.log(flag);
       window.setTimeout(getQuery, 1);
     } else if (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === false) {
       setTimeout(() => {
-        queryRequest(endpoint, getUrlBase(endpoint));
+        queryRequest(endpoint, getUrlBase(endpoint),'render');
       }, 3000);
 
       drawLoader(block);
@@ -51,14 +51,6 @@ console.log(flag);
       listGridContainer.classList.add('grid', 'list', 'container');
 
       const cols = ['url', 'views', 'formsubmission'];
-      const metrics = ['s', '', 'ms', 'ms'];
-      const ranges = {
-        avglcp: [2500, 4000],
-        avgfid: [100, 300],
-        avginp: [200, 500],
-        avgcls: [0.1, 0.25],
-      };
-
       const listGridHeadingRow = document.createElement('div');
       listGridHeadingRow.classList.add('grid', 'list', 'row', 'heading');
       for (let j = 0; j < 3; j += 1) {
@@ -89,9 +81,15 @@ console.log(flag);
           const listGridColumn = document.createElement('div');
           listGridColumn.classList.add('grid', 'list', 'col', cols[j]);
             let txtContent;
+            console.log(window);
             if (cols[j] === 'url') {
               listGridColumn.innerHTML = `<a href='${data[i][cols[j]]}' target="_blank">${data[i][cols[j]].replace(/^https?:\/\/[^/]+/i, '')}</a>`;
-            }  else {
+            } /*else if(cols[j] === 'formsubmission'){
+              setTimeout(() => {
+                queryRequest(endpoint, getUrlBase(endpoint),'submit');
+              }, 3000);
+
+            }*/ else {
               txtContent = data[i][cols[j]];
               listGridColumn.textContent = txtContent;
             }

@@ -123,7 +123,7 @@ export function addFavIcon(href) {
  * takes block and preemptively fires off requests for resources in worker thread
  * @param {*} main
  */
-export async function queryRequest(endpoint, endpointHost, qps = {}) {
+export async function queryRequest(endpoint, endpointHost, type ,qps = {}) {
   let offset;
   let interval;
 
@@ -209,8 +209,13 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
     params.set('interval', '30');
     params.set('offset', '0');
   }
-  params.set('checkpoint', 'viewblock');
-  params.set('source', '.form');
+  if(type === 'render') {
+    params.set('checkpoint', 'viewblock');
+    params.set('source', '.form');
+  }
+  if(type === 'submit'){
+    params.set('checkpoint', 'formsubmit');
+  }
   // remove http or https prefix in url param if it exists
   if (params.has('url')) {
     params.set('url', params.get('url').replace(/^http(s)*:\/\//, ''));
