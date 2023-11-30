@@ -234,6 +234,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
       params.set('limit', '500');
     }
   }
+  endpoint = "rum-checkpoint-urls";
   console.log("params");
   console.log(params.toString());
   console.log(`${endpointHost}${endpoint}?${params.toString()}`);
