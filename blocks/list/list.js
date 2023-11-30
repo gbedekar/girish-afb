@@ -101,20 +101,6 @@ console.log(flag);
             }
           listGridRow.append(listGridColumn);
         }
-        const chartLink = document.createElement('div');
-        const params = new URLSearchParams(window.location.search);
-        const nextUrl = data[i][cols[0]].replace('https://', '');
-        params.set('url', nextUrl);
-
-        if (chartFlag) {
-          chartLink.innerHTML = `<div><a target="_blank" href="/views/rum-performance-monitor?${params.toString()}">View Chart</a></div>`;
-        } else {
-          chartLink.innerText = 'No Data';
-        }
-        chartLink.classList.add('grid', 'list', 'col', 'clickChart');
-        listGridRow.append(chartLink);
-        listGridContainer.append(listGridRow);
-
         counter = i;
       }
       block.append(listGridContainer);
