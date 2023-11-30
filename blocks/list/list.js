@@ -25,6 +25,7 @@ console.log(flag);
 
   const getQuery = () => {
     if (!Object.hasOwn(window, 'gettingQueryInfo')) {
+      console.log("test111");
       getQueryInfo();
     }
     if (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === true) {
@@ -81,7 +82,6 @@ console.log(flag);
           const listGridColumn = document.createElement('div');
           listGridColumn.classList.add('grid', 'list', 'col', cols[j]);
             let txtContent;
-            console.log(window);
             if (cols[j] === 'url') {
               listGridColumn.innerHTML = `<a href='${data[i][cols[j]]}' target="_blank">${data[i][cols[j]].replace(/^https?:\/\/[^/]+/i, '')}</a>`;
             } else if(cols[j] === 'formsubmission'){
