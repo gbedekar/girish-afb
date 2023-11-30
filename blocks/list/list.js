@@ -97,6 +97,7 @@ console.log(flag);
               listGridColumn.innerHTML = `<a href='${data[i][cols[j]]}' target="_blank">${data[i][cols[j]].replace(/^https?:\/\/[^/]+/i, '')}</a>`;
             }  else {
               txtContent = data[i][cols[j]];
+              listGridColumn.textContent = txtContent;
             }
           listGridRow.append(listGridColumn);
         }
