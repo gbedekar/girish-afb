@@ -245,9 +245,9 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
   console.log(`${endpointHost}${endpoint}?${params.toString()}`);
   console.log(`${endpoint}`);
   const flag = `${endpoint}Flag`;
-  const checkData = () => {
+  const checkData = async () => {
     if(type === 'submit'){
-      fetch(`${endpointHost}${endpoint}?${params.toString()}`)
+      await fetch(`${endpointHost}${endpoint}?${params.toString()}`)
           .then((resp) => resp.json())
           .then((data) => {
             window[flag] = false;
