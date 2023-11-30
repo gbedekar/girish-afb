@@ -4,6 +4,121 @@
     "limit": 22,
     "data": [
         {
+            "endpoint": "github-prs",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@ci5383/",
+            "parameters": "date"
+        },
+        {
+            "endpoint": "site404",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@ci5383/",
+            "parameters": "date"
+        },
+        {
+            "endpoint": "rum-dashboard",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@ci6232/",
+            "parameters": "date"
+        },
+        {
+            "endpoint": "rum-pageviews",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@ci6078/",
+            "parameters": "interval"
+        },
+        {
+            "endpoint": "dash@top-pages",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@ci5366/",
+            "parameters": ""
+        },
+        {
+            "endpoint": "rum-sources",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@ci6023/",
+            "parameters": "date"
+        },
+        {
+            "endpoint": "dash/auth-all-domains",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@v3/",
+            "parameters": ""
+        },
+        {
+            "endpoint": "dash/domain-list",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@v3/",
+            "parameters": ""
+        },
+        {
+            "endpoint": "dash/update-domain-info",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@v3/",
+            "parameters": ""
+        },
+        {
+            "endpoint": "rotate-domainkeys",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@v3/",
+            "parameters": ""
+        },
+        {
+            "endpoint": "sidekick-aggregate",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@ci6062/rum-dashboard/",
+            "parameters": "date"
+        },
+        {
+            "endpoint": "sidekick-by-hostname",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@ci6062/rum-dashboard/",
+            "parameters": ""
+        },
+        {
+            "endpoint": "sidekick-by-url",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@ci6062/rum-dashboard/",
+            "parameters": ""
+        },
+        {
+            "endpoint": "sidekick-checkpoints",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@ci6062/rum-dashboard/",
+            "parameters": ""
+        },
+        {
+            "endpoint": "multiline-sidekick",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@ci6143/rum-dashboard/",
+            "parameters": ""
+        },
+        {
+            "endpoint": "github-commits",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@ci6143/rum-dashboard/",
+            "parameters": "date"
+        },
+        {
+            "endpoint": "daily-rum",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@ci6143/rum-dashboard/",
+            "parameters": "date"
+        },
+        {
+            "endpoint": "conversions",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@ci6320/rum-dashboard/",
+            "parameters": ""
+        },
+        {
+            "endpoint": "searches",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@ci6320/rum-dashboard/",
+            "parameters": ""
+        },
+        {
+            "endpoint": "rfqs",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@ci6320/rum-dashboard/",
+            "parameters": ""
+        },
+        {
+            "endpoint": "enters",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@ci6320/rum-dashboard/",
+            "parameters": ""
+        },
+        {
+            "endpoint": "pageviews",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@ci6338/rum-dashboard/",
+            "parameters": ""
+        },
+        {
+            "endpoint": "formsubmission",
+            "base": "https://helix-pages.anywhere.run/helix-services/run-query@ci6338/rum-dashboard/",
+            "parameters": ""
+        },
+        {
             "endpoint": "formview",
             "base": "https://helix-pages.anywhere.run/helix-services/run-query@ci5383/rum-checkpoint-urls/",
             "parameters": "date"
