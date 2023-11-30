@@ -39,13 +39,13 @@ console.log(flag);
     }
   };
 
-  const makeList = () => {
+  const makeList = async () => {
     console.log("....makelist");
     if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
       window.setTimeout(makeList, 1000);
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
       // query complete, hide loading graphic
-      const { data } = window.dashboard[endpoint].results;
+      const {data} = window.dashboard[endpoint].results;
       hideLoader(block);
 
       const listGridContainer = document.createElement('div');
@@ -60,7 +60,7 @@ console.log(flag);
           listGridHeadings.textContent = 'Path';
         } else if (cols[j] === 'views') {
           listGridHeadings.textContent = 'Form Views';
-        }else if (cols[j] === 'formsubmission') {
+        } else if (cols[j] === 'formsubmission') {
           listGridHeadings.textContent = 'Form Submission';
         }
         listGridHeadings.classList.add('grid', 'list', 'col', 'heading');
@@ -81,20 +81,20 @@ console.log(flag);
         for (let j = 0; j < 3; j += 1) {
           const listGridColumn = document.createElement('div');
           listGridColumn.classList.add('grid', 'list', 'col', cols[j]);
-            let txtContent;
-            if (cols[j] === 'url') {
-              listGridColumn.innerHTML = `<a href='${data[i][cols[j]]}' target="_blank">${data[i][cols[j]].replace(/^https?:\/\/[^/]+/i, '')}</a>`;
-            } else if(cols[j] === 'formsubmission'){
-              console.log(data[i]['url']);
-                queryRequest(endpoint, getUrlBase(endpoint),'submit',`${data[i]['url']}`);
-              const { submitData } = window.dashboard[endpoint].results;
+          let txtContent;
+          if (cols[j] === 'url') {
+            listGridColumn.innerHTML = `<a href='${data[i][cols[j]]}' target="_blank">${data[i][cols[j]].replace(/^https?:\/\/[^/]+/i, '')}</a>`;
+          } else if (cols[j] === 'formsubmission') {
+            console.log(data[i]['url']);
+            await queryRequest(endpoint, getUrlBase(endpoint), 'submit', `${data[i]['url']}`);
+            const {submitData} = window.dashboard[endpoint].results;
 
-              console.log("submitData");
-              console.log(window);
-            } else {
-              txtContent = data[i][cols[j]];
-              listGridColumn.textContent = txtContent;
-            }
+            console.log("submitData");
+            console.log(window);
+          } else {
+            txtContent = data[i][cols[j]];
+            listGridColumn.textContent = txtContent;
+          }
           listGridRow.append(listGridColumn);
         }
         listGridContainer.append(listGridRow);
