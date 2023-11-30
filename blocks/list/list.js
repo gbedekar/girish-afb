@@ -86,8 +86,9 @@ console.log(flag);
           } else if (cols[j] === 'formsubmission') {
             console.log(data[i]['url']);
             await queryRequest(endpoint, getUrlBase(endpoint), 'submit', `${data[i]['url']}`);
-            const {submitData} = window.dashboard[endpoint].results;
-            for(let k= 0; k< submitData.length ; k += 1){
+            const { submitData } = window.dashboard[endpoint].results;
+            console.log(submitData);
+            for(let k= 0; k < submitData.length ; k += 1){
                 if(submitData[k]['url'] === `${data[i]['url']}`){
                   txtContent = submitData[k]['actions'];
                   listGridColumn.textContent = txtContent;
