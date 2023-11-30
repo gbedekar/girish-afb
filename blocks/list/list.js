@@ -85,21 +85,6 @@ export default function decorate(block) {
         if ((i % 2) === 1) {
           listGridRow.classList.add('odd');
         }
-        const {
-          lcpgood, lcpbad, clsgood, clsbad, fidgood, fidbad, inpgood, inpbad,
-        } = data[i];
-
-        const lcpOkay = 100 - (lcpgood + lcpbad);
-        const clsOkay = 100 - (clsgood + clsbad);
-        const fidOkay = 100 - (fidgood + fidbad);
-        const inpOkay = 100 - (inpgood + inpbad);
-        let noresult;
-        if ((lcpgood + lcpbad + clsgood + clsbad + fidgood + fidbad + inpgood + inpbad) === 0) {
-          noresult = true;
-        }
-        const avgOkay = Math.round((lcpOkay + clsOkay + fidOkay + inpOkay) / 4);
-        const avgGood = Math.round((lcpgood + clsgood + fidgood + inpgood) / 4);
-        const avgBad = Math.round((lcpbad + clsbad + fidbad + inpbad) / 4);
         let chartFlag = true;
         for (let j = 0; j < 3; j += 1) {
           const listGridColumn = document.createElement('div');
