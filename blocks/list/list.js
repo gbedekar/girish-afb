@@ -87,8 +87,9 @@ console.log(flag);
             } else if(cols[j] === 'formsubmission'){
                 queryRequest(endpoint, getUrlBase(endpoint),'submit');
               const { submitData } = window.dashboard[endpoint].results;
+
               console.log("submitData");
-              console.log(submitData);
+              console.log(window);
             } else {
               txtContent = data[i][cols[j]];
               listGridColumn.textContent = txtContent;
