@@ -251,10 +251,14 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
           .then((resp) => resp.json())
           .then((data) => {
             window[flag] = false;
+            console.log("-----data");
             if (!Object.hasOwn(window, 'dashboard')) {
               window.dashboard = {};
             }
+            console.log("-----data");
+            console.log(data);
             window.dashboard[endpoint] = data;
+            console.log( window.dashboard[endpoint]);
           })
           .catch((err) => {
             // eslint-disable-next-line no-console
