@@ -78,7 +78,8 @@ export default function decorate(block) {
       listGridContainer.appendChild(listGridHeadingRow);
 
       let counter = 0;
-
+      console.log("data");
+      console.log(data);
       for (let i = 0; i < data.length; i += 1) {
         const listGridRow = document.createElement('div');
         listGridRow.classList.add('grid', 'list', 'row');
