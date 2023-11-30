@@ -209,7 +209,8 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
     params.set('interval', '30');
     params.set('offset', '0');
   }
-
+  params.set('checkpoint', 'viewblock');
+  params.set('source', '.form');
   // remove http or https prefix in url param if it exists
   if (params.has('url')) {
     params.set('url', params.get('url').replace(/^http(s)*:\/\//, ''));
