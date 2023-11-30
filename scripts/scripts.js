@@ -123,7 +123,7 @@ export function addFavIcon(href) {
  * takes block and preemptively fires off requests for resources in worker thread
  * @param {*} main
  */
-export async function queryRequest(endpoint, endpointHost, type ,qps = {}) {
+export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,qps = {}) {
   let offset;
   let interval;
 
