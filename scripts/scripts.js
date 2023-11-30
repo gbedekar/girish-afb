@@ -128,6 +128,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   let interval;
 
   const params = new URLSearchParams(window.location.search);
+  console.log("-----window.location.search");
   if (!endpoint) {
     throw new Error('No Endpoint Provided, No Data to be retrieved for Block');
   }
