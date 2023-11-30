@@ -54,7 +54,7 @@
             "parameters": ""
         },
         {
-            "endpoint": "formview",
+            "endpoint": "rum-checkpoint-urls",
             "base": "https://helix-pages.anywhere.run/helix-services/run-query@ci5383/rum-checkpoint-urls/",
             "parameters": "date"
         }
