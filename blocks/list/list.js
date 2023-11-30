@@ -86,7 +86,7 @@ console.log(flag);
           } else if (cols[j] === 'formsubmission') {
             console.log(data[i]['url']);
             await queryRequest(endpoint, getUrlBase(endpoint), 'submit', `${data[i]['url']}`);
-            const { submitData } = window.dashboard[endpoint].results;
+            const submitData  = window.dashboard[endpoint].results.data;
             console.log(submitData);
             console.log(window);
             for(let k= 0; k < submitData.length ; k += 1){
