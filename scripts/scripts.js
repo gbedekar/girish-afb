@@ -264,6 +264,7 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
             // eslint-disable-next-line no-console
             console.error('API Call Has Failed, Check that inputs are correct', err.message);
           });
+      console.log("-----data done");
     }
     else if (Object.hasOwn(window, flag) && window[flag] === true) {
       window.setTimeout(checkData, 5);
