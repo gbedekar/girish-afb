@@ -85,9 +85,7 @@ console.log(flag);
             if (cols[j] === 'url') {
               listGridColumn.innerHTML = `<a href='${data[i][cols[j]]}' target="_blank">${data[i][cols[j]].replace(/^https?:\/\/[^/]+/i, '')}</a>`;
             } else if(cols[j] === 'formsubmission'){
-              setTimeout(() => {
                 queryRequest(endpoint, getUrlBase(endpoint),'submit');
-              }, 3000);
               const { submitData } = window.dashboard[endpoint].results;
               console.log("submitData");
               console.log(submitData);
