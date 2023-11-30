@@ -213,14 +213,14 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
     params.set('checkpoint', 'viewblock');
     params.set('source', '.form');
   }
-  if(type === 'submit'){
-    params.set('checkpoint', 'formsubmit');
-  }
   // remove http or https prefix in url param if it exists
   if (params.has('url')) {
     params.set('url', params.get('url').replace(/^http(s)*:\/\//, ''));
   }
-
+  if(type === 'submit' && submitUrl !== ""){
+    params.set('checkpoint', 'formsubmit');
+    params.set('url', submitUrl.replace(/^http(s)*:\/\//, ''));
+  }
   const limit = params.get('limit') || '30';
   params.set('limit', limit);
   Object.entries(qps).forEach(([k, v]) => {
