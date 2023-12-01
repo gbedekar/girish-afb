@@ -19,3 +19,5 @@ G
 scripts/lib-franklin.js,b/1/b12b3df1742768a94adf7fcea07d2af082dac429
 A
 scripts/loader.js,0/8/081db4ba9986b576249ce84f416d538e3141ccda
+T
+$test/blocks/footer/footer.plain.html,5/3/53192adf99489a2a9986c0dafbfc502e5b22c556
