@@ -113,6 +113,7 @@ console.log(flag);
             listGridColumn.textContent = txtContent;
           }
           else {
+            console.log(window.dashboard["rum-dashboard"].results);
                if(window.dashboard["rum-dashboard"].results === undefined){
                  await queryRequest("rum-dashboard", getUrlBase("rum-dashboard"), 'cwv', `${data[i]['url']}`);
                }
