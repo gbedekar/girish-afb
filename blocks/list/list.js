@@ -45,7 +45,6 @@ console.log(flag);
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
       // query complete, hide loading graphic
       const {data} = window.dashboard[endpoint].results;
-      hideLoader(block);
 
       const listGridContainer = document.createElement('div');
       listGridContainer.classList.add('grid', 'list', 'container');
@@ -104,7 +103,7 @@ console.log(flag);
         counter = i;
       }
       block.append(listGridContainer);
-
+      hideLoader(block);
       if (counter === 0) {
         const noresults = document.createElement('p');
         const params = new URLSearchParams(window.location.search);
