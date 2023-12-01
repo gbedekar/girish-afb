@@ -256,6 +256,22 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
             console.error('API Call Has Failed, Check that inputs are correct', err.message);
           });
     }
+    else if(type === 'cwv'){
+      await fetch(`${endpointHost}${endpoint}?${params.toString()}`)
+          .then((resp) => resp.json())
+          .then((data) => {
+            window[flag] = false;
+            if (!Object.hasOwn(window, 'dashboard')) {
+              window.dashboard = {};
+            }
+            window.dashboard[endpoint] = data;
+            console.log( window.dashboard[endpoint]);
+          })
+          .catch((err) => {
+            // eslint-disable-next-line no-console
+            console.error('API Call Has Failed, Check that inputs are correct', err.message);
+          });
+    }
     else if (Object.hasOwn(window, flag) && window[flag] === true) {
       window.setTimeout(checkData, 5);
     } else if (!Object.hasOwn(window, flag)) {
