@@ -115,8 +115,11 @@ console.log(flag);
           else {
             console.log(window.dashboard["rum-dashboard"].results);
                if(window.dashboard["rum-dashboard"].results === undefined){
+                 console.log("inside rum dashboard");
                  await queryRequest("rum-dashboard", getUrlBase("rum-dashboard"), 'cwv', `${data[i]['url']}`);
                }
+            console.log("outside rum dashboard");
+            console.log(window);
             const cwvData  = window.dashboard["rum-dashboard"].results.data;
             let cwvValue = {};
             for(let k= 0; k < cwvData.length ; k += 1){
