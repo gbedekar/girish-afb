@@ -50,7 +50,7 @@ console.log(flag);
       const listGridContainer = document.createElement('div');
       listGridContainer.classList.add('grid', 'list', 'container');
 
-      const cols = ['url', 'views', 'formsubmission'];
+      const cols = ['url', 'views', 'formsubmission', 'cvv'];
       const listGridHeadingRow = document.createElement('div');
       listGridHeadingRow.classList.add('grid', 'list', 'row', 'heading');
       for (let j = 0; j < 3; j += 1) {
@@ -61,6 +61,9 @@ console.log(flag);
           listGridHeadings.textContent = 'Form Views';
         } else if (cols[j] === 'formsubmission') {
           listGridHeadings.textContent = 'Form Submission';
+        }
+        else if (cols[j] === 'cvv') {
+          listGridHeadings.textContent = 'CVV';
         }
         listGridHeadings.classList.add('grid', 'list', 'col', 'heading');
         listGridHeadingRow.appendChild(listGridHeadings);
