@@ -222,6 +222,9 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
   if(type === 'cwv' && submitUrl !== ""){
     params.set('url', submitUrl.replace(/^http(s)*:\/\//, ''));
   }
+  if(type === 'render-all'){
+    params.delete('url');
+  }
   const limit = params.get('limit') || '30';
   params.set('limit', limit);
   Object.entries(qps).forEach(([k, v]) => {
