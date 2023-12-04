@@ -276,23 +276,21 @@ export default function decorate(block) {
   // draw the form
   drawFilter(block, cfg);
     // Assuming you have an array of URLs
-    const urls = getUrls().then(urls => {
+    getUrls().then(urls => {
         console.log(urls);
-        return urls;
+        // Get the select element
+        const urlSelect = document.getElementById("url");
+
+        // Populate options based on the array
+        urls.forEach(url => {
+          const option = document.createElement("option");
+          option.value = url;
+          option.text = url;
+          urlSelect.appendChild(option);
+        })
       }).catch(error => {
         console.error("Error fetching URLs:", error);
       });
-
-    // Get the select element
-    const urlSelect = document.getElementById("url");
-
-    // Populate options based on the array
-    urls.forEach(url => {
-      const option = document.createElement("option");
-      option.value = url;
-      option.text = url;
-      urlSelect.appendChild(option);
-    })
 
   // add event listeners
   // interval buttons
