@@ -389,8 +389,8 @@ const getUrls = async ()=> {
       data = window.dashboard["rum-checkpoint-urls" + "-all"].results.data || [];
       for (let i = 0; i < data.length; i += 1) {
         console.log(data[i]);
-        console.log(data[i]['url'].replace(/^http(s)*:\/\//, ''));
-        urls.push(data[i]['url'].replace(/^http(s)*:\/\//, ''));
+        console.log(data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]);
+        urls.push(data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]);
       }
 
       // Update qps for the next iteration
