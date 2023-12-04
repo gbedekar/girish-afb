@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import Formula from './parser/Formula.js';
+import Formula from './formula/index.js';
 import transformRule from './RuleCompiler.js';
 import formatFns from '../formatting.js';
 

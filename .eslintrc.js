@@ -10,6 +10,7 @@ module.exports = {
     sourceType: 'module',
     requireConfigFile: false,
   },
+  ignorePatterns: ['blocks/form/formula/index.js'],
   rules: {
     // allow reassigning param
     'no-param-reassign': [2, { props: false }],
