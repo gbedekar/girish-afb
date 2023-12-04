@@ -66,11 +66,9 @@ console.log(flag);
         // Add promises to the array
         promises.push(submitPromise, cwvPromise);
       }
-
-// Use Promise.all to resolve all promises
-      Promise.all(promises)
-          .then(results => {
-
+      const response = await Promise.all(promises);
+      console.log("response");
+      console.log(response);
       const listGridHeadingRow = document.createElement('div');
       listGridHeadingRow.classList.add('grid', 'list', 'row', 'heading');
       for (let j = 0; j < 8; j += 1) {
@@ -129,6 +127,7 @@ console.log(flag);
             console.log(window.dashboard["rum-dashboard"].results);
                if(window.dashboard["rum-dashboard"+"-"+`${data[i]['url']}`].results === undefined){
                  console.log("inside rum dashboard");
+                 await queryRequest("rum-dashboard", getUrlBase("rum-dashboard"), 'cwv', `${data[i]['url']}`);
                }
             console.log("outside rum dashboard");
             console.log(window);
@@ -250,13 +249,6 @@ console.log(flag);
         }
         block.append(noresults);
       }
-            // Handle results if needed
-            console.log("All promises resolved successfully:", results);
-          })
-          .catch(error => {
-            // Handle errors if any of the promises are rejected
-            console.error("Error in one or more promises:", error);
-          });
     }
   };
 
