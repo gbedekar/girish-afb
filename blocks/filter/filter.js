@@ -1,5 +1,5 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
-import {getUrlBase, queryRequest} from '../../scripts/scripts';
+import {getUrlBase, queryRequest} from '../../scripts/scripts.js';
 
 
 // TODO replace getElementById with querySelector
