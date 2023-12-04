@@ -121,6 +121,8 @@ console.log(flag);
             console.log("outside rum dashboard");
             console.log(window);
             const cwvData  = window.dashboard["rum-dashboard"].results.data;
+            console.log("cwvData");
+            console.log(cwvData);
             let cwvValue = {};
             for(let k= 0; k < cwvData.length ; k += 1){
               if(cwvData[k]['url'] === `${data[i]['url']}`){
@@ -128,6 +130,7 @@ console.log(flag);
                 break;
               }
             }
+            console.log(cwvValue);
             const {
               lcpgood, lcpbad, clsgood, clsbad, fidgood, fidbad, inpgood, inpbad,
             } = cwvValue;
