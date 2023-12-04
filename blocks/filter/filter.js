@@ -368,23 +368,23 @@ const getUrls = ()=> {
   const urls = [];
   let data;
   const qps = {'offset': 0, 'limit': 500};
-  do {
-    queryRequest("rum-checkpoint-urls", getUrlBase("rum-checkpoint-urls"), 'render-all', '', qps)
-        .then(() => {
-          data = window.dashboard[endpoint + "-all"].result || [];
-          for (let i = 0; i < data.length; i += 1) {
-            console.log(data[i]);
-            console.log(data[i]['url'].replace(/^http(s)*:\/\//, ''));
-            urls.push(data[i]['url'].replace(/^http(s)*:\/\//, ''))
-          }
-          qps.offset = qps.offset + qps.limit;
-          qps.limit = qps.limit * 2;
-        })
-        .catch(error => {
-          // Handle errors if necessary
-          console.error("Error fetching data:", error);
-        });
-  } while (window.dashboard[endpoint + "-all"].result);
+  // do {
+  //   queryRequest("rum-checkpoint-urls", getUrlBase("rum-checkpoint-urls"), 'render-all', '', qps)
+  //       .then(() => {
+  //         data = window.dashboard[endpoint + "-all"].result || [];
+  //         for (let i = 0; i < data.length; i += 1) {
+  //           console.log(data[i]);
+  //           console.log(data[i]['url'].replace(/^http(s)*:\/\//, ''));
+  //           urls.push(data[i]['url'].replace(/^http(s)*:\/\//, ''))
+  //         }
+  //         qps.offset = qps.offset + qps.limit;
+  //         qps.limit = qps.limit * 2;
+  //       })
+  //       .catch(error => {
+  //         // Handle errors if necessary
+  //         console.error("Error fetching data:", error);
+  //       });
+  // } while (window.dashboard[endpoint + "-all"].result);
 
   return urls;
 }
