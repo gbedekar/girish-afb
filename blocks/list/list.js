@@ -145,6 +145,8 @@ console.log(flag);
             if ((lcpgood + lcpbad + clsgood + clsbad + fidgood + fidbad + inpgood + inpbad) === 0) {
               noresult = true;
             }
+            console.log("inpOkay");
+            console.log(inpOkay);
             const avgOkay = Math.round((lcpOkay + clsOkay + fidOkay + inpOkay) / 4);
             const avgGood = Math.round((lcpgood + clsgood + fidgood + inpgood) / 4);
             const avgBad = Math.round((lcpbad + clsbad + fidbad + inpbad) / 4);
@@ -189,6 +191,9 @@ console.log(flag);
               } else {
                 txtContent = cwvValue[cols[j]];
               }
+              console.log(cols[j]);
+              console.log(cwvValue[cols[j]]);
+              console.log("test-01");
               if (j >= 3) {
                 if (data[i][cols[j]] && data[i][cols[j]] <= ranges[cols[j]][0]) {
                   listGridColumn.classList.toggle('pass');
