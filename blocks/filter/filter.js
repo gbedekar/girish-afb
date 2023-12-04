@@ -286,6 +286,7 @@ export default function decorate(block) {
           const option = document.createElement("option");
           option.value = url;
           option.text = url;
+          option.className="noedit"
           urlSelect.appendChild(option);
         })
       }).catch(error => {
