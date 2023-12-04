@@ -370,13 +370,15 @@ const getUrls = ()=> {
   if  (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === true) {
     window.setTimeout(getUrls, 1000);
   }
+  console.log("window");
+  console.log(window);
   const urls = [];
   let data;
   const qps = {'offset': 0, 'limit': 500};
   do {
     queryRequest("rum-checkpoint-urls", getUrlBase("rum-checkpoint-urls"), 'render-all', '', qps)
         .then(() => {
-          data = window.dashboard[endpoint + "-all"].result || [];
+          data = window.dashboard["rum-checkpoint-urls" + "-all"].result || [];
           for (let i = 0; i < data.length; i += 1) {
             console.log(data[i]);
             console.log(data[i]['url'].replace(/^http(s)*:\/\//, ''));
@@ -389,7 +391,7 @@ const getUrls = ()=> {
           // Handle errors if necessary
           console.error("Error fetching data:", error);
         });
-  } while (window.dashboard[endpoint + "-all"].result);
+  } while (window.dashboard["rum-checkpoint-urls" + "-all"].result);
 
   return urls;
 }
