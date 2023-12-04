@@ -219,6 +219,9 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
     params.set('checkpoint', 'formsubmit');
     params.set('url', submitUrl.replace(/^http(s)*:\/\//, ''));
   }
+  if(type === 'cwv' && submitUrl !== ""){
+    params.set('url', submitUrl.replace(/^http(s)*:\/\//, ''));
+  }
   const limit = params.get('limit') || '30';
   params.set('limit', limit);
   Object.entries(qps).forEach(([k, v]) => {
