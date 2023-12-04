@@ -258,6 +258,7 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
     }
     else if(type === 'cwv'){
       console.log("cwv");
+      console.log(endpoint);
       await fetch(`${endpointHost}${endpoint}?${params.toString()}`)
           .then((resp) => resp.json())
           .then((data) => {
@@ -272,6 +273,7 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
             // eslint-disable-next-line no-console
             console.error('API Call Has Failed, Check that inputs are correct', err.message);
           });
+      console.log("done");
     }
     else if (Object.hasOwn(window, flag) && window[flag] === true) {
       window.setTimeout(checkData, 5);
