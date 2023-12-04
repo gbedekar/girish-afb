@@ -57,7 +57,7 @@ console.log(flag);
         avginp: [200, 500],
         avgcls: [0.1, 0.25],
       };
-      await processRequests(data);
+      processRequests(data);
       const listGridHeadingRow = document.createElement('div');
       listGridHeadingRow.classList.add('grid', 'list', 'row', 'heading');
       for (let j = 0; j < 8; j += 1) {
