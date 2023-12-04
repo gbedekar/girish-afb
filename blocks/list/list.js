@@ -194,7 +194,7 @@ console.log(flag);
               console.log(cols[j]);
               console.log(cwvValue[cols[j]]);
               console.log("test-01");
-              if (j >= 3) {
+              if (j >= 4) {
                 if (data[i][cols[j]] && data[i][cols[j]] <= ranges[cols[j]][0]) {
                   listGridColumn.classList.toggle('pass');
                 } else if (
@@ -208,14 +208,14 @@ console.log(flag);
                 }
               }
               if (txtContent) {
-                if (j >= 3) {
+                if (j >= 4) {
                   const numb = parseFloat(txtContent).toFixed(2).toLocaleString('en-US');
                   const displayedNumb = numb.endsWith('.00') ? numb.replace('.00', '') : numb;
-                  listGridColumn.textContent = `${displayedNumb}${metrics[j - 3]}`;
+                  listGridColumn.textContent = `${displayedNumb}${metrics[j - 4]}`;
                 } else {
                   listGridColumn.textContent = txtContent;
                 }
-              } else if (j >= 3) {
+              } else if (j >= 4) {
                 listGridColumn.textContent = 'n/a';
               }
             }
