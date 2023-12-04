@@ -378,7 +378,7 @@ const getUrls = ()=> {
   do {
     queryRequest("rum-checkpoint-urls", getUrlBase("rum-checkpoint-urls"), 'render-all', '', qps)
         .then(() => {
-          data = window.dashboard["rum-checkpoint-urls" + "-all"].result || [];
+          data = window.dashboard["rum-checkpoint-urls" + "-all"].results || [];
           for (let i = 0; i < data.length; i += 1) {
             console.log(data[i]);
             console.log(data[i]['url'].replace(/^http(s)*:\/\//, ''));
@@ -391,7 +391,7 @@ const getUrls = ()=> {
           // Handle errors if necessary
           console.error("Error fetching data:", error);
         });
-  } while (window.dashboard["rum-checkpoint-urls" + "-all"].result);
+  } while (window.dashboard["rum-checkpoint-urls" + "-all"].results);
 
   return urls;
 }
