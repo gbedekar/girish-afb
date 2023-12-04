@@ -390,7 +390,7 @@ const getUrls = async ()=> {
       for (let i = 0; i < data.length; i += 1) {
         console.log(data[i]);
         console.log(data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]);
-        urls.push(data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]);
+        urls.add(data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]);
       }
 
       // Update qps for the next iteration
