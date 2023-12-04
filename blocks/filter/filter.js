@@ -208,7 +208,10 @@ function drawFilter(block, cfg) {
       <div id=customurl class="customurl ${securl}">
         <div>
           <label for=url>URL</label>
-          <input id=url name=url class=noedit value="${url}">
+          <!-- <input id=url name=url class=noedit value="${url}"> -->
+          <select id="url" name="url" class="noedit">
+        <!-- JavaScript will populate options here -->
+         </select>
         </div>
         <div id=urlfilter class=" hide">
           <button id=btnurl>Go</button>
@@ -270,6 +273,19 @@ export default function decorate(block) {
 
   // draw the form
   drawFilter(block, cfg);
+    // Assuming you have an array of URLs
+    const urls = ["url1", "url2", "url3"];
+
+    // Get the select element
+    const urlSelect = document.getElementById("url");
+
+    // Populate options based on the array
+    urls.forEach(url => {
+    const option = document.createElement("option");
+    option.value = url;
+    option.text = url;
+    urlSelect.appendChild(option);
+  })
 
   // add event listeners
   // interval buttons
