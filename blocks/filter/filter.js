@@ -376,7 +376,7 @@ const getUrls = async ()=> {
 
   console.log("window");
   console.log(window);
-  const urls = [];
+  const urls = new Set();
   let data;
   const qps = {'offset': 0, 'limit': 500};
   do {
