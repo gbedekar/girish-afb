@@ -367,6 +367,9 @@ export default function decorate(block) {
 
 const getUrls = ()=> {
   getQuery();
+  if (!Object.hasOwn(window, 'gettingQueryInfo')) {
+    window.setTimeout(getUrls, 1000);
+  }
   const urls = [];
   let data;
   const qps = {'offset': 0, 'limit': 500};
