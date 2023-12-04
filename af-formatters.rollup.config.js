@@ -3,14 +3,16 @@ import license from 'rollup-plugin-license';
 import path from 'path';
 import { terser } from 'rollup-plugin-terser';
 
-const directory = 'node_modules/@adobe/json-formula';
+const directory = 'node_modules/@aemforms/af-formatters';
 
 export default {
   input: {
-    'json-formula': path.join(directory, 'src/json-formula.js'),
+    'afb-formatters': path.join(directory, 'lib/esm/index.js'),
   },
   plugins: [
-    cleanup(),
+    cleanup({
+      comments: 'none',
+    }),
     license({
       banner: {
         content: {
@@ -21,14 +23,14 @@ export default {
     }),
   ],
   output: [{
-    dir: 'blocks/aemform/rules/formula',
+    dir: 'blocks/aemform/rules/model',
     format: 'es',
-    entryFileNames: 'index.js',
+    entryFileNames: 'afb-formatters.js',
   },
   {
-    dir: 'blocks/aemform/rules/formula',
+    dir: 'blocks/aemform/rules/model',
     format: 'es',
-    entryFileNames: 'index.min.js',
+    entryFileNames: 'afb-formatters.min.js',
     plugins: [terser()],
   }],
 };

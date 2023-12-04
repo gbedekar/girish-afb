@@ -1,8 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import Formula from './formula/index.js';
-import { constructFormRuleNode, executeEvent, updateValue } from './State.js';
-import { getItems } from '../util.js';
-import functions from './functions.js';
+import { createFormInstance } from './model/afb-runtime.js';
 
 function stripTags(input, allowd) {
   const allowed = ((`${allowd || ''}`)
@@ -22,27 +19,12 @@ export function sanitizeHTML(input) {
 export default class RuleEngine {
   rulesOrder = {};
 
-  constructor(formDef, formTag) {
-    this.formTag = formTag;
-    this.state = constructFormRuleNode(formDef, this);
-    this.formula = new Formula(functions);
-    const items = getItems(this.state.form);
-    items.forEach((item) => {
-      executeEvent(item.id, {
-        name: 'change',
-        payload: {
-          changes: [],
-        },
-      }, this);
-      executeEvent(item.id, {
-        name: 'initialize',
-        payload: {},
-      }, this);
-    });
+  constructor(formDef) {
+    this.form = createFormInstance(formDef);
   }
 
   getState() {
-    return this.state.form;
+    return this.form.getState();
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -50,6 +32,7 @@ export default class RuleEngine {
 }
 
 let ruleEngine;
+let field;
 onmessage = (e) => {
   switch (e.data.name) {
     case 'init':
@@ -65,7 +48,12 @@ onmessage = (e) => {
       };
       break;
     case 'change':
-      updateValue(e.data.payload, ruleEngine);
+      field = ruleEngine.form.getElement(e.data.payload.id);
+      if (field.fieldType === 'checkbox') {
+        field.value = e.data.payload.checked ? field.enum[0] : field.enum[1];
+      } else {
+        field.value = e.data.payload.value;
+      }
       break;
     default:
       break;

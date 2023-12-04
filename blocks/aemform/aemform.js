@@ -1,4 +1,4 @@
-import testFormDefinition from '../../forms/crispr/test200.form.js';
+import testFormDefinition from '../../forms/crispr/test200a.form.js';
 import { enableRuleEngine } from './rules/index.js';
 import {
   createButton, createFieldWrapper, createLabel, getItems,
@@ -32,6 +32,11 @@ export const getId = (function getId() {
 //   console.log(entries.length);
 //   test(i, entries);
 // }
+
+// const items = getItems(testFormDefinition);
+// testFormDefinition.items = items;
+// testFormDefinition[':items'] = undefined;
+// testFormDefinition[':itemsOrder'] = undefined;
 
 // console.log(JSON.stringify(testFormDefinition, null, 2));
 
@@ -294,7 +299,7 @@ function renderField(fd) {
 
 function createForm(formDef) {
   const form = document.createElement('form');
-  const fields = getItems(formDef);
+  const fields = formDef.items;// getItems(formDef);
   insertItems(fields, form);
   form.dataset.submit = formDef.action;
   return form;
