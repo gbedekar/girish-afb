@@ -1,5 +1,6 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
-import {getUrlBase, queryRequest} from '../../scripts/scripts.js';
+import {getQueryInfo, getUrlBase, queryRequest} from '../../scripts/scripts.js';
+import {drawLoader} from "../../scripts/loader";
 
 
 // TODO replace getElementById with querySelector
@@ -366,6 +367,7 @@ export default function decorate(block) {
 }
 
 const getUrls = ()=> {
+  getQuery();
   const urls = [];
   let data;
   const qps = {'offset': 0, 'limit': 500};
@@ -389,3 +391,12 @@ const getUrls = ()=> {
 
   return urls;
 }
+const getQuery = () => {
+  if (!Object.hasOwn(window, 'gettingQueryInfo')) {
+    console.log("test111");
+    getQueryInfo();
+  }
+  if (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === true) {
+    window.setTimeout(getQuery, 1);
+  }
+};
