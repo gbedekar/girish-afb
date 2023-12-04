@@ -251,7 +251,7 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
             if (!Object.hasOwn(window, 'dashboard')) {
               window.dashboard = {};
             }
-            window.dashboard[endpoint] = data;
+            window.dashboard[endpoint+"-"+submitUrl] = data;
             console.log( window.dashboard[endpoint]);
           })
           .catch((err) => {
@@ -270,7 +270,7 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
             if (!Object.hasOwn(window, 'dashboard')) {
               window.dashboard = {};
             }
-            window.dashboard[endpoint] = data;
+            window.dashboard[endpoint+"-"+submitUrl] = data;
             console.log( window.dashboard[endpoint]);
           })
           .catch((err) => {

@@ -57,6 +57,26 @@ console.log(flag);
         avginp: [200, 500],
         avgcls: [0.1, 0.25],
       };
+      const promises = [];
+
+      for (let i = 0; i < data.length; i += 1) {
+        const submitPromise = queryRequest(endpoint, getUrlBase(endpoint), 'submit', `${data[i]['url']}`);
+        const cwvPromise = queryRequest("rum-dashboard", getUrlBase("rum-dashboard"), 'cwv', `${data[i]['url']}`);
+
+        // Add promises to the array
+        promises.push(submitPromise, cwvPromise);
+      }
+
+// Use Promise.all to resolve all promises
+      Promise.all(promises)
+          .then(results => {
+            // Handle results if needed
+            console.log("All promises resolved successfully:", results);
+          })
+          .catch(error => {
+            // Handle errors if any of the promises are rejected
+            console.error("Error in one or more promises:", error);
+          });
       const listGridHeadingRow = document.createElement('div');
       listGridHeadingRow.classList.add('grid', 'list', 'row', 'heading');
       for (let j = 0; j < 8; j += 1) {
@@ -99,8 +119,7 @@ console.log(flag);
           if (cols[j] === 'url') {
             listGridColumn.innerHTML = `<a href='${data[i][cols[j]]}' target="_blank">${data[i][cols[j]].replace(/^https?:\/\/[^/]+/i, '')}</a>`;
           } else if (cols[j] === 'formsubmission') {
-            await queryRequest(endpoint, getUrlBase(endpoint), 'submit', `${data[i]['url']}`);
-            const submitData  = window.dashboard[endpoint].results.data;
+            const submitData  = window.dashboard[endpoint+"-"+`${data[i]['url']}`].results.data;
             for(let k= 0; k < submitData.length ; k += 1){
                 if(submitData[k]['url'] === `${data[i]['url']}`){
                   txtContent = submitData[k]['actions'];
@@ -114,7 +133,7 @@ console.log(flag);
           }
           else {
             console.log(window.dashboard["rum-dashboard"].results);
-               if(window.dashboard["rum-dashboard"].results === undefined){
+               if(window.dashboard["rum-dashboard"+"-"+`${data[i]['url']}`].results === undefined){
                  console.log("inside rum dashboard");
                  await queryRequest("rum-dashboard", getUrlBase("rum-dashboard"), 'cwv', `${data[i]['url']}`);
                }
