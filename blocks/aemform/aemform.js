@@ -1,7 +1,38 @@
-import testFormDefinition from '../../forms/crispr/test1.form.js';
+import testFormDefinition from '../../forms/crispr/test200.form.js';
 import {
   createButton, createFieldWrapper, createLabel, getItems,
 } from './util.js';
+
+export const getId = (function getId() {
+  const ids = {};
+  return (name) => {
+    ids[name] = ids[name] || 0;
+    const idSuffix = ids[name] ? `-${ids[name]}` : '';
+    ids[name] += 1;
+    return `${name}${idSuffix}`;
+  };
+}());
+
+// function test(num, entries) {
+//   entries.forEach(([key, value]) => {
+//     const val1 = {
+//       ...value,
+//       name: `${key}${num}`,
+//       // eslint-disable-next-line no-use-before-define
+//       id: getId(`${key}${num}`),
+//     };
+//     testFormDefinition[':items'][`${key}${num}`] = val1;
+//     testFormDefinition[':itemsOrder'].push(`${key}${num}`);
+//   });
+// }
+
+// const entries = Object.entries(testFormDefinition[':items']);
+// for (let i = 1; i < 50; i += 1) {
+//   console.log(entries.length);
+//   test(i, entries);
+// }
+
+// console.log(JSON.stringify(testFormDefinition, null, 2));
 
 function generateUnique() {
   return new Date().valueOf() + Math.random();
@@ -231,16 +262,6 @@ function createPlainText(fd) {
   wrapper.replaceChildren(paragraph);
   return wrapper;
 }
-
-export const getId = (function getId() {
-  const ids = {};
-  return (name) => {
-    ids[name] = ids[name] || 0;
-    const idSuffix = ids[name] ? `-${ids[name]}` : '';
-    ids[name] += 1;
-    return `${name}${idSuffix}`;
-  };
-}());
 
 const fieldRenderers = {
   radio: createRadio,
