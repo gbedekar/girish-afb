@@ -55,7 +55,7 @@ div.grid.list.col {
     align-items: center;
 }
 
-div.grid.list.col:not(.url, .usrexp, .heading, .avgcls, .avginp, .avglcp, .avgfid) {
+div.grid.list.col:not(.url,.formsubmission, .views, .usrexp, .heading, .avgcls, .avginp, .avglcp, .avgfid) {
     background-color: var(--highlight-background-color);
 }
 
