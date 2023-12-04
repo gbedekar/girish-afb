@@ -276,7 +276,12 @@ export default function decorate(block) {
   // draw the form
   drawFilter(block, cfg);
     // Assuming you have an array of URLs
-    const urls = getUrls();
+    const urls = getUrls().then(urls => {
+        console.log(urls);
+        return urls;
+      }).catch(error => {
+        console.error("Error fetching URLs:", error);
+      });
 
     // Get the select element
     const urlSelect = document.getElementById("url");
@@ -365,7 +370,7 @@ export default function decorate(block) {
   });
 }
 
-const getUrls = ()=> {
+const getUrls = async ()=> {
   getQuery();
   if  (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === true) {
     window.setTimeout(getUrls, 1000);
@@ -376,22 +381,26 @@ const getUrls = ()=> {
   let data;
   const qps = {'offset': 0, 'limit': 500};
   do {
-    queryRequest("rum-checkpoint-urls", getUrlBase("rum-checkpoint-urls"), 'render-all', '', qps)
-        .then(() => {
-          data = window.dashboard["rum-checkpoint-urls" + "-all"].results || [];
-          for (let i = 0; i < data.length; i += 1) {
-            console.log(data[i]);
-            console.log(data[i]['url'].replace(/^http(s)*:\/\//, ''));
-            urls.push(data[i]['url'].replace(/^http(s)*:\/\//, ''))
-          }
-          qps.offset = qps.offset + qps.limit;
-          qps.limit = qps.limit * 2;
-        })
-        .catch(error => {
-          // Handle errors if necessary
-          console.error("Error fetching data:", error);
-        });
-  } while (window.dashboard["rum-checkpoint-urls" + "-all"].results);
+    try {
+      // Make the queryRequest
+      await queryRequest("rum-checkpoint-urls", getUrlBase("rum-checkpoint-urls"), 'render-all', '', qps);
+
+      // Process the data
+      data = window.dashboard["rum-checkpoint-urls" + "-all"].results || [];
+      for (let i = 0; i < data.length; i += 1) {
+        console.log(data[i]);
+        console.log(data[i]['url'].replace(/^http(s)*:\/\//, ''));
+        urls.push(data[i]['url'].replace(/^http(s)*:\/\//, ''));
+      }
+
+      // Update qps for the next iteration
+      qps.offset = qps.offset + qps.limit;
+      qps.limit = qps.limit * 2;
+    } catch (error) {
+      // Handle errors if necessary
+      console.error("Error fetching data:", error);
+    }
+  } while (data && data.length > 0);
 
   return urls;
 }
