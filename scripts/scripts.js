@@ -257,6 +257,7 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
           });
     }
     else if(type === 'cwv'){
+      console.log("cwv");
       await fetch(`${endpointHost}${endpoint}?${params.toString()}`)
           .then((resp) => resp.json())
           .then((data) => {
