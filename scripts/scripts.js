@@ -224,6 +224,7 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
   }
   if(type === 'render-all'){
     params.delete('url');
+    params.set('source', '.form');
   }
   const limit = params.get('limit') || '30';
   params.set('limit', limit);

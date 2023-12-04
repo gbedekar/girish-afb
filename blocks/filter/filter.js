@@ -371,10 +371,11 @@ export default function decorate(block) {
 }
 
 const getUrls = async ()=> {
-
-  do{
+  do {
     getQuery();
+    await delay(1000);
   } while(!(Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === false));
+
   console.log("window");
   console.log(window);
   const urls = [];
@@ -404,6 +405,10 @@ const getUrls = async ()=> {
   } while (data && data.length > 0);
 
   return urls;
+}
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 const getQuery = () => {
   if (!Object.hasOwn(window, 'gettingQueryInfo')) {
