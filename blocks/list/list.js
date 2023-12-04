@@ -57,26 +57,7 @@ console.log(flag);
         avginp: [200, 500],
         avgcls: [0.1, 0.25],
       };
-      const promises = [];
-
-      for (let i = 0; i < data.length; i += 1) {
-        const submitPromise = queryRequest(endpoint, getUrlBase(endpoint), 'submit', `${data[i]['url']}`);
-        const cwvPromise = queryRequest("rum-dashboard", getUrlBase("rum-dashboard"), 'cwv', `${data[i]['url']}`);
-
-        // Add promises to the array
-        promises.push(submitPromise, cwvPromise);
-      }
-
-// Use Promise.all to resolve all promises
-      await Promise.all(promises)
-          .then(results => {
-            // Handle results if needed
-            console.log("All promises resolved successfully:", results);
-          })
-          .catch(error => {
-            // Handle errors if any of the promises are rejected
-            console.error("Error in one or more promises:", error);
-          });
+      await processRequests(data);
       const listGridHeadingRow = document.createElement('div');
       listGridHeadingRow.classList.add('grid', 'list', 'row', 'heading');
       for (let j = 0; j < 8; j += 1) {
@@ -259,6 +240,33 @@ console.log(flag);
       }
     }
   };
+
+  async function processRequests(data) {
+    const promises = [];
+
+    for (let i = 0; i < data.length; i += 1) {
+      const submitPromise = queryRequest(endpoint, getUrlBase(endpoint), 'submit', `${data[i]['url']}`);
+      const cwvPromise = queryRequest("rum-dashboard", getUrlBase("rum-dashboard"), 'cwv', `${data[i]['url']}`);
+
+      // Add promises to the array
+      promises.push(submitPromise, cwvPromise);
+    }
+
+    try {
+      // Use await to wait for all promises to resolve
+      const results = await Promise.all(promises);
+
+      // Handle results if needed
+      console.log("All promises resolved successfully:", results);
+
+      // Continue with the rest of the synchronous code
+      console.log("testing");
+    } catch (error) {
+      // Handle errors if any of the promises are rejected
+      console.error("Error in one or more promises:", error);
+    }
+  }
+
   getQuery();
   makeList();
 }
