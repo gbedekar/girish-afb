@@ -386,7 +386,8 @@ const getUrls = async ()=> {
       await queryRequest("rum-checkpoint-urls", getUrlBase("rum-checkpoint-urls"), 'render-all', '', qps);
 
       // Process the data
-      data = window.dashboard["rum-checkpoint-urls" + "-all"].results || [];
+      // Process the data
+      data = window.dashboard["rum-checkpoint-urls" + "-all"].results.data || [];
       for (let i = 0; i < data.length; i += 1) {
         console.log(data[i]);
         console.log(data[i]['url'].replace(/^http(s)*:\/\//, ''));
