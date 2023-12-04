@@ -284,12 +284,10 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
       console.log("done");
     }
     else if(type === 'render-all'){
-      console.log("cwv");
       console.log(endpoint);
       await fetch(`${endpointHost}${endpoint}?${params.toString()}`)
           .then((resp) => resp.json())
           .then((data) => {
-            window[flag] = false;
             if (!Object.hasOwn(window, 'dashboard')) {
               window.dashboard = {};
             }
