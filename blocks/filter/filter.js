@@ -289,6 +289,16 @@ export default function decorate(block) {
           option.className="noedit"
           urlSelect.appendChild(option);
         })
+      const storedSelectedValue = localStorage.getItem('selectedValue');
+
+      // Set the selected value if it exists
+      if (storedSelectedValue) {
+        urlSelect.value = storedSelectedValue;
+      }
+      urlSelect.addEventListener('change', function () {
+        // Save the selected value to localStorage
+        localStorage.setItem('selectedValue', this.value);
+      });
       }).catch(error => {
         console.error("Error fetching URLs:", error);
       });
