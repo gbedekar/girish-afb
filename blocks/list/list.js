@@ -68,7 +68,7 @@ console.log(flag);
       }
 
 // Use Promise.all to resolve all promises
-      Promise.all(promises)
+      await Promise.all(promises)
           .then(results => {
             // Handle results if needed
             console.log("All promises resolved successfully:", results);
