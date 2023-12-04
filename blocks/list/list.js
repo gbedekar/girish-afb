@@ -129,7 +129,6 @@ console.log(flag);
             console.log(window.dashboard["rum-dashboard"].results);
                if(window.dashboard["rum-dashboard"+"-"+`${data[i]['url']}`].results === undefined){
                  console.log("inside rum dashboard");
-                 await queryRequest("rum-dashboard", getUrlBase("rum-dashboard"), 'cwv', `${data[i]['url']}`);
                }
             console.log("outside rum dashboard");
             console.log(window);
