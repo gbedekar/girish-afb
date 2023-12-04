@@ -1,4 +1,5 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
+import {getUrlBase, queryRequest} from "../../scripts/scripts";
 
 // TODO replace getElementById with querySelector
 
@@ -274,18 +275,18 @@ export default function decorate(block) {
   // draw the form
   drawFilter(block, cfg);
     // Assuming you have an array of URLs
-    const urls = ["url1", "url2", "url3"];
+    const urls = getUrls();
 
     // Get the select element
     const urlSelect = document.getElementById("url");
 
     // Populate options based on the array
     urls.forEach(url => {
-    const option = document.createElement("option");
-    option.value = url;
-    option.text = url;
-    urlSelect.appendChild(option);
-  })
+      const option = document.createElement("option");
+      option.value = url;
+      option.text = url;
+      urlSelect.appendChild(option);
+    })
 
   // add event listeners
   // interval buttons
@@ -361,4 +362,29 @@ export default function decorate(block) {
   block.querySelector('#enddate').addEventListener('blur', () => {
     focus('enddate', false);
   });
+}
+
+const getUrls = ()=> {
+  const urls = [];
+  let data;
+  const qps = {'offset': 0, 'limit': 500};
+  do {
+    queryRequest("rum-checkpoint-urls", getUrlBase("rum-checkpoint-urls"), 'render-all', '', qps)
+        .then(() => {
+          data = window.dashboard[endpoint + "-all"].result || [];
+          for (let i = 0; i < data.length; i += 1) {
+            console.log(data[i]);
+            console.log(data[i]['url'].replace(/^http(s)*:\/\//, ''));
+            urls.push(data[i]['url'].replace(/^http(s)*:\/\//, ''))
+          }
+          qps.offset = qps.offset + qps.limit;
+          qps.limit = qps.limit * 2;
+        })
+        .catch(error => {
+          // Handle errors if necessary
+          console.error("Error fetching data:", error);
+        });
+  } while (window.dashboard[endpoint + "-all"].result);
+
+  return urls;
 }

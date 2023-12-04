@@ -212,7 +212,7 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
     params.set('source', '.form');
   }
   // remove http or https prefix in url param if it exists
-  if (params.has('url')) {
+  if (params.has('url') && params.get('url') !== '') {
     params.set('url', params.get('url').replace(/^http(s)*:\/\//, ''));
   }
   if(type === 'submit' && submitUrl !== ""){
@@ -272,6 +272,25 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
             }
             window.dashboard[endpoint+"-"+submitUrl] = data;
             console.log( window.dashboard[endpoint]);
+          })
+          .catch((err) => {
+            // eslint-disable-next-line no-console
+            console.error('API Call Has Failed, Check that inputs are correct', err.message);
+          });
+      console.log("done");
+    }
+    else if(type === 'render-all'){
+      console.log("cwv");
+      console.log(endpoint);
+      await fetch(`${endpointHost}${endpoint}?${params.toString()}`)
+          .then((resp) => resp.json())
+          .then((data) => {
+            window[flag] = false;
+            if (!Object.hasOwn(window, 'dashboard')) {
+              window.dashboard = {};
+            }
+            window.dashboard[endpoint+"-all"] = data;
+            console.log( window.dashboard[endpoint+"-all"]);
           })
           .catch((err) => {
             // eslint-disable-next-line no-console
