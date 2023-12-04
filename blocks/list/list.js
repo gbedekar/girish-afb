@@ -119,6 +119,9 @@ console.log(flag);
                   break;
                 }
             }
+            if(listGridColumn.textContent === '' || listGridColumn.textContent === undefined){
+              listGridColumn.textContent = '0';
+            }
           } else if(cols[j] === 'views') {
             txtContent = data[i][cols[j]];
             listGridColumn.textContent = txtContent;
