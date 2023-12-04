@@ -124,14 +124,14 @@ console.log(flag);
             listGridColumn.textContent = txtContent;
           }
           else {
-            console.log(window.dashboard["rum-dashboard"].results);
+            console.log(window.dashboard["rum-dashboard"+"-"+`${data[i]['url']}`].results);
                if(window.dashboard["rum-dashboard"+"-"+`${data[i]['url']}`].results === undefined){
                  console.log("inside rum dashboard");
                  await queryRequest("rum-dashboard", getUrlBase("rum-dashboard"), 'cwv', `${data[i]['url']}`);
                }
             console.log("outside rum dashboard");
             console.log(window);
-            const cwvData  = window.dashboard["rum-dashboard"].results.data;
+            const cwvData  = window.dashboard["rum-dashboard"+"-"+`${data[i]['url']}`].results.data;
             console.log("cwvData");
             console.log(cwvData);
             let cwvValue = {};
