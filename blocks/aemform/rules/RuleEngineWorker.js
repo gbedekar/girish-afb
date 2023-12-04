@@ -2,6 +2,7 @@
 import Formula from './formula/index.js';
 import { constructFormRuleNode, executeEvent, updateValue } from './State.js';
 import { getItems } from '../util.js';
+import functions from './functions.js';
 
 function stripTags(input, allowd) {
   const allowed = ((`${allowd || ''}`)
@@ -24,10 +25,19 @@ export default class RuleEngine {
   constructor(formDef, formTag) {
     this.formTag = formTag;
     this.state = constructFormRuleNode(formDef, this);
-    this.formula = new Formula();
+    this.formula = new Formula(functions);
     const items = getItems(this.state.form);
     items.forEach((item) => {
-      executeEvent(this.state, item.id, 'change', this);
+      executeEvent(item.id, {
+        name: 'change',
+        payload: {
+          changes: [],
+        },
+      }, this);
+      executeEvent(item.id, {
+        name: 'initialize',
+        payload: {},
+      }, this);
     });
   }
 
@@ -35,33 +45,27 @@ export default class RuleEngine {
     return this.state.form;
   }
 
-  // enable() {
-  //   this.formTag.addEventListener('input', (e) => {
-  //     const field = e.target;
-  //     const { id } = field;
-  //     updateValue(this.state, id, field, this.formula);
-  //   });
-  // }
+  // eslint-disable-next-line class-methods-use-this
+  dispatch() { }
 }
 
-export async function applyRuleEngine(formDef) {
-  try {
-    const ruleEngine = new RuleEngine(formDef);
-    ruleEngine.enable();
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log('unable to apply rules ', e);
-  }
-}
-
+let ruleEngine;
 onmessage = (e) => {
-  console.log('Message received from main script');
-  let ruleEngine;
-  switch (e.data.event) {
+  switch (e.data.name) {
     case 'init':
       ruleEngine = new RuleEngine(e.data.payload);
+      // eslint-disable-next-line no-case-declarations
       const state = ruleEngine.getState();
-      postMessage(state);
+      postMessage({
+        name: 'init',
+        payload: state,
+      });
+      ruleEngine.dispatch = (e) => {
+        postMessage(e);
+      };
+      break;
+    case 'change':
+      updateValue(e.data.payload, ruleEngine);
       break;
     default:
       break;

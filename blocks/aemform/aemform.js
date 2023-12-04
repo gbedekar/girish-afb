@@ -1,4 +1,5 @@
-import testFormDefinition from '../../forms/crispr/test200.form.js';
+import testFormDefinition from '../../forms/crispr/test1.form.js';
+import { enableRuleEngine } from './rules/index.js';
 import {
   createButton, createFieldWrapper, createLabel, getItems,
 } from './util.js';
@@ -233,6 +234,7 @@ export function insertItems(fields, container) {
       if (input.type !== 'file') {
         input.value = fd.default || '';
         if (input.type === 'radio' || input.type === 'checkbox') {
+          input.value = fd.enum[0];
           input.checked = fd.enum[0] === fd.default;
         }
       }
@@ -290,25 +292,15 @@ function renderField(fd) {
   return field;
 }
 
-async function createForm(formDef) {
-  const myWorker = new Worker('/blocks/aemform/rules/RuleEngine.js', { type: 'module' });
-  myWorker.postMessage({
-    event: 'init',
-    payload: formDef,
-  });
-  return new Promise((resolve) => {
-    myWorker.onmessage = (e) => {
-      const form = document.createElement('form');
-      console.log(e);
-      const fields = getItems(e.data);
-      insertItems(fields, form);
-      form.dataset.submit = formDef.action;
-      resolve(form);
-    };
-  });
+function createForm(formDef) {
+  const form = document.createElement('form');
+  const fields = getItems(formDef);
+  insertItems(fields, form);
+  form.dataset.submit = formDef.action;
+  return form;
 }
 
 export default async function decorate(block) {
-  const form = await createForm(testFormDefinition, block);
+  const form = await enableRuleEngine(testFormDefinition, createForm);
   block.append(form);
 }
