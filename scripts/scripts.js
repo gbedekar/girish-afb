@@ -257,6 +257,7 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
           });
     }
     else if(type === 'cwv'){
+      endpoint ="rum-dashboard";
       console.log("cwv");
       console.log(endpoint);
       await fetch(`${endpointHost}${endpoint}?${params.toString()}`)
