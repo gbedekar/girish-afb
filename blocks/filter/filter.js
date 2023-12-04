@@ -1,6 +1,5 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
 import {getQueryInfo, getUrlBase, queryRequest} from '../../scripts/scripts.js';
-import {drawLoader} from "../../scripts/loader";
 
 
 // TODO replace getElementById with querySelector
