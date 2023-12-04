@@ -367,7 +367,7 @@ export default function decorate(block) {
 
 const getUrls = ()=> {
   getQuery();
-  if (!Object.hasOwn(window, 'gettingQueryInfo')) {
+  if  (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === true) {
     window.setTimeout(getUrls, 1000);
   }
   const urls = [];
