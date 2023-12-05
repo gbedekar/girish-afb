@@ -46,6 +46,11 @@
     font-size: var(--body-font-size-xs);
 }
 
+.filter select {
+    width: 300px;
+    font-size: var(--body-font-size-xs);
+}
+
 .filter input.noedit {
     border-color: var(--overlay-background-color);
     background-color: var(--overlay-background-color);
