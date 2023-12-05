@@ -256,7 +256,6 @@ main .section {
   .section > div,
   .filter-container > div,
   .list-container > div {
-    max-width: 900px;
     margin: auto;
   }
 }
