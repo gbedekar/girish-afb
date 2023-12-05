@@ -82,3 +82,9 @@
     font-size: small;
     color: red;
 }
+
+@media (min-width: 900px) {
+    .section > div {
+        margin: auto;
+    }
+}
