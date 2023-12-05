@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import { createFormInstance } from './model/afb-runtime.js';
+import { createFormInstance } from './model/afb-runtime.min.js';
 
 function stripTags(input, allowd) {
   const allowed = ((`${allowd || ''}`)
@@ -20,7 +20,9 @@ export default class RuleEngine {
   rulesOrder = {};
 
   constructor(formDef) {
+    console.time('createFormInstance');
     this.form = createFormInstance(formDef);
+    console.timeEnd('createFormInstance');
   }
 
   getState() {
@@ -38,7 +40,9 @@ onmessage = (e) => {
     case 'init':
       ruleEngine = new RuleEngine(e.data.payload);
       // eslint-disable-next-line no-case-declarations
+      console.time('getState');
       const state = ruleEngine.getState();
+      console.timeEnd('getState');
       postMessage({
         name: 'init',
         payload: state,

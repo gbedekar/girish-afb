@@ -306,6 +306,8 @@ function createForm(formDef) {
 }
 
 export default async function decorate(block) {
+  console.time('form generation');
   const form = await enableRuleEngine(testFormDefinition, createForm);
   block.append(form);
+  console.timeEnd('form generation');
 }
