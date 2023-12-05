@@ -47,6 +47,9 @@ export default {
         },
         'fd:path': '/content/forms/af/xwalk/test1/jcr:content/guideContainer/textinput',
       },
+      rules: {
+        visible: 'false()',
+      },
       events: {
         'custom:setProperty': [
           '$event.payload',

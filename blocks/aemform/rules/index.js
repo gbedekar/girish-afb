@@ -1,4 +1,4 @@
-export async function applyRuleEngine(htmlForm, worker) {
+export async function applyRuleEngine(htmlForm, postMessage) {
   htmlForm.addEventListener('input', (e) => {
     const field = e.target;
     const { id, value } = field;
@@ -8,15 +8,17 @@ export async function applyRuleEngine(htmlForm, worker) {
     } else {
       payload.value = value;
     }
-    worker.postMessage({
-      name: 'change',
-      payload,
+    postMessage({
+      data: {
+        name: 'change',
+        payload,
+      },
     });
   });
 }
 
 function handleRuleEngineEvent(e) {
-  const { data: { name, id, payload } } = e;
+  const { name, id, payload } = e;
   if (name === 'change') {
     const { changes } = payload;
     changes.forEach((change) => {
@@ -32,25 +34,18 @@ function handleRuleEngineEvent(e) {
 }
 
 export async function enableRuleEngine(formDef, renderHTMLForm) {
-  console.time('enableRuleEngine');
-  const myWorker = new Worker('/blocks/aemform/rules/RuleEngineWorker.js', { type: 'module' });
-
-  myWorker.postMessage({
-    name: 'init',
-    payload: formDef,
-  });
+  const { postMessage } = await import('./RuleEngineWorker.js');
 
   return new Promise((resolve) => {
-    myWorker.addEventListener('message', (e) => {
-      console.timeEnd('enableRuleEngine');
-      console.log('message received from worker', e);
-      if (e.data.name === 'init') {
-        const form = renderHTMLForm(e.data.payload);
-        applyRuleEngine(form, myWorker);
-        resolve(form);
-      } else {
-        handleRuleEngineEvent(e);
-      }
+    postMessage({
+      data: {
+        name: 'init',
+        payload: formDef,
+      },
+    }, (e) => {
+      const form = renderHTMLForm(e.payload);
+      applyRuleEngine(form, postMessage);
+      resolve(form);
     });
   });
 }

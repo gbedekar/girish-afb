@@ -35,20 +35,18 @@ export default class RuleEngine {
 
 let ruleEngine;
 let field;
-onmessage = (e) => {
+onmessage = (e, postMessage) => {
   switch (e.data.name) {
     case 'init':
       ruleEngine = new RuleEngine(e.data.payload);
       // eslint-disable-next-line no-case-declarations
-      console.time('getState');
       const state = ruleEngine.getState();
-      console.timeEnd('getState');
       postMessage({
         name: 'init',
         payload: state,
       });
-      ruleEngine.dispatch = (e) => {
-        postMessage(e);
+      ruleEngine.dispatch = (ev) => {
+        postMessage(ev);
       };
       break;
     case 'change':
@@ -63,3 +61,7 @@ onmessage = (e) => {
       break;
   }
 };
+
+export function postMessage(e, pm) {
+  onmessage(e, pm);
+}
