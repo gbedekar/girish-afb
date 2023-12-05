@@ -29,7 +29,7 @@ export default {
     entryFileNames: 'afb-[name].js',
     paths: {
       '@adobe/json-formula': '../formula/index.js',
-      '@aemforms/af-formatters': './afb-formatters.min.js',
+      '@aemforms/af-formatters': './afb-formatters.js',
     },
   },
   {

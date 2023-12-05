@@ -20,7 +20,7 @@
 
 import { propertyChange, ExecuteRule, Initialize, CustomEvent, Submit, RemoveInstance, AddInstance, Reset, RemoveItem, AddItem, Click, Change, FormLoad, FieldChanged, ValidationComplete, Valid, Invalid } from './afb-events.js';
 import Formula from '../formula/index.js';
-import { format, parseDateSkeleton, formatDate } from './afb-formatters.min.js';
+import { format, parseDateSkeleton, formatDate } from './afb-formatters.js';
 
 class DataValue {
     $_name;
