@@ -141,7 +141,7 @@ console.log(flag);
             for(let k= 0; k < cwvData.length ; k += 1){
               console.log(cwvData[k]['url']);
               console.log(data[i]['url']);
-              if(cwvData[k]['url'] === `${data[i]['url']}`){
+              if(cwvData[k]['url'] === `${data[i]['url']}` && ".form".indexOf(`${data[i]['source']}`) !== -1){
                cwvValue = cwvData[k];
                 break;
               }
