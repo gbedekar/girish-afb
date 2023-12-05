@@ -53,7 +53,9 @@ let ruleEngine;
 onmessage = (e) => {
   switch (e.data.name) {
     case 'init':
+      console.time('createForm');
       ruleEngine = new RuleEngine(e.data.payload);
+      console.timeEnd('createForm');
       // eslint-disable-next-line no-case-declarations
       const state = ruleEngine.getState();
       postMessage({

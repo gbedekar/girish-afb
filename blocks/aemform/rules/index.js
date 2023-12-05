@@ -32,6 +32,7 @@ function handleRuleEngineEvent(e) {
 }
 
 export async function enableRuleEngine(formDef, renderHTMLForm) {
+  console.time('enableRuleEngine');
   const myWorker = new Worker('/blocks/aemform/rules/RuleEngineWorker.js', { type: 'module' });
 
   myWorker.postMessage({
@@ -43,6 +44,7 @@ export async function enableRuleEngine(formDef, renderHTMLForm) {
     myWorker.addEventListener('message', (e) => {
       console.log('message received from worker', e);
       if (e.data.name === 'init') {
+        console.timeEnd('enableRuleEngine');
         const form = renderHTMLForm(e.data.payload);
         applyRuleEngine(form, myWorker);
         resolve(form);
