@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import { createFormInstance } from './model/afb-runtime.js';
+import { createFormInstance } from './model/afb-runtime.min.js';
 
 function stripTags(input, allowd) {
   const allowed = ((`${allowd || ''}`)
