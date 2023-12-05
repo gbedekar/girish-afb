@@ -14,27 +14,6 @@ export const getId = (function getId() {
   };
 }());
 
-// function test(num, entries) {
-//   entries.forEach(([key, value]) => {
-//     const val1 = {
-//       ...value,
-//       name: `${key}${num}`,
-//       // eslint-disable-next-line no-use-before-define
-//       id: getId(`${key}${num}`),
-//     };
-//     testFormDefinition[':items'][`${key}${num}`] = val1;
-//     testFormDefinition[':itemsOrder'].push(`${key}${num}`);
-//   });
-// }
-
-// const entries = Object.entries(testFormDefinition[':items']);
-// for (let i = 1; i < 50; i += 1) {
-//   console.log(entries.length);
-//   test(i, entries);
-// }
-
-// console.log(JSON.stringify(testFormDefinition, null, 2));
-
 function generateUnique() {
   return new Date().valueOf() + Math.random();
 }

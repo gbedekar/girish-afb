@@ -19,7 +19,7 @@ export function sanitizeHTML(input) {
   return stripTags(input, '<a>');
 }
 
-export default class RuleEngine {
+export class RuleEngine {
   rulesOrder = {};
 
   constructor(formDef, formTag) {
@@ -50,7 +50,7 @@ export default class RuleEngine {
 }
 
 let ruleEngine;
-onmessage = (e) => {
+onmessage = (e, postMessage) => {
   switch (e.data.name) {
     case 'init':
       console.time('createForm');
@@ -62,14 +62,18 @@ onmessage = (e) => {
         name: 'init',
         payload: state,
       });
-      ruleEngine.dispatch = (e) => {
-        postMessage(e);
-      };
       break;
     case 'change':
+      ruleEngine.dispatch = (ev) => {
+        postMessage(ev);
+      };
       updateValue(e.data.payload, ruleEngine);
       break;
     default:
       break;
   }
 };
+
+export function postMessage(e, postMessage) {
+  onmessage(e, postMessage);
+}
