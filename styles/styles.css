@@ -253,6 +253,15 @@ main .section {
 }
 
 @media (min-width: 900px) {
+  .section > div,
+  .filter-container > div,
+  .list-container > div {
+    max-width: 900px;
+    margin: auto;
+  }
+}
+
+@media (min-width: 900px) {
   .section > div {
     max-width: 800px;
     margin: auto;
