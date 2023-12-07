@@ -402,7 +402,7 @@ const getBaseDomains = async () => {
                 console.log(data[i]);
                 console.log(data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]);
                 let domain = data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]
-                if (!domain.endsWith('hlx.page') && !domain.endsWith('hlx.live') && !domain.contains('localhost')) {
+                if (!domain.endsWith('hlx.page') && !domain.endsWith('hlx.live') && !domain.indexOf('localhost')>-1) {
                     domains.add(domain);
                 }
             }
