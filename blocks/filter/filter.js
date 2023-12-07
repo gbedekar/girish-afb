@@ -1,4 +1,4 @@
-import { readBlockConfig } from '../../scripts/lib-franklin.js';
+import {readBlockConfig} from '../../scripts/lib-franklin.js';
 import {getQueryInfo, getUrlBase, queryRequest} from '../../scripts/scripts.js';
 
 
@@ -10,13 +10,13 @@ import {getQueryInfo, getUrlBase, queryRequest} from '../../scripts/scripts.js';
  * @param {boolean} display true when show, false when hide
  */
 function show(element, display) {
-  if (display) { 
-    // show element
-    document.getElementById(element).classList.remove('hide');
-  } else {
-    // hide element
-    document.getElementById(element).classList.add('hide');
-  }
+    if (display) {
+        // show element
+        document.getElementById(element).classList.remove('hide');
+    } else {
+        // hide element
+        document.getElementById(element).classList.add('hide');
+    }
 }
 
 /**
@@ -25,13 +25,13 @@ function show(element, display) {
  * @param {boolean} editable true when focus, false when blur
  */
 function focus(input, editable) {
-  if (editable) {
-    // make input look editable
-    document.getElementById(input).classList.remove('noedit');
-  } else {
-    // make input look not editable
-    document.getElementById(input).classList.add('noedit');
-  }
+    if (editable) {
+        // make input look editable
+        document.getElementById(input).classList.remove('noedit');
+    } else {
+        // make input look not editable
+        document.getElementById(input).classList.add('noedit');
+    }
 }
 
 /**
@@ -42,28 +42,28 @@ function focus(input, editable) {
  * @param {string} enddate enddate for run-query
  */
 function changeInterval(interval, offset, startdate, enddate) {
-  // update input fields and display as appropriate based on inputs
-  if (interval !== '-1') {
-    // interval selected
-    document.getElementById('customdate').classList.add('hide');
-    document.getElementById('interval').value = interval;
-    document.getElementById('offset').value = offset;
-    document.getElementById('startdate').value = startdate;
-    document.getElementById('enddate').value = enddate;
-  } else {
-    // custom date range entered
-    // do not change interval and offset values until
-    // valid dates entered in checkDates() function
+    // update input fields and display as appropriate based on inputs
+    if (interval !== '-1') {
+        // interval selected
+        document.getElementById('customdate').classList.add('hide');
+        document.getElementById('interval').value = interval;
+        document.getElementById('offset').value = offset;
+        document.getElementById('startdate').value = startdate;
+        document.getElementById('enddate').value = enddate;
+    } else {
+        // custom date range entered
+        // do not change interval and offset values until
+        // valid dates entered in checkDates() function
 
-    // adjust button highlights
-    document.getElementById('int7').classList.remove('selected');
-    document.getElementById('int30').classList.remove('selected');
-    document.getElementById('int90').classList.remove('selected');
-    document.getElementById('intcustom').classList.add('selected');
+        // adjust button highlights
+        document.getElementById('int7').classList.remove('selected');
+        document.getElementById('int30').classList.remove('selected');
+        document.getElementById('int90').classList.remove('selected');
+        document.getElementById('intcustom').classList.add('selected');
 
-    // show startdate and enddate fields
-    document.getElementById('customdate').classList.remove('hide');
-  }
+        // show startdate and enddate fields
+        document.getElementById('customdate').classList.remove('hide');
+    }
 }
 
 /**
@@ -71,7 +71,7 @@ function changeInterval(interval, offset, startdate, enddate) {
  * @param {string} limit limit used for other blocks on page
  */
 function changeLimit(limit) {
-  document.getElementById('limit').value = limit;
+    document.getElementById('limit').value = limit;
 }
 
 /**
@@ -79,57 +79,57 @@ function changeLimit(limit) {
  * @returns {boolean} true when dates are valid, false when invalid
  */
 function checkDates() {
-  let valid = true;
-  const startdate = document.getElementById('startdate').value;
-  const enddate = document.getElementById('enddate').value;
-  const dateerror = document.getElementById('dateerror');
+    let valid = true;
+    const startdate = document.getElementById('startdate').value;
+    const enddate = document.getElementById('enddate').value;
+    const dateerror = document.getElementById('dateerror');
 
-  if (startdate === '' || enddate === '') {
-    valid = false;
-    show('datefilter', false);
-    dateerror.textContent = 'Start Date and End Date are both required.';
-    show('dateerror', true);
-  } else if (new Date(startdate) > new Date(enddate)) {
-    valid = false;
-    show('datefilter', false);
-    dateerror.textContent = 'Start Date must be earlier than End Date.';
-    show('dateerror', true);
-  }
+    if (startdate === '' || enddate === '') {
+        valid = false;
+        show('datefilter', false);
+        dateerror.textContent = 'Start Date and End Date are both required.';
+        show('dateerror', true);
+    } else if (new Date(startdate) > new Date(enddate)) {
+        valid = false;
+        show('datefilter', false);
+        dateerror.textContent = 'Start Date must be earlier than End Date.';
+        show('dateerror', true);
+    }
 
-  if (valid) {
-    // any button which submits form can be used
-    document.getElementById('btnurl').classList.remove('disabled');
-    document.getElementById('btnownerrepo').classList.remove('disabled');
-    document.getElementById('limit10').classList.remove('disabled');
-    document.getElementById('limit30').classList.remove('disabled');
-    document.getElementById('limit100').classList.remove('disabled');
-    document.getElementById('btnurl').disabled = false;
-    document.getElementById('btnownerrepo').disabled = false;
-    document.getElementById('limit10').disabled = false;
-    document.getElementById('limit30').disabled = false;
-    document.getElementById('limit100').disabled = false;
-    show('dateerror', false);
-    show('datefilter', true);
-    document.getElementById('interval').value = '-1';
-    document.getElementById('offset').value = '-1';
-  } else {
-    // do not allow any button to submit a form if dates are invalid
-    // note the interval buttons remain enabled because they ignore dates
-    document.getElementById('btnurl').classList.add('disabled');
-    document.getElementById('btnownerrepo').classList.add('disabled');
-    document.getElementById('limit10').classList.add('disabled');
-    document.getElementById('limit30').classList.add('disabled');
-    document.getElementById('limit100').classList.add('disabled');
-    document.getElementById('btnurl').disabled = true;
-    document.getElementById('btnownerrepo').disabled = true;
-    document.getElementById('limit10').disabled = true;
-    document.getElementById('limit30').disabled = true;
-    document.getElementById('limit100').disabled = true;
-    show('datefilter', false);
-    show('dateerror', true);
-  }
+    if (valid) {
+        // any button which submits form can be used
+        document.getElementById('btnurl').classList.remove('disabled');
+        document.getElementById('btnownerrepo').classList.remove('disabled');
+        document.getElementById('limit10').classList.remove('disabled');
+        document.getElementById('limit30').classList.remove('disabled');
+        document.getElementById('limit100').classList.remove('disabled');
+        document.getElementById('btnurl').disabled = false;
+        document.getElementById('btnownerrepo').disabled = false;
+        document.getElementById('limit10').disabled = false;
+        document.getElementById('limit30').disabled = false;
+        document.getElementById('limit100').disabled = false;
+        show('dateerror', false);
+        show('datefilter', true);
+        document.getElementById('interval').value = '-1';
+        document.getElementById('offset').value = '-1';
+    } else {
+        // do not allow any button to submit a form if dates are invalid
+        // note the interval buttons remain enabled because they ignore dates
+        document.getElementById('btnurl').classList.add('disabled');
+        document.getElementById('btnownerrepo').classList.add('disabled');
+        document.getElementById('limit10').classList.add('disabled');
+        document.getElementById('limit30').classList.add('disabled');
+        document.getElementById('limit100').classList.add('disabled');
+        document.getElementById('btnurl').disabled = true;
+        document.getElementById('btnownerrepo').disabled = true;
+        document.getElementById('limit10').disabled = true;
+        document.getElementById('limit30').disabled = true;
+        document.getElementById('limit100').disabled = true;
+        show('datefilter', false);
+        show('dateerror', true);
+    }
 
-  return valid;
+    return valid;
 }
 
 /**
@@ -138,69 +138,69 @@ function checkDates() {
  * @param {Object} cfg Map containing config params
  */
 function drawFilter(block, cfg) {
-  // TODO determine if below is best approach
-  // draw placeholder "hero" for LCP purposes
-  block.innerHTML = '<form></form>';
+    // TODO determine if below is best approach
+    // draw placeholder "hero" for LCP purposes
+    block.innerHTML = '<form></form>';
 
-  // retrieve querystring params for default filter values
-  const currentpage = new URL(window.location.href);
-  const currentpagenoqs = window.location.href.replace(window.location.search, '');
-  const params = currentpage.searchParams;
-  // set defaults as needed
-  const url = params.get('url') || '';
-  const ownerrepo = params.get('owner_repo') || '';
-  const domainkey = params.get('domainkey');
-  let interval = params.get('interval') || '30';
-  let offset = params.get('offset') || '0';
-  const startdate = params.get('startdate') || '';
-  const enddate = params.get('enddate') || '';
-  const limit = params.get('limit') || '10';
+    // retrieve querystring params for default filter values
+    const currentpage = new URL(window.location.href);
+    const currentpagenoqs = window.location.href.replace(window.location.search, '');
+    const params = currentpage.searchParams;
+    // set defaults as needed
+    const url = params.get('url') || '';
+    const ownerrepo = params.get('owner_repo') || '';
+    const domainkey = params.get('domainkey');
+    let interval = params.get('interval') || '30';
+    let offset = params.get('offset') || '0';
+    const startdate = params.get('startdate') || '';
+    const enddate = params.get('enddate') || '';
+    const limit = params.get('limit') || '10';
 
-  if (startdate !== '') {
-    interval = '-1';
-    offset = '-1';
-  }
-
-  // prepare variables to draw filter form
-  const int7 = interval === '7' ? 'selected' : '';
-  const int30 = interval === '30' ? 'selected' : '';
-  const int90 = interval === '90' ? 'selected' : '';
-  const intCustom = !int7 && !int30 && !int90 ? 'selected' : '';
-  const customDate = intCustom !== 'selected' ? 'hide' : '';
-  const limit10 = limit === '10' ? 'selected' : '';
-  const limit30 = limit === '30' ? 'selected' : '';
-  const limit100 = limit === '100' ? 'selected' : '';
-  const today = new Date(); // get today's date
-  const tomorrow = new Date(today);
-  tomorrow.setDate(today.getDate() + 1);
-  const maxStartDate = today.toISOString().split('T')[0];
-  const maxEndDate = tomorrow.toISOString().split('T')[0];
-
-  // if block config param for sections exists
-  // then show only the sections requested
-  // eslint-disable-next-line prefer-destructuring
-  const sections = cfg.sections;
-  let securl = '';
-  let secownerrepo = '';
-  let secdate = '';
-  let seclimit = '';
-  if (sections !== null) {
-    if (sections.toLowerCase().indexOf('url') === -1) {
-      securl = 'hide';
+    if (startdate !== '') {
+        interval = '-1';
+        offset = '-1';
     }
-    if (sections.toLowerCase().indexOf('ownerrepo') === -1) {
-      secownerrepo = 'hide';
-    }
-    if (sections.toLowerCase().indexOf('date') === -1) {
-      secdate = 'hide';
-    }
-    if (sections.toLowerCase().indexOf('limit') === -1) {
-      seclimit = 'hide';
-    }
-  }
 
-  // prepare filter form
-  const formHTML = `
+    // prepare variables to draw filter form
+    const int7 = interval === '7' ? 'selected' : '';
+    const int30 = interval === '30' ? 'selected' : '';
+    const int90 = interval === '90' ? 'selected' : '';
+    const intCustom = !int7 && !int30 && !int90 ? 'selected' : '';
+    const customDate = intCustom !== 'selected' ? 'hide' : '';
+    const limit10 = limit === '10' ? 'selected' : '';
+    const limit30 = limit === '30' ? 'selected' : '';
+    const limit100 = limit === '100' ? 'selected' : '';
+    const today = new Date(); // get today's date
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    const maxStartDate = today.toISOString().split('T')[0];
+    const maxEndDate = tomorrow.toISOString().split('T')[0];
+
+    // if block config param for sections exists
+    // then show only the sections requested
+    // eslint-disable-next-line prefer-destructuring
+    const sections = cfg.sections;
+    let securl = '';
+    let secownerrepo = '';
+    let secdate = '';
+    let seclimit = '';
+    if (sections !== null) {
+        if (sections.toLowerCase().indexOf('url') === -1) {
+            securl = 'hide';
+        }
+        if (sections.toLowerCase().indexOf('ownerrepo') === -1) {
+            secownerrepo = 'hide';
+        }
+        if (sections.toLowerCase().indexOf('date') === -1) {
+            secdate = 'hide';
+        }
+        if (sections.toLowerCase().indexOf('limit') === -1) {
+            seclimit = 'hide';
+        }
+    }
+
+    // prepare filter form
+    const formHTML = `
     <form id=filter method=get action="${currentpagenoqs}">
       <input type=hidden name=domainkey value="${domainkey}">
       <input type=hidden id=interval name=interval value="${interval}">
@@ -261,8 +261,8 @@ function drawFilter(block, cfg) {
     </form>
   `;
 
-  // draw filter form
-  block.innerHTML = formHTML;
+    // draw filter form
+    block.innerHTML = formHTML;
 }
 
 /**
@@ -270,161 +270,165 @@ function drawFilter(block, cfg) {
  * @param {Element} block The filter block element
  */
 export default function decorate(block) {
-  // retrieve block config
-  const cfg = readBlockConfig(block);
+    // retrieve block config
+    const cfg = readBlockConfig(block);
 
-  // draw the form
-  drawFilter(block, cfg);
+    // draw the form
+    drawFilter(block, cfg);
     // Assuming you have an array of URLs
-    getUrls().then(urls => {
-        console.log(urls);
+    getBaseDomains().then(domains => {
+        console.log(domains);
         // Get the select element
         const urlSelect = document.getElementById("url");
 
         // Populate options based on the array
-        urls.forEach(url => {
-          const option = document.createElement("option");
-          option.value = url;
-          option.text = url;
-          option.className="noedit"
-          urlSelect.appendChild(option);
+        domains.forEach(domain => {
+            const option = document.createElement("option");
+            option.value = domain;
+            option.text = domain;
+            option.className = "noedit"
+            urlSelect.appendChild(option);
         })
-      const storedSelectedValue = localStorage.getItem('selectedValue');
+        const storedSelectedValue = localStorage.getItem('selectedValue');
 
-      // Set the selected value if it exists
-      if (storedSelectedValue) {
-        urlSelect.value = storedSelectedValue;
-      }
-      urlSelect.addEventListener('change', function () {
-        // Save the selected value to localStorage
-        localStorage.setItem('selectedValue', this.value);
-      });
-      }).catch(error => {
+        // Set the selected value if it exists
+        if (storedSelectedValue) {
+            urlSelect.value = storedSelectedValue;
+        }
+        urlSelect.addEventListener('change', function () {
+            // Save the selected value to localStorage
+            localStorage.setItem('selectedValue', this.value);
+        });
+    }).catch(error => {
         console.error("Error fetching URLs:", error);
-      });
+    });
 
-  // add event listeners
-  // interval buttons
-  block.querySelector('#int7').addEventListener('click', () => {
-    changeInterval('7', '0', '', '');
-  });
-  block.querySelector('#int30').addEventListener('click', () => {
-    changeInterval('30', '0', '', '');
-  });
-  block.querySelector('#int90').addEventListener('click', () => {
-    changeInterval('90', '0', '', '');
-  });
-  block.querySelector('#intcustom').addEventListener('click', () => {
-    changeInterval('-1', '-1', '', '');
-  });
+    // add event listeners
+    // interval buttons
+    block.querySelector('#int7').addEventListener('click', () => {
+        changeInterval('7', '0', '', '');
+    });
+    block.querySelector('#int30').addEventListener('click', () => {
+        changeInterval('30', '0', '', '');
+    });
+    block.querySelector('#int90').addEventListener('click', () => {
+        changeInterval('90', '0', '', '');
+    });
+    block.querySelector('#intcustom').addEventListener('click', () => {
+        changeInterval('-1', '-1', '', '');
+    });
 
-  // custom date button
-  block.querySelector('#btndatefilter').addEventListener('click', () => {
-    if (checkDates()) {
-      // should always be true because button hidden when dates invalid
-      document.getElementById('filter').submit();
-    }
-  });
+    // custom date button
+    block.querySelector('#btndatefilter').addEventListener('click', () => {
+        if (checkDates()) {
+            // should always be true because button hidden when dates invalid
+            document.getElementById('filter').submit();
+        }
+    });
 
-  // limit buttons
-  block.querySelector('#limit10').addEventListener('click', () => {
-    changeLimit('10');
-  });
-  block.querySelector('#limit30').addEventListener('click', () => {
-    changeLimit('30');
-  });
-  block.querySelector('#limit100').addEventListener('click', () => {
-    changeLimit('100');
-  });
+    // limit buttons
+    block.querySelector('#limit10').addEventListener('click', () => {
+        changeLimit('10');
+    });
+    block.querySelector('#limit30').addEventListener('click', () => {
+        changeLimit('30');
+    });
+    block.querySelector('#limit100').addEventListener('click', () => {
+        changeLimit('100');
+    });
 
-  // show buttons when input field values change
-  block.querySelector('#url').addEventListener('change', () => {
-    show('urlfilter', true);
-  });
-  block.querySelector('#owner_repo').addEventListener('change', () => {
-    show('ownerrepofilter', true);
-  });
-  block.querySelector('#startdate').addEventListener('change', () => {
-    checkDates();
-  });
-  block.querySelector('#enddate').addEventListener('change', () => {
-    checkDates();
-  });
+    // show buttons when input field values change
+    block.querySelector('#url').addEventListener('change', () => {
+        show('urlfilter', true);
+    });
+    block.querySelector('#owner_repo').addEventListener('change', () => {
+        show('ownerrepofilter', true);
+    });
+    block.querySelector('#startdate').addEventListener('change', () => {
+        checkDates();
+    });
+    block.querySelector('#enddate').addEventListener('change', () => {
+        checkDates();
+    });
 
-  // handle focus and blur styling
-  block.querySelector('#url').addEventListener('focus', () => {
-    focus('url', true);
-  });
-  block.querySelector('#owner_repo').addEventListener('focus', () => {
-    focus('owner_repo', true);
-  });
-  block.querySelector('#startdate').addEventListener('focus', () => {
-    focus('startdate', true);
-  });
-  block.querySelector('#enddate').addEventListener('focus', () => {
-    focus('enddate', true);
-  });
-  block.querySelector('#url').addEventListener('blur', () => {
-    focus('url', false);
-    block.querySelector('#url').value = block.querySelector('#url').value.replace(/^http(s)*:\/\//, '');
-  });
-  block.querySelector('#owner_repo').addEventListener('blur', () => {
-    focus('owner_repo', false);
-  });
-  block.querySelector('#startdate').addEventListener('blur', () => {
-    focus('startdate', false);
-  });
-  block.querySelector('#enddate').addEventListener('blur', () => {
-    focus('enddate', false);
-  });
+    // handle focus and blur styling
+    block.querySelector('#url').addEventListener('focus', () => {
+        focus('url', true);
+    });
+    block.querySelector('#owner_repo').addEventListener('focus', () => {
+        focus('owner_repo', true);
+    });
+    block.querySelector('#startdate').addEventListener('focus', () => {
+        focus('startdate', true);
+    });
+    block.querySelector('#enddate').addEventListener('focus', () => {
+        focus('enddate', true);
+    });
+    block.querySelector('#url').addEventListener('blur', () => {
+        focus('url', false);
+        block.querySelector('#url').value = block.querySelector('#url').value.replace(/^http(s)*:\/\//, '');
+    });
+    block.querySelector('#owner_repo').addEventListener('blur', () => {
+        focus('owner_repo', false);
+    });
+    block.querySelector('#startdate').addEventListener('blur', () => {
+        focus('startdate', false);
+    });
+    block.querySelector('#enddate').addEventListener('blur', () => {
+        focus('enddate', false);
+    });
 }
 
-const getUrls = async ()=> {
-  do {
-    getQuery();
-    await delay(1000);
-  } while(!(Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === false));
+const getBaseDomains = async () => {
+    do {
+        getQuery();
+        await delay(1000);
+    } while (!(Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === false));
 
-  console.log("window");
-  console.log(window);
-  const urls = new Set();
-  let data;
-  const qps = {'offset': 0, 'limit': 500};
-  do {
-    try {
-      // Make the queryRequest
-      await queryRequest("rum-checkpoint-urls", getUrlBase("rum-checkpoint-urls"), 'render-all', '', qps);
+    console.log("window");
+    console.log(window);
+    const domains = new Set();
+    let data;
+    const qps = {'offset': 0, 'limit': 500};
+    do {
+        try {
+            // Make the queryRequest
+            await queryRequest("rum-checkpoint-urls", getUrlBase("rum-checkpoint-urls"), 'render-all', '', qps);
 
-      // Process the data
-      // Process the data
-      data = window.dashboard["rum-checkpoint-urls" + "-all"].results.data || [];
-      for (let i = 0; i < data.length; i += 1) {
-        console.log(data[i]);
-        console.log(data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]);
-        urls.add(data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]);
-      }
+            // Process the data
+            // Process the data
+            data = window.dashboard["rum-checkpoint-urls" + "-all"].results.data || [];
+            for (let i = 0; i < data.length; i += 1) {
+                console.log(data[i]);
+                console.log(data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]);
+                let domain = data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]
+                if (!domain.endsWith('hlx.page') && !domain.endsWith('hlx.live')) {
+                    domains.add(domain);
+                }
+            }
 
-      // Update qps for the next iteration
-      qps.offset = qps.offset + qps.limit;
-      qps.limit = qps.limit * 2;
-    } catch (error) {
-      // Handle errors if necessary
-      console.error("Error fetching data:", error);
-    }
-  } while (data && data.length > 0);
+            // Update qps for the next iteration
+            qps.offset = qps.offset + qps.limit;
+            qps.limit = qps.limit * 2;
+        } catch (error) {
+            // Handle errors if necessary
+            console.error("Error fetching data:", error);
+        }
+    } while (data && data.length > 0);
 
-  return urls;
+    return domains;
 }
 
 function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
+
 const getQuery = () => {
-  if (!Object.hasOwn(window, 'gettingQueryInfo')) {
-    console.log("test111");
-    getQueryInfo();
-  }
-  if (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === true) {
-    window.setTimeout(getQuery, 1);
-  }
+    if (!Object.hasOwn(window, 'gettingQueryInfo')) {
+        console.log("test111");
+        getQueryInfo();
+    }
+    if (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === true) {
+        window.setTimeout(getQuery, 1);
+    }
 };
