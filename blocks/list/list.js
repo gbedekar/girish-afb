@@ -40,6 +40,7 @@ console.log(flag);
   };
 
   const makeList = async () => {
+    let totalFormSubmit = 0;
     if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
       window.setTimeout(makeList, 1000);
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
@@ -115,6 +116,9 @@ console.log(flag);
             for(let k= 0; k < submitData.length ; k += 1){
                 if(submitData[k]['url'] === `${data[i]['url']}`){
                   txtContent = submitData[k]['actions'];
+                  if (!submitData[k]['url'].endsWith('hlx.page') && !submitData[k]['url'].endsWith('hlx.live') && !submitData[k]['url'].indexOf('localhost')>-1) {
+                    totalFormSubmit += submitData[k]['actions'];
+                  }
                   listGridColumn.textContent = txtContent;
                   break;
                 }
@@ -253,6 +257,8 @@ console.log(flag);
         block.append(noresults);
       }
     }
+    console.log("totalFormSubmit");
+    console.log(totalFormSubmit);
   };
 
   getQuery();
