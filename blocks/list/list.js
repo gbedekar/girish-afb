@@ -80,11 +80,11 @@ console.log(flag);
         }
       }
 
-      for (let i = 0; i < domain.length; i += 1) {
-        console.log(domain);
+      for (let i = 0; i < domains.length; i += 1) {
+        console.log(domains[i]);
         console.log('domain');
-          await queryRequest(endpoint, getUrlBase(endpoint), 'submit', domain);
-          const submitData = window.dashboard[endpoint + "-" + domain].results.data;
+          await queryRequest(endpoint, getUrlBase(endpoint), 'submit', domains[i]);
+          const submitData = window.dashboard[endpoint + "-" + domains[i]].results.data;
           for (let k = 0; k < submitData.length; k += 1) {
             if (!submitData[k]['url'].endsWith('hlx.page') && !submitData[k]['url'].endsWith('hlx.live') && !submitData[k]['url'].indexOf('localhost') > -1) {
               console.log("!submitData[k]['url']");
