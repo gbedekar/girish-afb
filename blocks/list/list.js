@@ -70,6 +70,17 @@ console.log(flag);
       const domains = window.dashboard["domains"];
       console.log("domains");
       console.log(domains);
+      for (let value of domains) {
+        console.log(value);
+        const submitPromise = queryRequest(endpoint, getUrlBase(endpoint), 'submit', value);
+        const submitData  = window.dashboard[endpoint+"-"+value].results.data;
+        for(let k= 0; k < submitData.length ; k += 1){
+          totalFormSubmit += Number(submitData[k]['actions']);
+          console.log("totalFormSubmit");
+          console.log(totalFormSubmit);
+        }
+      }
+
       const response = await Promise.all(promises);
       const listGridHeadingRow = document.createElement('div');
       listGridHeadingRow.classList.add('grid', 'list', 'row', 'heading');
