@@ -209,7 +209,7 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
   }
   if(type === 'render') {
     params.set('checkpoint', 'viewblock');
-    params.set('source', '.marketo');
+    params.set('source', '.form');
   }
   // remove http or https prefix in url param if it exists
   if (params.has('url') && params.get('url') !== '') {
@@ -224,7 +224,7 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
   }
   if(type === 'render-all'){
     params.delete('url');
-    params.set('source', '.marketo');
+    params.set('source', '.form');
   }
   const limit = params.get('limit') || '30';
   params.set('limit', limit);
