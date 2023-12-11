@@ -415,7 +415,7 @@ const getBaseDomains = async () => {
             console.error("Error fetching data:", error);
         }
     } while (data && data.length > 0);
-
+    window.dashboard["domains"] = domains;
     return domains;
 }
 

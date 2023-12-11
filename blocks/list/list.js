@@ -69,7 +69,9 @@ console.log(flag);
         // Add promises to the array
         promises.push(submitPromise, cwvPromise);
       }
-
+      const domains = window.dashboard["domains"];
+      console.log("domains");
+      console.log(domains);
       const response = await Promise.all(promises);
       console.log("response");
       console.log(response);
