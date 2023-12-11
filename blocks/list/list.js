@@ -69,14 +69,20 @@ console.log(flag);
         // Add promises to the array
         promises.push(submitPromise, cwvPromise);
       }
-      for (let i = 0; i < data.length; i += 1) {
-        await queryRequest(endpoint, getUrlBase(endpoint), 'submit', `${data[i]['url']}`);
-        const submitData = window.dashboard[endpoint + "-" + `${data[i]['url']}`].results.data;
-        for (let k = 0; k < submitData.length; k += 1) {
-          if (!submitData[k]['url'].endsWith('hlx.page') && !submitData[k]['url'].endsWith('hlx.live') && !submitData[k]['url'].indexOf('localhost') > -1) {
-            console.log("!submitData[k]['url']");
-            console.log(submitData[k]['url']);
-            totalFormSubmit += Number(submitData[k]['actions']);
+      data1 = window.dashboard["rum-checkpoint-urls" + "-all"].results.data || [];
+      for (let i = 0; i < data1.length; i += 1) {
+        console.log(data1[i]);
+        console.log(data1[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]);
+        let domain = data1[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]
+        if (!domain.endsWith('hlx.page') && !domain.endsWith('hlx.live') && !domain.indexOf('localhost')>-1) {
+          await queryRequest(endpoint, getUrlBase(endpoint), 'submit', domain);
+          const submitData = window.dashboard[endpoint + "-" + domain].results.data;
+          for (let k = 0; k < submitData.length; k += 1) {
+            if (!submitData[k]['url'].endsWith('hlx.page') && !submitData[k]['url'].endsWith('hlx.live') && !submitData[k]['url'].indexOf('localhost') > -1) {
+              console.log("!submitData[k]['url']");
+              console.log(submitData[k]['url']);
+              totalFormSubmit += Number(submitData[k]['actions']);
+            }
           }
         }
       }
