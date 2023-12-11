@@ -398,7 +398,7 @@ const getBaseDomains = async () => {
             data = window.dashboard["rum-checkpoint-urls" + "-all"].results.data || [];
             for (let i = 0; i < data.length; i += 1) {
                 let domain = data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]
-                if (!domain.endsWith('hlx.page') && !domain.endsWith('hlx.live') && !domain.indexOf('localhost')>-1) {
+                if (!domain.endsWith('hlx.page') && !domain.endsWith('hlx.live') && !(domain.indexOf('localhost')>-1)) {
                     domains.add(domain);
                 }
             }
