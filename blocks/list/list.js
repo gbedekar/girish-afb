@@ -82,11 +82,11 @@ console.log(flag);
       console.log("domains");
       console.log(domains);
       console.log(domains.length);
-      for (let i = 0; i < domains.length; i += 1) {
-        console.log(domains[i]);
+      for (let value of domains) {
+        console.log(value);
         console.log('domain');
-          await queryRequest(endpoint, getUrlBase(endpoint), 'submit', domains[i]);
-          const submitData = window.dashboard[endpoint + "-" + domains[i]].results.data;
+          await queryRequest(endpoint, getUrlBase(endpoint), 'submit', value);
+          const submitData = window.dashboard[endpoint + "-" + value].results.data;
           for (let k = 0; k < submitData.length; k += 1) {
             if (!submitData[k]['url'].endsWith('hlx.page') && !submitData[k]['url'].endsWith('hlx.live') && !submitData[k]['url'].indexOf('localhost') > -1) {
               console.log("!submitData[k]['url']");
