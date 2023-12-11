@@ -81,6 +81,7 @@ console.log(flag);
       }
       console.log("domains");
       console.log(domains);
+      console.log(domains.length);
       for (let i = 0; i < domains.length; i += 1) {
         console.log(domains[i]);
         console.log('domain');
