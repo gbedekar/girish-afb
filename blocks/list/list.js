@@ -116,11 +116,11 @@ console.log(flag);
           } else if (cols[j] === 'formsubmission') {
             const submitData  = window.dashboard[endpoint+"-"+`${data[i]['url']}`].results.data;
             for(let k= 0; k < submitData.length ; k += 1){
+              if (!submitData[k]['url'].endsWith('hlx.page') && !submitData[k]['url'].endsWith('hlx.live') && !submitData[k]['url'].indexOf('localhost')>-1) {
+                totalFormSubmit += Number(submitData[k]['actions']);
+              }
                 if(submitData[k]['url'] === `${data[i]['url']}`){
                   txtContent = submitData[k]['actions'];
-                  if (!submitData[k]['url'].endsWith('hlx.page') && !submitData[k]['url'].endsWith('hlx.live') && !submitData[k]['url'].indexOf('localhost')>-1) {
-                    totalFormSubmit += Number(submitData[k]['actions']);
-                  }
                   listGridColumn.textContent = txtContent;
                   break;
                 }
