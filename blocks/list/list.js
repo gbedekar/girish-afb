@@ -131,7 +131,7 @@ console.log(flag);
           } else if (cols[j] === 'formsubmission') {
             const submitData  = window.dashboard[endpoint+"-"+`${data[i]['url']}`].results.data;
             for(let k= 0; k < submitData.length ; k += 1){
-                if(submitData[k]['url'] === `${data[i]['url']}`  && ".form".indexOf(`${submitData[k]['source']}`) !== -1){
+                if(submitData[k]['url'] === `${data[i]['url']}`  && (".form".indexOf(`${submitData[k]['source']}`) !== -1)){
                   txtContent = submitData[k]['actions'];
                   listGridColumn.textContent = txtContent;
                   break;
