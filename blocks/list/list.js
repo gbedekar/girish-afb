@@ -67,6 +67,25 @@ console.log(flag);
         // Add promises to the array
         promises.push(submitPromise, cwvPromise);
       }
+      const formslist = new Set();
+      const domains = window.dashboard["domains"];
+      console.log("domains");
+      console.log(domains);
+      for (let value of domains) {
+        console.log(value);
+        await queryRequest(endpoint, getUrlBase(endpoint), 'submit', value);
+        const submitData  = window.dashboard[endpoint+"-"+value].results.data;
+        for(let k= 0; k < submitData.length ; k += 1){
+          if(".form".indexOf(`${submitData[k]['source']}`) !== -1) {
+            totalFormSubmit += Number(submitData[k]['actions']);
+            console.log("totalFormSubmit");
+            console.log(totalFormSubmit);
+            formslist.add(submitData[k]['url']);
+          }
+        }
+      }
+      console.log("formslist");
+      console.log(formslist);
 
       const response = await Promise.all(promises);
       const listGridHeadingRow = document.createElement('div');
@@ -112,7 +131,7 @@ console.log(flag);
           } else if (cols[j] === 'formsubmission') {
             const submitData  = window.dashboard[endpoint+"-"+`${data[i]['url']}`].results.data;
             for(let k= 0; k < submitData.length ; k += 1){
-                if(submitData[k]['url'] === `${data[i]['url']}`){
+                if(submitData[k]['url'] === `${data[i]['url']}`  && ".form".indexOf(`${submitData[k]['source']}`) !== -1){
                   txtContent = submitData[k]['actions'];
                   listGridColumn.textContent = txtContent;
                   break;
