@@ -69,32 +69,7 @@ console.log(flag);
         // Add promises to the array
         promises.push(submitPromise, cwvPromise);
       }
-      const domains = new Set();
-      const data1 = window.dashboard["rum-checkpoint-urls" + "-all"].results.data || [];
-      for (let i = 0; i < data1.length; i += 1) {
-        console.log(data1[i]);
-        console.log(data1[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]);
-        let domain = data1[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]
-        if (!domain.endsWith('hlx.page') && !domain.endsWith('hlx.live') && !domain.indexOf('localhost') > -1) {
-          domains.add(domain);
-        }
-      }
-      console.log("domains");
-      console.log(domains);
-      console.log(domains.length);
-      for (let value of domains) {
-        console.log(value);
-        console.log('domain');
-          await queryRequest(endpoint, getUrlBase(endpoint), 'submit', value);
-          const submitData = window.dashboard[endpoint + "-" + value].results.data;
-          for (let k = 0; k < submitData.length; k += 1) {
-            if (!submitData[k]['url'].endsWith('hlx.page') && !submitData[k]['url'].endsWith('hlx.live') && !submitData[k]['url'].indexOf('localhost') > -1) {
-              console.log("!submitData[k]['url']");
-              console.log(submitData[k]['url']);
-              totalFormSubmit += Number(submitData[k]['actions']);
-            }
-          }
-        }
+
       const response = await Promise.all(promises);
       console.log("response");
       console.log(response);
