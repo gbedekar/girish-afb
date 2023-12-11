@@ -69,7 +69,7 @@ console.log(flag);
         // Add promises to the array
         promises.push(submitPromise, cwvPromise);
       }
-      data1 = window.dashboard["rum-checkpoint-urls" + "-all"].results.data || [];
+      const data1 = window.dashboard["rum-checkpoint-urls" + "-all"].results.data || [];
       for (let i = 0; i < data1.length; i += 1) {
         console.log(data1[i]);
         console.log(data1[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]);
