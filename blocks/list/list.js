@@ -46,8 +46,6 @@ console.log(flag);
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
       // query complete, hide loading graphic
       const {data} = window.dashboard[endpoint].results;
-      console.log("___data");
-      console.log(data);
 
       const listGridContainer = document.createElement('div');
       listGridContainer.classList.add('grid', 'list', 'container');
@@ -73,8 +71,6 @@ console.log(flag);
       console.log("domains");
       console.log(domains);
       const response = await Promise.all(promises);
-      console.log("response");
-      console.log(response);
       const listGridHeadingRow = document.createElement('div');
       listGridHeadingRow.classList.add('grid', 'list', 'row', 'heading');
       for (let j = 0; j < 8; j += 1) {
@@ -113,7 +109,6 @@ console.log(flag);
           const listGridColumn = document.createElement('div');
           listGridColumn.classList.add('grid', 'list', 'col', cols[j]);
           let txtContent;
-          console.log(window);
           if (cols[j] === 'url') {
             listGridColumn.innerHTML = `<a href='${data[i][cols[j]]}' target="_blank">${data[i][cols[j]].replace(/^https?:\/\/[^/]+/i, '')}</a>`;
           } else if (cols[j] === 'formsubmission') {
@@ -133,16 +128,11 @@ console.log(flag);
             listGridColumn.textContent = txtContent;
           }
           else {
-            console.log(window.dashboard["rum-dashboard"+"-"+`${data[i]['url']}`].results);
                if(window.dashboard["rum-dashboard"+"-"+`${data[i]['url']}`].results === undefined){
-                 console.log("inside rum dashboard");
                  await queryRequest("rum-dashboard", getUrlBase("rum-dashboard"), 'cwv', `${data[i]['url']}`);
                }
-            console.log("outside rum dashboard");
             console.log(window);
             const cwvData  = window.dashboard["rum-dashboard"+"-"+`${data[i]['url']}`].results.data;
-            console.log("cwvData");
-            console.log(cwvData);
             let cwvValue = {};
             for(let k= 0; k < cwvData.length ; k += 1){
               console.log(cwvData[k]['url']);
@@ -152,7 +142,6 @@ console.log(flag);
                 break;
               }
             }
-            console.log(cwvValue);
             const {
               lcpgood, lcpbad, clsgood, clsbad, fidgood, fidbad, inpgood, inpbad,
             } = cwvValue;
@@ -165,8 +154,6 @@ console.log(flag);
             if ((lcpgood + lcpbad + clsgood + clsbad + fidgood + fidbad + inpgood + inpbad) === 0) {
               noresult = true;
             }
-            console.log("inpOkay");
-            console.log(inpOkay);
             const avgOkay = Math.round((lcpOkay + clsOkay + fidOkay + inpOkay) / 4);
             const avgGood = Math.round((lcpgood + clsgood + fidgood + inpgood) / 4);
             const avgBad = Math.round((lcpbad + clsbad + fidbad + inpbad) / 4);
@@ -204,16 +191,11 @@ console.log(flag);
             }
             else {
               let txtContent;
-              console.log(cwvValue);
-              console.log("cwvValue");
               if (cols[j] === 'avglcp') {
                 txtContent = cwvValue[cols[j]] / 1000.00;
               } else {
                 txtContent = cwvValue[cols[j]];
               }
-              console.log(cols[j]);
-              console.log(cwvValue[cols[j]]);
-              console.log("test-01");
               if (j >= 4) {
                 if (data[i][cols[j]] && data[i][cols[j]] <= ranges[cols[j]][0]) {
                   listGridColumn.classList.toggle('pass');

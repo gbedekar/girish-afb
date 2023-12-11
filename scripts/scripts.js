@@ -256,7 +256,6 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
               window.dashboard = {};
             }
             window.dashboard[endpoint+"-"+submitUrl] = data;
-            console.log( window.dashboard[endpoint]);
           })
           .catch((err) => {
             // eslint-disable-next-line no-console
@@ -265,8 +264,6 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
     }
     else if(type === 'cwv'){
       endpoint ="rum-dashboard";
-      console.log("cwv");
-      console.log(endpoint);
       await fetch(`${endpointHost}${endpoint}?${params.toString()}`)
           .then((resp) => resp.json())
           .then((data) => {
@@ -275,16 +272,13 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
               window.dashboard = {};
             }
             window.dashboard[endpoint+"-"+submitUrl] = data;
-            console.log( window.dashboard[endpoint]);
           })
           .catch((err) => {
             // eslint-disable-next-line no-console
             console.error('API Call Has Failed, Check that inputs are correct', err.message);
           });
-      console.log("done");
     }
     else if(type === 'render-all'){
-      console.log(endpoint);
       await fetch(`${endpointHost}${endpoint}?${params.toString()}`)
           .then((resp) => resp.json())
           .then((data) => {
@@ -292,13 +286,11 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
               window.dashboard = {};
             }
             window.dashboard[endpoint+"-all"] = data;
-            console.log( window.dashboard[endpoint+"-all"]);
           })
           .catch((err) => {
             // eslint-disable-next-line no-console
             console.error('API Call Has Failed, Check that inputs are correct', err.message);
           });
-      console.log("done");
     }
     else if (Object.hasOwn(window, flag) && window[flag] === true) {
       window.setTimeout(checkData, 5);

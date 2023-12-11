@@ -277,7 +277,7 @@ export default function decorate(block) {
     drawFilter(block, cfg);
     // Assuming you have an array of URLs
     getBaseDomains().then(domains => {
-        console.log(domains);
+
         // Get the select element
         const urlSelect = document.getElementById("url");
 
@@ -385,8 +385,6 @@ const getBaseDomains = async () => {
         await delay(1000);
     } while (!(Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === false));
 
-    console.log("window");
-    console.log(window);
     const domains = new Set();
     let data;
     const qps = {'offset': 0, 'limit': 500};
@@ -399,8 +397,6 @@ const getBaseDomains = async () => {
             // Process the data
             data = window.dashboard["rum-checkpoint-urls" + "-all"].results.data || [];
             for (let i = 0; i < data.length; i += 1) {
-                console.log(data[i]);
-                console.log(data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]);
                 let domain = data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]
                 if (!domain.endsWith('hlx.page') && !domain.endsWith('hlx.live') && !domain.indexOf('localhost')>-1) {
                     domains.add(domain);
@@ -425,7 +421,6 @@ function delay(ms) {
 
 const getQuery = () => {
     if (!Object.hasOwn(window, 'gettingQueryInfo')) {
-        console.log("test111");
         getQueryInfo();
     }
     if (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === true) {
