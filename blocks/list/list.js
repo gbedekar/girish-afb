@@ -46,6 +46,8 @@ console.log(flag);
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
       // query complete, hide loading graphic
       const {data} = window.dashboard[endpoint].results;
+      console.log("___data");
+      console.log(data);
 
       const listGridContainer = document.createElement('div');
       listGridContainer.classList.add('grid', 'list', 'container');
