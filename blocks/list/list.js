@@ -72,7 +72,7 @@ console.log(flag);
       console.log(domains);
       for (let value of domains) {
         console.log(value);
-        const submitPromise = queryRequest(endpoint, getUrlBase(endpoint), 'submit', value);
+        await queryRequest(endpoint, getUrlBase(endpoint), 'submit', value);
         const submitData  = window.dashboard[endpoint+"-"+value].results.data;
         for(let k= 0; k < submitData.length ; k += 1){
           totalFormSubmit += Number(submitData[k]['actions']);
