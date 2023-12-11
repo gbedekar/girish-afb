@@ -69,6 +69,17 @@ console.log(flag);
         // Add promises to the array
         promises.push(submitPromise, cwvPromise);
       }
+      for (let i = 0; i < data.length; i += 1) {
+        await queryRequest(endpoint, getUrlBase(endpoint), 'submit', `${data[i]['url']}`);
+        const submitData = window.dashboard[endpoint + "-" + `${data[i]['url']}`].results.data;
+        for (let k = 0; k < submitData.length; k += 1) {
+          if (!submitData[k]['url'].endsWith('hlx.page') && !submitData[k]['url'].endsWith('hlx.live') && !submitData[k]['url'].indexOf('localhost') > -1) {
+            console.log("!submitData[k]['url']");
+            console.log(submitData[k]['url']);
+            totalFormSubmit += Number(submitData[k]['actions']);
+          }
+        }
+      }
       const response = await Promise.all(promises);
       console.log("response");
       console.log(response);
@@ -116,9 +127,6 @@ console.log(flag);
           } else if (cols[j] === 'formsubmission') {
             const submitData  = window.dashboard[endpoint+"-"+`${data[i]['url']}`].results.data;
             for(let k= 0; k < submitData.length ; k += 1){
-              if (!submitData[k]['url'].endsWith('hlx.page') && !submitData[k]['url'].endsWith('hlx.live') && !submitData[k]['url'].indexOf('localhost')>-1) {
-                totalFormSubmit += Number(submitData[k]['actions']);
-              }
                 if(submitData[k]['url'] === `${data[i]['url']}`){
                   txtContent = submitData[k]['actions'];
                   listGridColumn.textContent = txtContent;
