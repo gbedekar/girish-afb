@@ -79,7 +79,8 @@ console.log(flag);
           domains.add(domain);
         }
       }
-
+      console.log("domains");
+      console.log(domains);
       for (let i = 0; i < domains.length; i += 1) {
         console.log(domains[i]);
         console.log('domain');
