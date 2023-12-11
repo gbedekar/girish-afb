@@ -76,7 +76,8 @@ console.log(flag);
         await queryRequest(endpoint, getUrlBase(endpoint), 'submit', value);
         const submitData  = window.dashboard[endpoint+"-"+value].results.data;
         for(let k= 0; k < submitData.length ; k += 1){
-          if(`${submitData[k]['source']}`.indexOf(".form") !== -1) {
+          console.log(submitData[i]);
+          if(`${submitData[k]['source']}`.indexOf(".form") !== -1 || `${submitData[k]['source']}`.indexOf("mktoForm") !== -1) {
             totalFormSubmit += Number(submitData[k]['actions']);
             console.log("totalFormSubmit");
             console.log(totalFormSubmit);
