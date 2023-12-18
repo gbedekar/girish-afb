@@ -67,11 +67,12 @@ console.log(flag);
         // Add promises to the array
         promises.push(submitPromise, cwvPromise);
       }
-
+      let totalFormViews = 0;
+      let totalSubmissions = 0;
       const response = await Promise.all(promises);
       const listGridHeadingRow = document.createElement('div');
       listGridHeadingRow.classList.add('grid', 'list', 'row', 'heading');
-      for (let j = 0; j < 10; j += 1) {
+      for (let j = 0; j < 8; j += 1) {
         const listGridHeadings = document.createElement('div');
         if (cols[j] === 'url') {
           listGridHeadings.textContent = 'Path';
@@ -118,6 +119,7 @@ console.log(flag);
             for(let k= 0; k < submitData.length ; k += 1){
                 if(submitData[k]['url'] === `${data[i]['url']}`  && ((`${submitData[k]['source']}`.indexOf(".form") !== -1) || (`${submitData[k]['source']}`.indexOf("mktoForm") !== -1))){
                   txtContent = submitData[k]['actions'];
+                  totalSubmissions = totalSubmissions + Number(txtContent);
                   listGridColumn.textContent = txtContent;
                   break;
                 }
@@ -127,6 +129,7 @@ console.log(flag);
             }
           } else if(cols[j] === 'views') {
             txtContent = data[i][cols[j]];
+            totalFormViews = totalFormViews + Number(data[i][cols[j]]);
             listGridColumn.textContent = txtContent;
           }
           else {
@@ -230,6 +233,8 @@ console.log(flag);
 
         counter = i;
       }
+      console.log("totalFormViews.....");
+      console.log(totalFormViews);
       block.append(listGridContainer);
       hideLoader(block);
       if (counter === 0) {
