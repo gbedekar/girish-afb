@@ -234,10 +234,12 @@ console.log(flag);
         counter = i;
       }
       const listGridRow = document.createElement('div');
+      listGridRow.classList.add('grid', 'list', 'row');
       console.log("totalFormViews.....");
       console.log(totalFormViews);
       for (let j = 0; j < 3; j += 1) {
         const listGridColumn = document.createElement('div');
+        listGridColumn.classList.add('grid', 'list', 'col', cols[j]);
         let txtContent;
         if (cols[j] === 'url') {
           listGridColumn.textContent = "Total";
