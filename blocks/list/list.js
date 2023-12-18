@@ -233,8 +233,24 @@ console.log(flag);
 
         counter = i;
       }
+      const listGridRow = document.createElement('div');
       console.log("totalFormViews.....");
       console.log(totalFormViews);
+      for (let j = 0; j < 3; j += 1) {
+        const listGridColumn = document.createElement('div');
+        let txtContent;
+        if (cols[j] === 'url') {
+          listGridColumn.textContent = "Total";
+        }
+        else if (cols[j] === 'views') {
+          listGridColumn.textContent = totalFormViews;
+        }
+       else if (cols[j] === 'formsubmission') {
+          listGridColumn.textContent = totalSubmissions;
+        }
+        listGridRow.append(listGridColumn);
+      }
+      listGridContainer.append(listGridRow);
       block.append(listGridContainer);
       hideLoader(block);
       if (counter === 0) {
