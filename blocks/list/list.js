@@ -50,7 +50,7 @@ console.log(flag);
       const listGridContainer = document.createElement('div');
       listGridContainer.classList.add('grid', 'list', 'container');
 
-      const cols = ['url', 'views', 'formsubmission','usrexp', 'avglcp', 'avgcls', 'avgfid', 'avginp'];
+      const cols = ['url', 'views', 'formsubmission','usrexp', 'avglcp', 'avgcls', 'avgfid', 'avginp','totalViews', 'totalSubmissions'];
       const metrics = ['s', '', 'ms', 'ms'];
       const ranges = {
         avglcp: [2500, 4000],
@@ -89,6 +89,10 @@ console.log(flag);
           listGridHeadings.textContent = 'FID 75P';
         } else if (cols[j] === 'avginp') {
           listGridHeadings.textContent = 'INP 75P';
+        } else if (cols[j] === 'totalViews') {
+          listGridHeadings.textContent = 'Total Form Render';
+        } else if (cols[j] === 'totalSubmissions') {
+          listGridHeadings.textContent = 'Total Form Submission';
         }
         listGridHeadings.classList.add('grid', 'list', 'col', 'heading');
         listGridHeadingRow.appendChild(listGridHeadings);
