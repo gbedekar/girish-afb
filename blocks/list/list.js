@@ -71,7 +71,7 @@ console.log(flag);
       const response = await Promise.all(promises);
       const listGridHeadingRow = document.createElement('div');
       listGridHeadingRow.classList.add('grid', 'list', 'row', 'heading');
-      for (let j = 0; j < 8; j += 1) {
+      for (let j = 0; j < 10; j += 1) {
         const listGridHeadings = document.createElement('div');
         if (cols[j] === 'url') {
           listGridHeadings.textContent = 'Path';
