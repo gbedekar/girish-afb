@@ -266,8 +266,6 @@ console.log(flag);
         block.append(noresults);
       }
     }
-    console.log("totalFormSubmit");
-    console.log(totalFormSubmit);
   };
 
   getQuery();
