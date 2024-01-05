@@ -18,6 +18,8 @@
   --overlay-background-color: #eee;
   --highlight-background-color: #ccc;
   --text-color: #000;
+  --code-bg-color: #f1f1f1;
+  --dark-spectrum-blue: #0463d6;
 
 
   /* global colors */
@@ -42,6 +44,7 @@
   --clr-error: #db0000;
   --clr-danger: #dc3545;
   --clr-success: #28a745;
+  --dark-spectrum-blue: 
 
   --mt-global-color-base-primary: #84329B;
   --mt-global-color-base-secondary: #3D3E40;
@@ -151,6 +154,16 @@ code, pre, samp {
 
 code, samp {
   padding: .125em;
+}
+
+code:not(pre > code) {
+  font-size: 14px;
+  overflow-wrap: break-word;
+  border: 1px solid #e5e5e5;
+  background-color: var(--code-bg-color);
+  color: var(--dark-spectrum-blue);
+  padding: 1px 4px;
+  border-radius: 4px;
 }
 
 pre {
