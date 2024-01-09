@@ -209,11 +209,8 @@ function drawFilter(block, cfg) {
 
       <div id=customurl class="customurl ${securl}">
         <div>
-          <label for=url>URL</label>
-          <!-- <input id=url name=url class=noedit value="${url}"> -->
-          <select id="url" name="url" class="noedit">
-        <!-- JavaScript will populate options here -->
-         </select>
+         <label for=url>URL</label>
+         <input id=url name=url class=noedit value="${url}">
         </div>
         <div id=urlfilter class=" hide">
           <button id=btnurl>Go</button>
@@ -275,34 +272,7 @@ export default function decorate(block) {
 
     // draw the form
     drawFilter(block, cfg);
-    // Assuming you have an array of URLs
-    getBaseDomains().then(domains => {
-
-        // Get the select element
-        const urlSelect = document.getElementById("url");
-
-        // Populate options based on the array
-        domains.forEach(domain => {
-            const option = document.createElement("option");
-            option.value = domain;
-            option.text = domain;
-            option.className = "noedit"
-            urlSelect.appendChild(option);
-        })
-        const storedSelectedValue = localStorage.getItem('selectedValue');
-
-        // Set the selected value if it exists
-        if (storedSelectedValue) {
-            urlSelect.value = storedSelectedValue;
-        }
-        urlSelect.addEventListener('change', function () {
-            // Save the selected value to localStorage
-            localStorage.setItem('selectedValue', this.value);
-        });
-    }).catch(error => {
-        console.error("Error fetching URLs:", error);
-    });
-
+    
     // add event listeners
     // interval buttons
     block.querySelector('#int7').addEventListener('click', () => {
@@ -377,48 +347,6 @@ export default function decorate(block) {
     block.querySelector('#enddate').addEventListener('blur', () => {
         focus('enddate', false);
     });
-}
-
-const getBaseDomains = async () => {
-    do {
-        getQuery();
-        await delay(1000);
-    } while (!(Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === false));
-
-    const domains = new Set();
-    let data;
-    const qps = {'offset': 0, 'limit': 500};
-    do {
-        try {
-            // Make the queryRequest
-            await queryRequest("rum-checkpoint-urls", getUrlBase("rum-checkpoint-urls"), 'render-all', '', qps);
-
-            // Process the data
-            // Process the data
-            data = window.dashboard["rum-checkpoint-urls" + "-all"].results.data || [];
-            for (let i = 0; i < data.length; i += 1) {
-                let domain = data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]
-                if (!domain.endsWith('hlx.page') && !domain.endsWith('hlx.live') && !(domain.indexOf('localhost')>-1)
-                    && !(domain.indexOf('dev')>-1) && !(domain.indexOf('stage')>-1) && !(domain.indexOf('stagging')>-1) && !(domain.indexOf('main-')>-1)
-                    && !(domain.indexOf('staging')>-1)) {
-                    domains.add(domain);
-                }
-            }
-
-            // Update qps for the next iteration
-            qps.offset = qps.offset + qps.limit;
-            qps.limit = qps.limit * 2;
-        } catch (error) {
-            // Handle errors if necessary
-            console.error("Error fetching data:", error);
-        }
-    } while (data && data.length > 0);
-    window.dashboard["domains"] = domains;
-    return domains;
-}
-
-function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 const getQuery = () => {
