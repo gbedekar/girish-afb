@@ -8,16 +8,11 @@ import { drawLoader, hideLoader } from "../../scripts/loader.js";
 
 export default function decorate(block) {
   let cfg = readBlockConfig(block);
-  console.log("...decorate");
-  console.log(cfg);
   cfg = Object.fromEntries(Object.entries(cfg).map(([k, v]) => [k, typeof v === 'string' ? v.toLowerCase() : v]));
-  console.log(cfg);
   const endpoint = 'rum-checkpoint-urls';
 
   cfg.block = block;
   const flag = `${endpoint}Flag`;
-console.log("flag");
-console.log(flag);
   // once we read config, clear the dom.
   block.querySelectorAll(':scope > div').forEach((row) => {
     row.style.display = 'none';
@@ -25,7 +20,6 @@ console.log(flag);
 
   const getQuery = () => {
     if (!Object.hasOwn(window, 'gettingQueryInfo')) {
-      console.log("test111");
       getQueryInfo();
     }
     if (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === true) {
@@ -40,7 +34,6 @@ console.log(flag);
   };
 
   const makeList = async () => {
-    let totalFormSubmit = 0;
     if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
       window.setTimeout(makeList, 1000);
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
@@ -136,12 +129,9 @@ console.log(flag);
                if(window.dashboard["rum-dashboard"+"-"+`${data[i]['url']}`].results === undefined){
                  await queryRequest("rum-dashboard", getUrlBase("rum-dashboard"), 'cwv', `${data[i]['url']}`);
                }
-            console.log(window);
             const cwvData  = window.dashboard["rum-dashboard"+"-"+`${data[i]['url']}`].results.data;
             let cwvValue = {};
             for(let k= 0; k < cwvData.length ; k += 1){
-              console.log(cwvData[k]['url']);
-              console.log(data[i]['url']);
               if(cwvData[k]['url'] === `${data[i]['url']}` && ".form".indexOf(`${data[i]['source']}`) !== -1){
                cwvValue = cwvData[k];
                 break;
@@ -235,12 +225,9 @@ console.log(flag);
       }
       const listGridRow = document.createElement('div');
       listGridRow.classList.add('grid', 'list', 'row');
-      console.log("totalFormViews.....");
-      console.log(totalFormViews);
       for (let j = 0; j < 3; j += 1) {
         const listGridColumn = document.createElement('div');
         listGridColumn.classList.add('grid', 'list', 'col', cols[j]);
-        let txtContent;
         if (cols[j] === 'url') {
           listGridColumn.textContent = "Total";
         }

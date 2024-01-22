@@ -123,7 +123,7 @@ export function addFavIcon(href) {
  * takes block and preemptively fires off requests for resources in worker thread
  * @param {*} main
  */
-export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,qps = {}) {
+export async function queryRequest(endpoint, endpointHost, type, url="" ,qps = {}) {
   let offset;
   let interval;
 
@@ -215,16 +215,12 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
   if (params.has('url') && params.get('url') !== '') {
     params.set('url', params.get('url').replace(/^http(s)*:\/\//, ''));
   }
-  if(type === 'submit' && submitUrl !== ""){
+  if(type === 'submit' && url !== ""){
     params.set('checkpoint', 'formsubmit');
-    params.set('url', submitUrl.replace(/^http(s)*:\/\//, ''));
+    params.set('url', url.replace(/^http(s)*:\/\//, ''));
   }
-  if(type === 'cwv' && submitUrl !== ""){
-    params.set('url', submitUrl.replace(/^http(s)*:\/\//, ''));
-  }
-  if(type === 'render-all'){
-    params.delete('url');
-    params.set('source', '.form');
+  if(type === 'cwv' && url !== ""){
+    params.set('url', url.replace(/^http(s)*:\/\//, ''));
   }
   const limit = params.get('limit') || '30';
   params.set('limit', limit);
@@ -255,7 +251,7 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
             if (!Object.hasOwn(window, 'dashboard')) {
               window.dashboard = {};
             }
-            window.dashboard[endpoint+"-"+submitUrl] = data;
+            window.dashboard[endpoint+"-"+url] = data;
           })
           .catch((err) => {
             // eslint-disable-next-line no-console
@@ -271,21 +267,7 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
             if (!Object.hasOwn(window, 'dashboard')) {
               window.dashboard = {};
             }
-            window.dashboard[endpoint+"-"+submitUrl] = data;
-          })
-          .catch((err) => {
-            // eslint-disable-next-line no-console
-            console.error('API Call Has Failed, Check that inputs are correct', err.message);
-          });
-    }
-    else if(type === 'render-all'){
-      await fetch(`${endpointHost}${endpoint}?${params.toString()}`)
-          .then((resp) => resp.json())
-          .then((data) => {
-            if (!Object.hasOwn(window, 'dashboard')) {
-              window.dashboard = {};
-            }
-            window.dashboard[endpoint+"-all"] = data;
+            window.dashboard[endpoint+"-"+url] = data;
           })
           .catch((err) => {
             // eslint-disable-next-line no-console
