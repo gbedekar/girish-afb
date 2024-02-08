@@ -55,10 +55,8 @@ export default function decorate(block) {
 
       for (let i = 0; i < data.length; i += 1) {
         const submitPromise = queryRequest(endpoint, getUrlBase(endpoint), 'submit', `${data[i]['url']}`);
-        const cwvPromise = queryRequest("rum-dashboard", getUrlBase("rum-dashboard"), 'cwv', `${data[i]['url']}`);
-
         // Add promises to the array
-        promises.push(submitPromise, cwvPromise);
+        promises.push(submitPromise);
       }
       let totalFormViews = 0;
       let totalSubmissions = 0;
