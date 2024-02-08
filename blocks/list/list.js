@@ -73,16 +73,6 @@ export default function decorate(block) {
           listGridHeadings.textContent = 'Form Views';
         } else if (cols[j] === 'formsubmission') {
           listGridHeadings.textContent = 'Form Submission';
-        } else  if (cols[j] === 'usrexp') {
-          listGridHeadings.textContent = 'Core Web Vitals across visits';
-        } else if (cols[j] === 'avglcp') {
-          listGridHeadings.textContent = 'LCP 75P';
-        } else if (cols[j] === 'avgcls') {
-          listGridHeadings.textContent = 'CLS 75P';
-        } else if (cols[j] === 'avgfid') {
-          listGridHeadings.textContent = 'FID 75P';
-        } else if (cols[j] === 'avginp') {
-          listGridHeadings.textContent = 'INP 75P';
         } else if (cols[j] === 'totalViews') {
           listGridHeadings.textContent = 'Total Form Render';
         } else if (cols[j] === 'totalSubmissions') {
@@ -124,98 +114,6 @@ export default function decorate(block) {
             txtContent = data[i][cols[j]];
             totalFormViews = totalFormViews + Number(data[i][cols[j]]);
             listGridColumn.textContent = txtContent;
-          }
-          else {
-               if(window.dashboard["rum-dashboard"+"-"+`${data[i]['url']}`].results === undefined){
-                 await queryRequest("rum-dashboard", getUrlBase("rum-dashboard"), 'cwv', `${data[i]['url']}`);
-               }
-            const cwvData  = window.dashboard["rum-dashboard"+"-"+`${data[i]['url']}`].results.data;
-            let cwvValue = {};
-            for(let k= 0; k < cwvData.length ; k += 1){
-              if(cwvData[k]['url'] === `${data[i]['url']}` && ".form".indexOf(`${data[i]['source']}`) !== -1){
-               cwvValue = cwvData[k];
-                break;
-              }
-            }
-            const {
-              lcpgood, lcpbad, clsgood, clsbad, fidgood, fidbad, inpgood, inpbad,
-            } = cwvValue;
-
-            const lcpOkay = 100 - (lcpgood + lcpbad);
-            const clsOkay = 100 - (clsgood + clsbad);
-            const fidOkay = 100 - (fidgood + fidbad);
-            const inpOkay = 100 - (inpgood + inpbad);
-            let noresult;
-            if ((lcpgood + lcpbad + clsgood + clsbad + fidgood + fidbad + inpgood + inpbad) === 0) {
-              noresult = true;
-            }
-            const avgOkay = Math.round((lcpOkay + clsOkay + fidOkay + inpOkay) / 4);
-            const avgGood = Math.round((lcpgood + clsgood + fidgood + inpgood) / 4);
-            const avgBad = Math.round((lcpbad + clsbad + fidbad + inpbad) / 4);
-            if (cols[j] === 'usrexp') {
-              const badPerc = document.createElement('div');
-              const goodPerc = document.createElement('div');
-              const okayPerc = document.createElement('div');
-              if (!noresult) {
-                badPerc.classList.add('grid', 'list', 'col', cols[j], 'badbar');
-                goodPerc.classList.add('grid', 'list', 'col', cols[j], 'goodbar');
-                okayPerc.classList.add('grid', 'list', 'col', cols[j], 'okaybar');
-                const badPercentage = `${avgBad}%`;
-                const goodPercentage = `${avgGood}%`;
-                const okayPercentage = `${avgOkay}%`;
-                badPerc.textContent = badPercentage;
-                goodPerc.textContent = goodPercentage;
-                okayPerc.textContent = okayPercentage;
-                badPerc.style.width = badPercentage;
-                goodPerc.style.width = goodPercentage;
-                okayPerc.style.width = okayPercentage;
-                if (avgBad < 10) badPerc.style.color = 'red';
-                if (avgGood < 10) goodPerc.style.color = 'green';
-                if (avgOkay < 10) okayPerc.style.color = 'orange';
-                listGridColumn.appendChild(goodPerc);
-                listGridColumn.appendChild(okayPerc);
-                listGridColumn.appendChild(badPerc);
-              } else {
-                const noresultPerc = document.createElement('div');
-                noresultPerc.classList.add('grid', 'list', 'col', cols[j], 'noresultbar');
-                const noresultPercentage = '100%';
-                noresultPerc.textContent = 'Not Enough Traffic';
-                noresultPerc.style.width = noresultPercentage;
-                listGridColumn.appendChild(noresultPerc);
-              }
-            }
-            else {
-              let txtContent;
-              if (cols[j] === 'avglcp') {
-                txtContent = cwvValue[cols[j]] / 1000.00;
-              } else {
-                txtContent = cwvValue[cols[j]];
-              }
-              if (j >= 4) {
-                if (data[i][cols[j]] && data[i][cols[j]] <= ranges[cols[j]][0]) {
-                  listGridColumn.classList.toggle('pass');
-                } else if (
-                    data[i][cols[j]] > ranges[cols[j]][0] && data[i][cols[j]] < ranges[cols[j]][1]
-                ) {
-                  listGridColumn.classList.toggle('okay');
-                } else if (!data[i][cols[j]]) {
-                  listGridColumn.classList.toggle('noresult');
-                } else {
-                  listGridColumn.classList.toggle('fail');
-                }
-              }
-              if (txtContent) {
-                if (j >= 4) {
-                  const numb = parseFloat(txtContent).toFixed(2).toLocaleString('en-US');
-                  const displayedNumb = numb.endsWith('.00') ? numb.replace('.00', '') : numb;
-                  listGridColumn.textContent = `${displayedNumb}${metrics[j - 4]}`;
-                } else {
-                  listGridColumn.textContent = txtContent;
-                }
-              } else if (j >= 4) {
-                listGridColumn.textContent = 'n/a';
-              }
-            }
           }
           listGridRow.append(listGridColumn);
         }
