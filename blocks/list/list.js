@@ -43,7 +43,7 @@ export default function decorate(block) {
       const listGridContainer = document.createElement('div');
       listGridContainer.classList.add('grid', 'list', 'container');
 
-      const cols = ['url', 'views', 'formsubmission','totalViews', 'totalSubmissions'];
+      const cols = ['url', 'views', 'formsubmission'];
       const metrics = ['s', '', 'ms', 'ms'];
       const ranges = {
         avglcp: [2500, 4000],
@@ -73,10 +73,6 @@ export default function decorate(block) {
           listGridHeadings.textContent = 'Form Views';
         } else if (cols[j] === 'formsubmission') {
           listGridHeadings.textContent = 'Form Submission';
-        } else if (cols[j] === 'totalViews') {
-          listGridHeadings.textContent = 'Total Form Render';
-        } else if (cols[j] === 'totalSubmissions') {
-          listGridHeadings.textContent = 'Total Form Submission';
         }
         listGridHeadings.classList.add('grid', 'list', 'col', 'heading');
         listGridHeadingRow.appendChild(listGridHeadings);
