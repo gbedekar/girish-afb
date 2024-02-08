@@ -43,7 +43,7 @@ export default function decorate(block) {
       const listGridContainer = document.createElement('div');
       listGridContainer.classList.add('grid', 'list', 'container');
 
-      const cols = ['url', 'views', 'formsubmission','usrexp', 'avglcp', 'avgcls', 'avgfid', 'avginp','totalViews', 'totalSubmissions'];
+      const cols = ['url', 'views', 'formsubmission','totalViews', 'totalSubmissions'];
       const metrics = ['s', '', 'ms', 'ms'];
       const ranges = {
         avglcp: [2500, 4000],
@@ -65,7 +65,7 @@ export default function decorate(block) {
       const response = await Promise.all(promises);
       const listGridHeadingRow = document.createElement('div');
       listGridHeadingRow.classList.add('grid', 'list', 'row', 'heading');
-      for (let j = 0; j < 8; j += 1) {
+      for (let j = 0; j < 4; j += 1) {
         const listGridHeadings = document.createElement('div');
         if (cols[j] === 'url') {
           listGridHeadings.textContent = 'Path';
