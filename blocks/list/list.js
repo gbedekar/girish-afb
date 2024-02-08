@@ -87,7 +87,7 @@ export default function decorate(block) {
         if ((i % 2) === 1) {
           listGridRow.classList.add('odd');
         }
-        for (let j = 0; j < 8; j += 1) {
+        for (let j = 0; j < 4; j += 1) {
           const listGridColumn = document.createElement('div');
           listGridColumn.classList.add('grid', 'list', 'col', cols[j]);
           let txtContent;
