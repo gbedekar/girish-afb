@@ -50,7 +50,7 @@ console.log(flag);
       const listGridContainer = document.createElement('div');
       listGridContainer.classList.add('grid', 'list', 'container');
 
-      const cols = ['url', 'views', 'formsubmission','usrexp', 'avglcp', 'avgcls', 'avgfid', 'avginp','totalViews', 'totalSubmissions'];
+      const cols = ['url', 'views', 'formsubmission'];
       const metrics = ['s', '', 'ms', 'ms'];
       const ranges = {
         avglcp: [2500, 4000],
@@ -72,7 +72,7 @@ console.log(flag);
       const response = await Promise.all(promises);
       const listGridHeadingRow = document.createElement('div');
       listGridHeadingRow.classList.add('grid', 'list', 'row', 'heading');
-      for (let j = 0; j < 8; j += 1) {
+      for (let j = 0; j < 3; j += 1) {
         const listGridHeadings = document.createElement('div');
         if (cols[j] === 'url') {
           listGridHeadings.textContent = 'Path';
@@ -80,20 +80,6 @@ console.log(flag);
           listGridHeadings.textContent = 'Form Views';
         } else if (cols[j] === 'formsubmission') {
           listGridHeadings.textContent = 'Form Submission';
-        } else  if (cols[j] === 'usrexp') {
-          listGridHeadings.textContent = 'Core Web Vitals across visits';
-        } else if (cols[j] === 'avglcp') {
-          listGridHeadings.textContent = 'LCP 75P';
-        } else if (cols[j] === 'avgcls') {
-          listGridHeadings.textContent = 'CLS 75P';
-        } else if (cols[j] === 'avgfid') {
-          listGridHeadings.textContent = 'FID 75P';
-        } else if (cols[j] === 'avginp') {
-          listGridHeadings.textContent = 'INP 75P';
-        } else if (cols[j] === 'totalViews') {
-          listGridHeadings.textContent = 'Total Form Render';
-        } else if (cols[j] === 'totalSubmissions') {
-          listGridHeadings.textContent = 'Total Form Submission';
         }
         listGridHeadings.classList.add('grid', 'list', 'col', 'heading');
         listGridHeadingRow.appendChild(listGridHeadings);
