@@ -387,6 +387,7 @@ const getBaseDomains = async () => {
 
     const domains = new Set();
     let data;
+    let totalFormViews = 0;
     const qps = {'offset': 0, 'limit': 500};
     do {
         try {
@@ -403,6 +404,9 @@ const getBaseDomains = async () => {
                     && !(domain.indexOf('dev')>-1) && !(domain.indexOf('stage')>-1) && !(domain.indexOf('stagging')>-1) && !(domain.indexOf('main-')>-1)
                     && !(domain.indexOf('staging')>-1)) {
                     domains.add(domain);
+                    if(((`${data[i]['source']}`.indexOf(".form") !== -1) || (`${data[i]['source']}`.indexOf("mktoForm") !== -1))){
+                        totalFormViews  = totalFormViews + Number(data[i]['views']);
+                    }
                 }
             }
 
@@ -417,6 +421,7 @@ const getBaseDomains = async () => {
     domains.add('ALL');
     console.log("-------domains------");
     window.dashboard["domains"] = domains;
+    window.dashboard["totalFormViews"] = totalFormViews;
     return domains;
 }
 
