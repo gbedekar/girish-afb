@@ -388,6 +388,7 @@ const getBaseDomains = async () => {
     const domains = new Set();
     let data;
     let totalFormViews = 0;
+    let viewData = [];
     const qps = {'offset': 0, 'limit': 500};
     do {
         try {
@@ -397,7 +398,6 @@ const getBaseDomains = async () => {
             // Process the data
             // Process the data
             data = window.dashboard["rum-checkpoint-urls" + "-all"].results.data || [];
-           // window.dashboard["rum-checkpoint-urls-all-filter"].results.data.a
             for (let i = 0; i < data.length; i += 1) {
                 let domain = data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]
                 if (!domain.endsWith('hlx.page') && !domain.endsWith('hlx.live') && !(domain.indexOf('localhost')>-1)
@@ -406,6 +406,9 @@ const getBaseDomains = async () => {
                     domains.add(domain);
                     if(((`${data[i]['source']}`.indexOf(".form") !== -1) || (`${data[i]['source']}`.indexOf("mktoForm") !== -1))){
                         totalFormViews  = totalFormViews + Number(data[i]['views']);
+                        viewData = window.dashboard["rum-checkpoint-urls-all-filter"]?.data || [];
+                        viewData = viewData.concat(data[i]);
+                        window.dashboard["rum-checkpoint-urls-all-filter"].data = viewData;
                     }
                 }
             }

@@ -46,7 +46,7 @@ console.log(flag);
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
       // query complete, hide loading graphic
       const {data} = window.dashboard[endpoint].results;
-
+      
       const listGridContainer = document.createElement('div');
       listGridContainer.classList.add('grid', 'list', 'container');
 
@@ -120,7 +120,6 @@ console.log(flag);
       }
       const listGridRow = document.createElement('div');
       listGridRow.classList.add('grid', 'list', 'row');
-      console.log(totalFormViews);
       for (let j = 0; j < 3; j += 1) {
         const listGridColumn = document.createElement('div');
         listGridColumn.classList.add('grid', 'list', 'col', cols[j]);
@@ -129,6 +128,7 @@ console.log(flag);
         }
         else if (cols[j] === 'views') {
           listGridColumn.textContent = window.dashboard["totalFormViews"];
+          console.log(window.dashboard["totalFormViews"]);
         }
        else if (cols[j] === 'formsubmission') {
           listGridColumn.textContent = totalSubmissions;
