@@ -104,7 +104,6 @@ console.log(flag);
                   txtContent = submitData[k]['actions'];
                   totalSubmissions = totalSubmissions + Number(txtContent);
                   listGridColumn.textContent = txtContent;
-                  break;
                 }
             }
             if(listGridColumn.textContent === '' || listGridColumn.textContent === undefined){
