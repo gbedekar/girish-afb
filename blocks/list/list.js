@@ -51,12 +51,14 @@ console.log(flag);
       console.log((params.get('url') === 'ALL'))
       const listGridContainer = document.createElement('div');
       listGridContainer.classList.add('grid', 'list', 'container');
-
+      let limit = params.get('limit');
       const cols = ['url', 'views', 'formsubmission'];
       const promises = [];
-
+      if(params.get('url') === 'ALL'){
+        limit =  500;
+      }
       for (let i = 0; i < data.length; i += 1) {
-        const submitPromise = queryRequest(endpoint, getUrlBase(endpoint), 'submit', `${data[i]['url']}`);
+        const submitPromise = queryRequest(endpoint, getUrlBase(endpoint), 'submit', `${data[i]['url']}`, {'limit':limit});
         // Add promises to the array
         promises.push(submitPromise);
       }

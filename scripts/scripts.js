@@ -252,11 +252,7 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
   endpoint = "rum-checkpoint-urls";
   const flag = `${endpoint}Flag`;
   const checkData = async () => {
-    if(params.get('url') === 'ALL'){
-      params.delete('limit');
-      params.set('limit',500);
-      console.log(" params limit ",params.get('limit'));
-    }
+   
     if(type === 'submit'){
       await fetch(`${endpointHost}${endpoint}?${params.toString()}`)
           .then((resp) => resp.json())
