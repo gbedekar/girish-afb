@@ -48,6 +48,7 @@ console.log(flag);
       const {data} = (params.get('url') === 'ALL') ? window.dashboard["rum-checkpoint-urls-all-filter"] : window.dashboard[endpoint].results;
       console.log("---data---");
       console.log(data);
+      console.log((params.get('url') === 'ALL'));
       const listGridContainer = document.createElement('div');
       listGridContainer.classList.add('grid', 'list', 'container');
 
