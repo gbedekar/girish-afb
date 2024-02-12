@@ -40,12 +40,12 @@ console.log(flag);
   };
 
   const makeList = async () => {
-    let totalFormSubmit = 0;
     if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
       window.setTimeout(makeList, 1000);
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
+      const params = new URLSearchParams(window.location.search);
       // query complete, hide loading graphic
-      const {data} = window.dashboard[endpoint].results;
+      const {data} = (params.get('url') === 'ALL') ? window.dashboard["rum-checkpoint-urls-all-filter"] : window.dashboard[endpoint].results;
       
       const listGridContainer = document.createElement('div');
       listGridContainer.classList.add('grid', 'list', 'container');
@@ -78,7 +78,6 @@ console.log(flag);
       listGridContainer.appendChild(listGridHeadingRow);
 
       let counter = 0;
-      const params = new URLSearchParams(window.location.search);
       console.log("----params.get('url')---");
       console.log(params.get('url'));
       for (let i = 0; i < data.length; i += 1) {
@@ -132,6 +131,7 @@ console.log(flag);
         }
        else if (cols[j] === 'formsubmission') {
           listGridColumn.textContent = totalSubmissions;
+          console.log(totalSubmissions);
         }
         listGridRow.append(listGridColumn);
       }
