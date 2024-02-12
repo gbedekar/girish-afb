@@ -96,7 +96,9 @@ console.log(flag);
           if (cols[j] === 'url') {
             listGridColumn.innerHTML = `<a href='${data[i][cols[j]]}' target="_blank">${data[i][cols[j]].replace(/^https?:\/\/[^/]+/i, '')}</a>`;
           } else if (cols[j] === 'formsubmission') {
+            console.log("---inside form submission-----");
             const submitData  = window.dashboard[endpoint+"-"+`${data[i]['url']}`].results.data;
+            console.log("---inside form submission-----",data[i]);
             for(let k= 0; k < submitData.length ; k += 1){
                 if(submitData[k]['url'] === `${data[i]['url']}`  && ((`${submitData[k]['source']}`.indexOf(".form") !== -1) || (`${submitData[k]['source']}`.indexOf("mktoForm") !== -1))){
                   txtContent = submitData[k]['actions'];

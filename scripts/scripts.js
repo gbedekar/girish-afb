@@ -231,6 +231,9 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
   Object.entries(qps).forEach(([k, v]) => {
     params.set(k, v);
   });
+  if(params.get('url') === 'ALL'){
+    params.set('limit',500);
+  }
   /*
   Below are specific parameters set for specific queries
   This is intended as short term solution; will discuss
