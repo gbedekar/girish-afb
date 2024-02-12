@@ -61,6 +61,7 @@ console.log(flag);
         promises.push(submitPromise);
       }
       let totalFormViews = 0;
+      let totalSubmissionsCount = 0;
       let totalSubmissions = 0;
       const response = await Promise.all(promises);
       const listGridHeadingRow = document.createElement('div');
@@ -111,6 +112,7 @@ console.log(flag);
             }
             console.log(" done ....");
             listGridColumn.textContent = totalSubmissions;
+            totalSubmissionsCount = totalSubmissionsCount + totalSubmissions;
             if(listGridColumn.textContent === '' || listGridColumn.textContent === undefined){
               listGridColumn.textContent = '0';
             }
@@ -137,8 +139,8 @@ console.log(flag);
           console.log(window.dashboard["totalFormViews"]);
         }
        else if (cols[j] === 'formsubmission') {
-          listGridColumn.textContent = totalSubmissions;
-          console.log(totalSubmissions);
+          listGridColumn.textContent = totalSubmissionsCount;
+          console.log(totalSubmissionsCount);
         }
         listGridRow.append(listGridColumn);
       }
