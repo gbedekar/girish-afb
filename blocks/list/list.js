@@ -78,6 +78,7 @@ console.log(flag);
       listGridContainer.appendChild(listGridHeadingRow);
 
       let counter = 0;
+      const params = new URLSearchParams(window.location.search);
       console.log("----params.get('url')---");
       console.log(params.get('url'));
       for (let i = 0; i < data.length; i += 1) {
