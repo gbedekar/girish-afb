@@ -243,7 +243,7 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
   queries when needed
   */
   if (endpoint === 'github-commits' || endpoint === 'rum-pageviews' || endpoint === 'daily-rum') {
-    const currLimit = parseInt(limit, 10);
+    const currLimit = parseInt(limit, 500);
     if (currLimit < 500) {
       params.set('limit', '500');
     }
