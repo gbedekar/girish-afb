@@ -233,6 +233,7 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
   });
   if(params.get('url') === 'ALL'){
     params.set('limit',500);
+    console.log(" params limit ",params.get('limit'));
   }
   /*
   Below are specific parameters set for specific queries
@@ -247,6 +248,7 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
       params.set('limit', '500');
     }
   }
+  console.log(" params limit1 ",params.get('limit'));
   endpoint = "rum-checkpoint-urls";
   const flag = `${endpoint}Flag`;
   const checkData = async () => {
