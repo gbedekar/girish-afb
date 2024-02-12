@@ -78,6 +78,8 @@ console.log(flag);
       listGridContainer.appendChild(listGridHeadingRow);
 
       let counter = 0;
+      console.log("----params.get('url')---");
+      console.log(params.get('url'));
       for (let i = 0; i < data.length; i += 1) {
         window.dashboard["rum-dashboard"] = {};
         const listGridRow = document.createElement('div');
@@ -121,7 +123,6 @@ console.log(flag);
       for (let j = 0; j < 3; j += 1) {
         const listGridColumn = document.createElement('div');
         listGridColumn.classList.add('grid', 'list', 'col', cols[j]);
-        let txtContent;
         if (cols[j] === 'url') {
           listGridColumn.textContent = "Total";
         }
