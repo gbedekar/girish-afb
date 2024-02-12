@@ -115,9 +115,7 @@ console.log(flag);
           }
           listGridRow.append(listGridColumn);
         }
-        if(!(params.get('url') === 'ALL')){
            listGridContainer.append(listGridRow);
-        }
         counter = i;
       }
       const listGridRow = document.createElement('div');

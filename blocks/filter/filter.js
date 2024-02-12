@@ -404,10 +404,24 @@ const getBaseDomains = async () => {
                     && !(domain.indexOf('dev')>-1) && !(domain.indexOf('stage')>-1) && !(domain.indexOf('stagging')>-1) && !(domain.indexOf('main-')>-1)
                     && !(domain.indexOf('staging')>-1)) {
                     domains.add(domain);
-                    if(((`${data[i]['source']}`.indexOf(".form") !== -1) || (`${data[i]['source']}`.indexOf("mktoForm") !== -1))){
-                        totalFormViews  = totalFormViews + Number(data[i]['views']);
-                        viewData = window.dashboard["rum-checkpoint-urls-all-filter"] || [];
-                        viewData = viewData.concat(data[i]);
+                    if ((`${data[i]['source']}`.indexOf(".form") !== -1) || (`${data[i]['source']}`.indexOf("mktoForm") !== -1)) {
+                        totalFormViews = totalFormViews + Number(data[i]['views']);
+                        let found = false;
+                        for (let j = 0; j < viewData.length; j++) {
+                            if (viewData[j]['url'].includes(domain)) {
+                                viewData[j]['views'] += Number(data[i]['views']);
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            let newData = {
+                                url: domain,
+                                views: Number(data[i]['views']),
+                                source: data[i]['source']
+                            };
+                            viewData.push(newData);
+                        }
                         window.dashboard["rum-checkpoint-urls-all-filter"] = viewData;
                     }
                 }
