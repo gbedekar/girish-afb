@@ -100,7 +100,7 @@ console.log(flag);
             const submitData  = window.dashboard[endpoint+"-"+`${data[i]['url']}`].results.data;
             console.log("---inside form submission-----", window.dashboard[endpoint+"-"+`${data[i]['url']}`]);
             for(let k= 0; k < submitData.length ; k += 1){
-                if(submitData[k]['url'] === `${data[i]['url']}`  && ((`${submitData[k]['source']}`.indexOf(".form") !== -1) || (`${submitData[k]['source']}`.indexOf("mktoForm") !== -1))){
+                if(((`${submitData[k]['source']}`.indexOf(".form") !== -1) || (`${submitData[k]['source']}`.indexOf("mktoForm") !== -1))){
                   txtContent = submitData[k]['actions'];
                   totalSubmissions = totalSubmissions + Number(txtContent);
                   listGridColumn.textContent = txtContent;
@@ -117,7 +117,7 @@ console.log(flag);
           }
           listGridRow.append(listGridColumn);
         }
-           listGridContainer.append(listGridRow);
+        listGridContainer.append(listGridRow);
         counter = i;
       }
       const listGridRow = document.createElement('div');
