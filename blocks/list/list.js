@@ -110,7 +110,7 @@ console.log(flag);
                 }
             }
             console.log(" done ....");
-            listGridColumn.textContent = txtContent;
+            listGridColumn.textContent = totalSubmissions;
             if(listGridColumn.textContent === '' || listGridColumn.textContent === undefined){
               listGridColumn.textContent = '0';
             }
