@@ -102,6 +102,8 @@ console.log(flag);
             for(let k= 0; k < submitData.length ; k += 1){
                 if(((`${submitData[k]['source']}`.indexOf(".form") !== -1) || (`${submitData[k]['source']}`.indexOf("mktoForm") !== -1))){
                   txtContent = submitData[k]['actions'];
+                  console.log(" value is not null ",submitData[k]['url']);
+                  console.log(" value is not null ",submitData[k]['actions']);
                   totalSubmissions = totalSubmissions + Number(txtContent);
                   listGridColumn.textContent = txtContent;
                 }
