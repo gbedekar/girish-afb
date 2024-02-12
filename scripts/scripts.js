@@ -227,11 +227,11 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
     params.set('source', '.form');
   }
   const limit = params.get('limit') || '30';
-  params.set('limit', limit);
+  params.set('limit', 500);
   Object.entries(qps).forEach(([k, v]) => {
     params.set(k, v);
   });
-  if(params.get('url') === 'ALL'){
+  if(params.get('8') === 'ALL'){
     params.set('limit',500);
     console.log(" params limit ",params.get('limit'));
   }
@@ -243,12 +243,12 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
   queries when needed
   */
   if (endpoint === 'github-commits' || endpoint === 'rum-pageviews' || endpoint === 'daily-rum') {
-    const currLimit = parseInt(limit, 500);
+    const currLimit = parseInt(limit, 10);
     if (currLimit < 500) {
       params.set('limit', '500');
     }
   }
-  console.log(" params limit1 ",params.get('limit'));
+  console.log(" params limit ",params.get('limit'));
   endpoint = "rum-checkpoint-urls";
   const flag = `${endpoint}Flag`;
   const checkData = async () => {
