@@ -231,10 +231,6 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
   Object.entries(qps).forEach(([k, v]) => {
     params.set(k, v);
   });
-  if(params.get('url') === 'ALL'){
-    params.set('limit',500);
-    console.log(" params limit ",params.get('limit'));
-  }
   /*
   Below are specific parameters set for specific queries
   This is intended as short term solution; will discuss
@@ -252,7 +248,6 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
   endpoint = "rum-checkpoint-urls";
   const flag = `${endpoint}Flag`;
   const checkData = async () => {
-   
     if(type === 'submit'){
       await fetch(`${endpointHost}${endpoint}?${params.toString()}`)
           .then((resp) => resp.json())
