@@ -406,9 +406,9 @@ const getBaseDomains = async () => {
                     domains.add(domain);
                     if(((`${data[i]['source']}`.indexOf(".form") !== -1) || (`${data[i]['source']}`.indexOf("mktoForm") !== -1))){
                         totalFormViews  = totalFormViews + Number(data[i]['views']);
-                        viewData = window.dashboard["rum-checkpoint-urls-all-filter"]?.data || [];
+                        viewData = window.dashboard["rum-checkpoint-urls-all-filter"] || [];
                         viewData = viewData.concat(data[i]);
-                        window.dashboard["rum-checkpoint-urls-all-filter"].data = viewData;
+                        window.dashboard["rum-checkpoint-urls-all-filter"] = viewData;
                     }
                 }
             }
