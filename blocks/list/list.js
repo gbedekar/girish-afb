@@ -46,7 +46,8 @@ console.log(flag);
       const params = new URLSearchParams(window.location.search);
       // query complete, hide loading graphic
       const {data} = (params.get('url') === 'ALL') ? window.dashboard["rum-checkpoint-urls-all-filter"] : window.dashboard[endpoint].results;
-      
+      console.log("---data---");
+      console.log(data);
       const listGridContainer = document.createElement('div');
       listGridContainer.classList.add('grid', 'list', 'container');
 
