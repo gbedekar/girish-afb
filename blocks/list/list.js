@@ -45,13 +45,10 @@ console.log(flag);
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
       const params = new URLSearchParams(window.location.search);
       // query complete, hide loading graphic
-      const {data} = window.dashboard[endpoint].results;
-      if((params.get('url') === 'ALL')){
-        data = window.dashboard["rum-checkpoint-urls-all-filter"]
-      }
+      const data = (params.get('url') === 'ALL') ? window.dashboard["rum-checkpoint-urls-all-filter"] : window.dashboard[endpoint].results.data;
       console.log("---data---");
       console.log(data);
-      console.log((params.get('url') === 'ALL'));
+      console.log((params.get('url') === 'ALL'))
       const listGridContainer = document.createElement('div');
       listGridContainer.classList.add('grid', 'list', 'container');
 
