@@ -231,7 +231,7 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
   Object.entries(qps).forEach(([k, v]) => {
     params.set(k, v);
   });
-  if(params.get('8') === 'ALL'){
+  if(params.get('url') === 'ALL'){
     params.set('limit',500);
     console.log(" params limit ",params.get('limit'));
   }
