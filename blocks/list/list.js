@@ -126,7 +126,7 @@ console.log(flag);
           listGridColumn.textContent = "Total";
         }
         else if (cols[j] === 'views') {
-          listGridColumn.textContent = window.dahsboard["totalFormViews"];
+          listGridColumn.textContent = window.dashboard["totalFormViews"];
         }
        else if (cols[j] === 'formsubmission') {
           listGridColumn.textContent = totalSubmissions;
