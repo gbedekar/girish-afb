@@ -253,6 +253,7 @@ export async function queryRequest(endpoint, endpointHost, type, submitUrl="" ,q
   const flag = `${endpoint}Flag`;
   const checkData = async () => {
     if(params.get('url') === 'ALL'){
+      params.delete('limit');
       params.set('limit',500);
       console.log(" params limit ",params.get('limit'));
     }
