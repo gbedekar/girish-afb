@@ -396,6 +396,7 @@ const getBaseDomains = async () => {
             // Process the data
             // Process the data
             data = window.dashboard["rum-checkpoint-urls" + "-all"].results.data || [];
+           // window.dashboard["rum-checkpoint-urls-all-filter"].results.data.a
             for (let i = 0; i < data.length; i += 1) {
                 let domain = data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]
                 if (!domain.endsWith('hlx.page') && !domain.endsWith('hlx.live') && !(domain.indexOf('localhost')>-1)
@@ -414,6 +415,7 @@ const getBaseDomains = async () => {
         }
     } while (data && data.length > 0);
     domains.add('ALL');
+    console.log("-------domains------");
     window.dashboard["domains"] = domains;
     return domains;
 }
