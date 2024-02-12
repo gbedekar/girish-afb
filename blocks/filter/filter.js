@@ -402,7 +402,7 @@ const getBaseDomains = async () => {
                 let domain = data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]
                 if (!domain.endsWith('hlx.page') && !domain.endsWith('hlx.live') && !(domain.indexOf('localhost')>-1)
                     && !(domain.indexOf('dev')>-1) && !(domain.indexOf('stage')>-1) && !(domain.indexOf('stagging')>-1) && !(domain.indexOf('main-')>-1)
-                    && !(domain.indexOf('staging')>-1)) {
+                    && !(domain.indexOf('staging')>-1) && !(domain.indexOf('about:srcdoc')>-1)) {
                     domains.add(domain);
                     if ((`${data[i]['source']}`.indexOf(".form") !== -1) || (`${data[i]['source']}`.indexOf("mktoForm") !== -1)) {
                         totalFormViews = totalFormViews + Number(data[i]['views']);
