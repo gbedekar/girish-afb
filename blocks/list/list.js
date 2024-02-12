@@ -45,7 +45,10 @@ console.log(flag);
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
       const params = new URLSearchParams(window.location.search);
       // query complete, hide loading graphic
-      const {data} = (params.get('url') === 'ALL') ? window.dashboard["rum-checkpoint-urls-all-filter"] : window.dashboard[endpoint].results;
+      const {data} = window.dashboard[endpoint].results;
+      if((params.get('url') === 'ALL')){
+        data = window.dashboard["rum-checkpoint-urls-all-filter"]
+      }
       console.log("---data---");
       console.log(data);
       console.log((params.get('url') === 'ALL'));
