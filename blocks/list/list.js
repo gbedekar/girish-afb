@@ -99,15 +99,18 @@ console.log(flag);
             console.log("---inside form submission-----");
             const submitData  = window.dashboard[endpoint+"-"+`${data[i]['url']}`].results.data;
             console.log("---inside form submission-----", window.dashboard[endpoint+"-"+`${data[i]['url']}`]);
+            totalSubmissions = 0;
+            console.log(" started ....");
             for(let k= 0; k < submitData.length ; k += 1){
                 if(((`${submitData[k]['source']}`.indexOf(".form") !== -1) || (`${submitData[k]['source']}`.indexOf("mktoForm") !== -1))){
                   txtContent = submitData[k]['actions'];
                   console.log(" value is not null ",submitData[k]['url']);
                   console.log(" value is not null ",submitData[k]['actions']);
                   totalSubmissions = totalSubmissions + Number(txtContent);
-                  listGridColumn.textContent = txtContent;
                 }
             }
+            console.log(" done ....");
+            listGridColumn.textContent = txtContent;
             if(listGridColumn.textContent === '' || listGridColumn.textContent === undefined){
               listGridColumn.textContent = '0';
             }
